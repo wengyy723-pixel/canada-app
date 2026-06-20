@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>加拿大遊學助手 - 即時匯率版 🇨🇦</title>
+    <title>加拿大遊學冒險助手 🇨🇦</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,47 +15,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* 電腦版 iPhone 外殼 */
-        @media (min-width: 768px) {
-            .phone-wrapper {
-                background: #1e1e1e;
-                border: 12px solid #2e2e2e;
-                border-radius: 48px;
-                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 3px 2px rgba(255,255,255,0.2);
-                width: 393px;
-                height: 852px;
-                position: relative;
-                margin: 30px auto;
-                overflow: hidden;
-            }
-            .phone-wrapper::before {
-                content: '';
-                position: absolute;
-                top: 15px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 110px;
-                height: 30px;
-                background: #000;
-                border-radius: 20px;
-                z-index: 999;
-                pointer-events: none;
-            }
-            .phone-screen {
-                width: 100%;
-                height: 100%;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
-            .phone-screen::-webkit-scrollbar { display: none; }
-        }
-
         body { 
-            background-color: #f0ebf4; 
+            background-color: #fcf9f6; 
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         } 
-        .app-page { display: none; min-height: 100%; }
+        .app-page { display: none; min-height: 100vh; }
         .app-page.active { display: block; }
         @keyframes rotate {
             from { transform: rotate(0deg); }
@@ -64,187 +29,187 @@
         .spinning { animation: rotate 0.8s cubic-bezier(0.1, 0.8, 0.1, 1) infinite; }
     </style>
 </head>
-<body class="text-gray-800 font-sans min-h-screen flex flex-col justify-center items-center">
+<body class="text-gray-800 font-sans">
 
-    <div class="phone-wrapper w-full max-w-md md:max-w-none">
-        <div class="phone-screen bg-[#fcf9f6] text-gray-800 pb-12">
-
-            <div id="page-home" class="app-page active">
-                <header class="bg-white px-6 pt-12 pb-4 border-b border-gray-100">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h1 class="text-2xl font-serif font-bold text-amber-900 tracking-wide">Bonjour, Canada!</h1>
-                            <p class="text-xs text-amber-700 mt-0.5">2026 · 我的暑期遊學誌 🇨🇦</p>
-                        </div>
-                        <div class="relative bg-amber-50 p-2 rounded-full text-amber-800">
-                            <i class="fa-regular fa-bell text-lg"></i>
-                        </div>
-                    </div>
-                </header>
-
-                <main class="px-4 mt-4 space-y-4">
-                    <div class="bg-gradient-to-br from-red-700 to-red-500 rounded-2xl p-5 text-white shadow-md relative overflow-hidden">
-                        <span class="text-xs bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">今日行程</span>
-                        <h2 class="text-2xl font-bold mt-2">多倫多大學報到日</h2>
-                        <p class="text-xs opacity-90 mt-1"><i class="fa-solid fa-location-dot mr-1"></i>Campus ➜ St. George Station</p>
-                        
-                        <div class="mt-4 pt-3 border-t border-white/20 flex items-center justify-between">
-                            <p class="text-xs text-red-100"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>今天開學典禮囉！</p>
-                            <button onclick="navigateTo('itinerary')" class="bg-white text-red-600 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">查看完整行程</button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
-                            <span class="text-2xl font-bold text-red-600" id="countdown-days">--</span>
-                            <p class="text-[10px] text-gray-400 mt-1">天後出發</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
-                            <span class="text-2xl font-bold text-amber-800">30</span>
-                            <p class="text-[10px] text-gray-400 mt-1">天遊學行程</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
-                            <span class="text-2xl font-bold text-emerald-600">1</span>
-                            <p class="text-[10px] text-gray-400 mt-1">人獨自冒險</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3 pt-2">
-                        <button onclick="navigateTo('spots')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                            <div class="bg-blue-50 text-blue-600 p-2.5 rounded-lg"><i class="fa-solid fa-map-location-dot text-lg"></i></div>
-                            <div><h3 class="font-bold text-sm">景點收藏</h3><p class="text-[10px] text-gray-400">口袋名單</p></div>
-                        </button>
-                        <button onclick="navigateTo('gifts')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                            <div class="bg-amber-50 text-amber-600 p-2.5 rounded-lg"><i class="fa-solid fa-gift text-lg"></i></div>
-                            <div><h3 class="font-bold text-sm">伴手禮清單</h3><p class="text-[10px] text-gray-400">必買代購</p></div>
-                        </button>
-                        <button onclick="navigateTo('finance')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                            <div class="bg-purple-50 text-purple-600 p-2.5 rounded-lg"><i class="fa-solid fa-wallet text-lg"></i></div>
-                            <div><h3 class="font-bold text-sm">記帳與匯率</h3><p class="text-[10px] text-gray-400">即時匯率換算</p></div>
-                        </button>
-                        <button onclick="navigateTo('games')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                            <div class="bg-rose-50 text-rose-600 p-2.5 rounded-lg"><i class="fa-solid fa-dice text-lg"></i></div>
-                            <div><h3 class="font-bold text-sm">旅遊小遊戲</h3><p class="text-[10px] text-gray-400">今天吃啥隨機轉</p></div>
-                        </button>
-                    </div>
-                </main>
+    <div id="page-home" class="app-page active">
+        <header class="bg-white px-6 pt-8 pb-4 border-b border-gray-100">
+            <div class="flex justify-between items-center max-w-md mx-auto">
+                <div>
+                    <h1 class="text-2xl font-serif font-bold text-amber-900 tracking-wide">Bonjour, Canada!</h1>
+                    <p class="text-xs text-amber-700 mt-0.5">2026 · 我的暑期遊學誌 🇨🇦</p>
+                </div>
+                <div class="relative bg-amber-50 p-2 rounded-full text-amber-800">
+                    <i class="fa-regular fa-bell text-lg"></i>
+                </div>
             </div>
+        </header>
 
-            <div id="page-spots" class="app-page bg-slate-50">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-slate-800">景點收藏專區</h2>
-                </header>
-                <div class="p-4 space-y-4">
-                    <div class="bg-white rounded-2xl p-4 shadow-sm border">
-                        <div class="flex gap-2">
-                            <input type="text" id="spot-name" placeholder="輸入景點/美食 (如: 尼加拉瀑布)" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
-                            <button onclick="addSpot()" class="bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium">收藏</button>
-                        </div>
-                    </div>
-                    <div id="spots-list" class="space-y-2.5"></div>
+        <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
+            <div class="bg-[oklch(80.8%_0.114_19.571)] rounded-2xl p-5 text-amber-950 shadow-md relative overflow-hidden">
+                <span class="text-xs bg-amber-900/10 px-2 py-0.5 rounded-full backdrop-blur-sm text-amber-900 font-medium">今日行程</span>
+                <h2 class="text-2xl font-bold mt-2 text-amber-950">多倫多大學報到日</h2>
+                <p class="text-xs opacity-90 mt-1"><i class="fa-solid fa-location-dot mr-1"></i>Campus ➜ St. George Station</p>
+                <div class="mt-4 pt-3 border-t border-amber-900/10 flex items-center justify-between">
+                    <p class="text-xs text-amber-900/90"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>今天開學典禮囉！</p>
+                    <button onclick="navigateTo('itinerary')" class="bg-amber-950 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm active:scale-95 transition">查看完整行程</button>
                 </div>
             </div>
 
-            <div id="page-gifts" class="app-page bg-amber-50/20">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-amber-900">伴手禮 & 購物清單</h2>
-                </header>
-                <div class="p-4 space-y-4">
-                    <div class="bg-white rounded-2xl p-4 shadow-sm border">
-                        <div class="flex gap-2">
-                            <input type="text" id="gift-name" placeholder="如: 楓糖漿、Roots 帽T" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
-                            <button onclick="addGift()" class="bg-amber-600 text-white px-4 py-2 rounded-xl text-sm font-medium">加入</button>
-                        </div>
-                    </div>
-                    <ul id="gifts-list" class="space-y-2"></ul>
+            <div class="grid grid-cols-3 gap-3">
+                <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
+                    <span class="text-2xl font-bold block" id="countdown-days" style="color: oklch(75% 0.114 19.571);">--</span>
+                    <p class="text-[10px] text-gray-400 mt-1">天後出發</p>
+                </div>
+                <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
+                    <span class="text-2xl font-bold text-amber-800">30</span>
+                    <p class="text-[10px] text-gray-400 mt-1">天遊學行程</p>
+                </div>
+                <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
+                    <span class="text-2xl font-bold text-emerald-600">1</span>
+                    <p class="text-[10px] text-gray-400 mt-1">人獨自冒險</p>
                 </div>
             </div>
 
-            <div id="page-finance" class="app-page bg-purple-50/20">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-purple-900">記帳與即時匯率</h2>
-                </header>
-                <div class="p-4 space-y-4">
-                    <div class="bg-white rounded-2xl p-4 border shadow-sm">
-                        <h3 class="font-bold text-sm text-purple-700 mb-2">
-                            <i class="fa-solid fa-calculator mr-2"></i>即時匯率換算 
-                            <span id="rate-badge" class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full ml-1 font-normal">載入中...</span>
-                        </h3>
-                        <div class="grid grid-cols-2 gap-3 items-center">
-                            <div>
-                                <label class="block text-[10px] text-gray-400 mb-1">加幣 CAD</label>
-                                <input type="number" id="cad-input" oninput="convert()" class="w-full border rounded-xl p-2 font-bold text-center bg-purple-50 text-purple-800" value="1">
-                            </div>
-                            <div class="text-center pt-4">
-                                <span class="block text-[10px] text-gray-400">換算台幣 TWD</span>
-                                <div class="font-bold text-lg text-gray-700 mt-1" id="twd-output">計算中...</div>
-                            </div>
-                        </div>
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button onclick="navigateTo('spots')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
+                    <div class="bg-blue-50 text-blue-600 p-2.5 rounded-lg"><i class="fa-solid fa-map-location-dot text-lg"></i></div>
+                    <div><h3 class="font-bold text-sm">景點收藏</h3><p class="text-[10px] text-gray-400">口袋名單</p></div>
+                </button>
+                <button onclick="navigateTo('gifts')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
+                    <div class="bg-amber-50 text-amber-600 p-2.5 rounded-lg"><i class="fa-solid fa-gift text-lg"></i></div>
+                    <div><h3 class="font-bold text-sm">伴手禮清單</h3><p class="text-[10px] text-gray-400">必買代購</p></div>
+                </button>
+                <button onclick="navigateTo('finance')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
+                    <div class="bg-purple-50 text-purple-600 p-2.5 rounded-lg"><i class="fa-solid fa-wallet text-lg"></i></div>
+                    <div><h3 class="font-bold text-sm">記帳與匯率</h3><p class="text-[10px] text-gray-400">即時匯率換算</p></div>
+                </button>
+                <button onclick="navigateTo('games')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
+                    <div class="bg-rose-50 text-rose-600 p-2.5 rounded-lg"><i class="fa-solid fa-dice text-lg"></i></div>
+                    <div><h3 class="font-bold text-sm">旅遊小遊戲</h3><p class="text-[10px] text-gray-400">今天吃啥隨機轉</p></div>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <div id="page-spots" class="app-page bg-slate-50">
+        <header class="bg-white pt-8 p-4 border-b">
+            <div class="max-w-md mx-auto flex items-center gap-4">
+                <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
+                <h2 class="font-bold text-lg text-slate-800">景點收藏專區</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4 space-y-4">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border">
+                <div class="flex gap-2">
+                    <input type="text" id="spot-name" placeholder="輸入景點/美食 (如: 尼加拉瀑布)" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                    <button onclick="addSpot()" class="bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium">收藏</button>
+                </div>
+            </div>
+            <div id="spots-list" class="space-y-2.5"></div>
+        </div>
+    </div>
+
+    <div id="page-gifts" class="app-page bg-amber-50/20">
+        <header class="bg-white pt-8 p-4 border-b">
+            <div class="max-w-md mx-auto flex items-center gap-4">
+                <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
+                <h2 class="font-bold text-lg text-amber-900">伴手禮 & 購物清單</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4 space-y-4">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border">
+                <div class="flex gap-2">
+                    <input type="text" id="gift-name" placeholder="如: 楓糖漿、Roots 帽T" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                    <button onclick="addGift()" class="bg-amber-600 text-white px-4 py-2 rounded-xl text-sm font-medium">加入</button>
+                </div>
+            </div>
+            <ul id="gifts-list" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <div id="page-finance" class="app-page bg-purple-50/20">
+        <header class="bg-white pt-8 p-4 border-b">
+            <div class="max-w-md mx-auto flex items-center gap-4">
+                <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
+                <h2 class="font-bold text-lg text-purple-900">記帳與即時匯率</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4 space-y-4">
+            <div class="bg-white rounded-2xl p-4 border shadow-sm">
+                <h3 class="font-bold text-sm text-purple-700 mb-2">
+                    <i class="fa-solid fa-calculator mr-2"></i>即時匯率換算 
+                    <span id="rate-badge" class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full ml-1 font-normal">載入中...</span>
+                </h3>
+                <div class="grid grid-cols-2 gap-3 items-center">
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1">加幣 CAD</label>
+                        <input type="number" id="cad-input" oninput="convert()" class="w-full border rounded-xl p-2 font-bold text-center bg-purple-50 text-purple-800" value="1">
                     </div>
-                    <div class="bg-white rounded-2xl p-4 border shadow-sm">
-                        <h3 class="font-bold text-sm text-gray-800 mb-3"><i class="fa-solid fa-dollar-sign mr-2"></i>新增消費紀錄</h3>
-                        <div class="flex gap-2 mb-4">
-                            <input type="text" id="exp-title" placeholder="項目" class="w-1/2 border border-gray-200 rounded-xl px-3 py-2 text-sm">
-                            <input type="number" id="exp-amount" placeholder="CAD" class="w-1/4 border border-gray-200 rounded-xl px-3 py-2 text-sm">
-                            <button onclick="addExpense()" class="bg-purple-600 text-white px-3 py-2 rounded-xl text-sm font-medium">記帳</button>
-                        </div>
-                        <div class="border-t pt-2 flex justify-between font-bold mb-2"><span>總計消費:</span><span id="total-cost" class="text-purple-600">0 CAD</span></div>
-                        <ul id="expenses-list" class="space-y-2"></ul>
+                    <div class="text-center pt-4">
+                        <span class="block text-[10px] text-gray-400">換算台幣 TWD</span>
+                        <div class="font-bold text-lg text-gray-700 mt-1" id="twd-output">計算中...</div>
                     </div>
                 </div>
             </div>
+            <div class="bg-white rounded-2xl p-4 border shadow-sm">
+                <h3 class="font-bold text-sm text-gray-800 mb-3"><i class="fa-solid fa-dollar-sign mr-2"></i>新增消費紀錄</h3>
+                <div class="flex gap-2 mb-4">
+                    <input type="text" id="exp-title" placeholder="項目" class="w-1/2 border border-gray-200 rounded-xl px-3 py-2 text-sm">
+                    <input type="number" id="exp-amount" placeholder="CAD" class="w-1/4 border border-gray-200 rounded-xl px-3 py-2 text-sm">
+                    <button onclick="addExpense()" class="bg-purple-600 text-white px-3 py-2 rounded-xl text-sm font-medium">記帳</button>
+                </div>
+                <div class="border-t pt-2 flex justify-between font-bold mb-2"><span>總計消費:</span><span id="total-cost" class="text-purple-600">0 CAD</span></div>
+                <ul id="expenses-list" class="space-y-2"></ul>
+            </div>
+        </div>
+    </div>
 
-            <div id="page-games" class="app-page bg-rose-50/20">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-rose-900">旅遊決策大轉盤</h2>
-                </header>
-                <div class="p-6 text-center space-y-6">
-                    <div class="bg-white rounded-2xl p-6 border shadow-sm max-w-sm mx-auto">
-                        <h3 class="font-bold text-base text-gray-700 mb-4">今天誰請客 / 吃什麼？</h3>
-                        <div class="w-32 h-32 bg-rose-100 rounded-full mx-auto flex items-center justify-center border-4 border-rose-300 shadow-inner relative mb-4">
-                            <div class="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[16px] border-b-red-600 absolute -top-1 left-1/2 -translate-x-1/2 z-10"></div>
-                            <div class="w-full h-full flex items-center justify-center rounded-full" id="wheel">
-                                <span id="wheel-result" class="font-bold text-rose-800 px-2 text-sm">按下開轉</span>
-                            </div>
-                        </div>
-                        <button onclick="spinWheel()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-6 py-2 rounded-full shadow-md text-sm transition active:scale-95">大轉盤，啟動！</button>
+    <div id="page-games" class="app-page bg-rose-50/20">
+        <header class="bg-white pt-8 p-4 border-b">
+            <div class="max-w-md mx-auto flex items-center gap-4">
+                <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
+                <h2 class="font-bold text-lg text-rose-900">旅遊決策大轉盤</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-6 text-center space-y-6">
+            <div class="bg-white rounded-2xl p-6 border shadow-sm max-w-sm mx-auto">
+                <h3 class="font-bold text-base text-gray-700 mb-4">今天誰請客 / 吃什麼？</h3>
+                <div class="w-32 h-32 bg-rose-100 rounded-full mx-auto flex items-center justify-center border-4 border-rose-300 shadow-inner relative mb-4">
+                    <div class="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[16px] border-b-red-600 absolute -top-1 left-1/2 -translate-x-1/2 z-10"></div>
+                    <div class="w-full h-full flex items-center justify-center rounded-full" id="wheel">
+                        <span id="wheel-result" class="font-bold text-rose-800 px-2 text-sm">按下開轉</span>
                     </div>
                 </div>
+                <button onclick="spinWheel()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-6 py-2 rounded-full shadow-md text-sm transition active:scale-95">大轉盤，啟動！</button>
             </div>
+        </div>
+    </div>
 
-            <div id="page-itinerary" class="app-page bg-stone-50">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-gray-800">每日行程總覽</h2>
-                </header>
-                <div class="p-4">
-                    <div class="bg-white rounded-2xl p-4 border shadow-sm space-y-4">
-                        <div class="border-l-2 border-red-500 pl-3">
-                            <span class="text-xs font-bold text-red-500">Day 01</span>
-                            <h4 class="font-bold text-sm">多倫多皮爾遜機場落地</h4>
-                            <p class="text-xs text-gray-500 mt-0.5">搭乘 UP Express 前往市區宿舍 check-in。</p>
-                        </div>
-                        <div class="border-l-2 border-gray-200 pl-3">
-                            <span class="text-xs font-bold text-gray-400">Day 02</span>
-                            <h4 class="font-bold text-sm text-gray-700">語言學校報到 + 認識環境</h4>
-                            <p class="text-xs text-gray-400 mt-0.5">早上分班測驗，下午去買 Presto 交通卡。</p>
-                        </div>
-                    </div>
+    <div id="page-itinerary" class="app-page bg-stone-50">
+        <header class="bg-white pt-8 p-4 border-b">
+            <div class="max-w-md mx-auto flex items-center gap-4">
+                <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
+                <h2 class="font-bold text-lg text-gray-800">每日行程總覽</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4">
+            <div class="bg-white rounded-2xl p-4 border shadow-sm space-y-4">
+                <div class="border-l-4 pl-3" style="border-color: oklch(80.8% 0.114 19.571);">
+                    <span class="text-xs font-bold text-amber-800">Day 01</span>
+                    <h4 class="font-bold text-sm">多倫多皮爾遜機場落地</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">搭乘 UP Express 前往市區宿舍 check-in。</p>
+                </div>
+                <div class="border-l-4 border-gray-200 pl-3">
+                    <span class="text-xs font-bold text-gray-400">Day 02</span>
+                    <h4 class="font-bold text-sm text-gray-700">語言學校報到 + 認識環境</h4>
+                    <p class="text-xs text-gray-400 mt-0.5">早上分班測驗，下午去買 Presto 交通卡。</p>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
-        // 全域匯率變數（預設 24，串接成功後會自動覆蓋）
         let exchangeRate = 24.0;
-
-        // 本地瀏覽器資料儲存
         let data = JSON.parse(localStorage.getItem('canadaProData')) || { 
             spots: [{name: '尼加拉瀑布 🇨🇦'}, {name: 'CN Tower 電視塔'}], 
             gifts: [{name: '加拿大楓糖漿', bought: false}, {name: 'Roots 經典帽T', bought: false}], 
@@ -252,39 +217,26 @@
         };
         function save() { localStorage.setItem('canadaProData', JSON.stringify(data)); }
 
-        // 🌟 核心功能：使用 Fetch API 抓取網路上的真實即時匯率
         async function fetchLiveExchangeRate() {
             try {
-                // 向免費的匯率 API 發出請求
                 const response = await fetch('https://open.er-api.com/v6/latest/CAD');
                 const result = await response.json();
-                
-                // 提取加幣對台幣 (TWD) 的匯率
                 if (result && result.rates && result.rates.TWD) {
                     exchangeRate = parseFloat(result.rates.TWD);
-                    
-                    // 更新網頁上的 UI 標籤
                     document.getElementById('rate-badge').innerText = `1 : ${exchangeRate.toFixed(2)}`;
-                    console.log(`成功動態更新最新匯率：1 CAD = ${exchangeRate} TWD`);
                 }
             } catch (error) {
-                console.error("即時匯率抓取失敗，將使用預設匯率 24.0", error);
                 document.getElementById('rate-badge').innerText = `1 : 24.00 (離線)`;
             }
-            // 抓取完不論成功與否，立刻重新計算一次畫面數字
             convert();
         }
 
-        // 頁面切換控制
         function navigateTo(pageId) {
             document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
             document.getElementById(`page-${pageId}`).classList.add('active');
-            const screen = document.querySelector('.phone-screen');
-            if(screen) screen.scrollTop = 0;
             window.scrollTo(0, 0);
         }
 
-        // 景點控制
         function addSpot() {
             const input = document.getElementById('spot-name');
             if(!input.value.trim()) return;
@@ -300,7 +252,6 @@
             `).join('');
         }
 
-        // 伴手禮控制
         function addGift() {
             const input = document.getElementById('gift-name');
             if(!input.value.trim()) return;
@@ -323,7 +274,6 @@
             `).join('');
         }
 
-        // 記帳控制
         function addExpense() {
             const t = document.getElementById('exp-title').value.trim();
             const a = parseFloat(document.getElementById('exp-amount').value);
@@ -348,7 +298,6 @@
             document.getElementById('total-cost').innerText = total.toFixed(2) + ' CAD';
         }
 
-        // 匯率計算（自動綁定全域變數 exchangeRate）
         function convert() {
             const cad = document.getElementById('cad-input').value;
             document.getElementById('twd-output').innerText = (cad ? (parseFloat(cad) * exchangeRate).toFixed(1) : "0.0") + ' TWD';
@@ -367,7 +316,7 @@
             }, 1000);
         }
 
-        // 自動計算倒數天數 (出發日定為 2026-07-15)
+        // 自動計算倒數天數（預設 2026-07-15 出發，可自由修改日期）
         function calculateCountdown() {
             const departureDate = new Date('2026-07-15'); 
             const today = new Date();
@@ -378,9 +327,8 @@
             document.getElementById('countdown-days').innerText = daysLeft > 0 ? daysLeft : 0;
         }
 
-        // 初始執行
         calculateCountdown();
-        fetchLiveExchangeRate(); // 👈 啟動時立刻連上網路抓即時匯率
+        fetchLiveExchangeRate();
         renderSpots(); renderGifts(); renderExpenses();
     </script>
 </body>
