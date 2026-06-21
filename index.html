@@ -11,12 +11,17 @@
     <meta name="mobile-web-app-capable" content="yes">
     <link class="apple-touch-icon" href="https://img.icons8.com/color/512/canada.png">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body { 
             background-color: #FDFDFD; 
+            font-family: 'Noto Sans TC', sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             overflow-x: hidden;
@@ -29,22 +34,16 @@
             -webkit-overflow-scrolling: touch;
         }
         .app-page.active { display: block; }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .spinning { animation: rotate 0.8s cubic-bezier(0.1, 0.8, 0.1, 1) infinite; }
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="text-slate-800 font-sans">
+<body class="text-slate-800">
 
     <div id="page-home" class="app-page active">
         <header class="bg-white px-6 pt-8 pb-4 border-b border-gray-100 sticky top-0 z-20">
             <div class="flex justify-between items-center max-w-md mx-auto">
                 <div>
-                    <h1 class="text-2xl font-serif font-bold text-[#2E0F11] tracking-wide">Bonjour, Canada!</h1>
+                    <h1 class="text-2xl font-bold text-[#2E0F11] tracking-wide">Bonjour, Canada!</h1>
                     <p class="text-xs text-[#2E0F11]/70 mt-0.5">2026 · 我的暑期遊學誌 🇨🇦</p>
                 </div>
                 <button onclick="triggerBellNotification()" class="relative bg-rose-50 p-2 rounded-full text-[#2E0F11] active:scale-95 transition">
@@ -89,17 +88,17 @@
                     <div class="bg-blue-50 text-blue-600 p-2.5 rounded-xl"><i class="fa-solid fa-map-location-dot text-lg"></i></div>
                     <div><h3 class="font-bold text-sm text-[#2E0F11]">景點收藏</h3><p class="text-[10px] text-gray-400">口袋名單</p></div>
                 </button>
-                <button onclick="navigateTo('packing')" class="bg-white p-4 rounded-2xl border border-gray-50 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                    <div class="bg-teal-50 text-teal-600 p-2.5 rounded-xl"><i class="fa-solid fa-suitcase text-lg"></i></div>
-                    <div><h3 class="font-bold text-sm text-[#2E0F11]">行李清單</h3><p class="text-[10px] text-gray-400">打包檢查</p></div>
+                <button onclick="navigateTo('restaurant')" class="bg-white p-4 rounded-2xl border border-gray-50 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
+                    <div class="bg-teal-50 text-teal-600 p-2.5 rounded-xl"><i class="fa-solid fa-utensils text-lg"></i></div>
+                    <div><h3 class="font-bold text-sm text-[#2E0F11]">口袋餐廳</h3><p class="text-[10px] text-gray-400">美食收藏</p></div>
                 </button>
                 <button onclick="navigateTo('gifts')" class="bg-white p-4 rounded-2xl border border-gray-50 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
                     <div class="bg-amber-50 text-amber-600 p-2.5 rounded-xl"><i class="fa-solid fa-gift text-lg"></i></div>
                     <div><h3 class="font-bold text-sm text-[#2E0F11]">伴手禮物</h3><p class="text-[10px] text-gray-400">必買代購</p></div>
                 </button>
-                <button onclick="navigateTo('games')" class="bg-white p-4 rounded-2xl border border-gray-50 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                    <div class="bg-rose-50 text-rose-600 p-2.5 rounded-xl"><i class="fa-solid fa-dice text-lg"></i></div>
-                    <div><h3 class="font-bold text-sm text-[#2E0F11]">旅遊遊戲</h3><p class="text-[10px] text-gray-400">吃啥隨機轉</p></div>
+                <button onclick="navigateTo('finance')" class="bg-white p-4 rounded-2xl border border-gray-50 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
+                    <div class="bg-purple-50 text-purple-600 p-2.5 rounded-xl"><i class="fa-solid fa-wallet text-lg"></i></div>
+                    <div><h3 class="font-bold text-sm text-[#2E0F11]">記帳匯率</h3><p class="text-[10px] text-gray-400">即時換算</p></div>
                 </button>
             </div>
         </main>
@@ -112,7 +111,6 @@
                     <h2 class="font-bold text-lg text-[#2E0F11]">遊學冒險日誌日曆</h2>
                     <span class="text-[11px] text-slate-400">左右滑動切換天數 ➜</span>
                 </div>
-                
                 <div id="horizontal-scroll-days" class="flex gap-2.5 overflow-x-auto pb-1 px-1 scroll-smooth">
                     </div>
             </div>
@@ -127,7 +125,6 @@
                     </div>
                     <span id="selected-countdown-label" class="text-xs bg-rose-50 text-rose-800 font-bold px-2.5 py-1 rounded-full">出發當天</span>
                 </div>
-                
                 <div id="selected-day-events-content" class="space-y-4 min-height-[150px]">
                     </div>
             </div>
@@ -139,9 +136,9 @@
     </div>
 
     <div id="itinerary-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-xl animate-fade-in">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-xl">
             <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-base text-[#2E0F11]"><i class="fa-regular fa-calendar-plus mr-1"></i> 新增行事曆行程</h3>
+                <h3 class="font-bold text-base text-[#2E0F11]"><i class="fa-regular fa-calendar-plus mr-1"></i> 新增行事曆行程</h3>
                 <button onclick="toggleItineraryModal(false)" class="text-gray-400 hover:text-gray-600 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="space-y-3">
@@ -198,20 +195,20 @@
         </div>
     </div>
 
-    <div id="page-packing" class="app-page">
+    <div id="page-restaurant" class="app-page">
         <header class="bg-white pt-8 p-4 border-b sticky top-0 z-20">
             <div class="max-w-md mx-auto">
-                <h2 class="font-bold text-lg text-[#2E0F11]">出國行李檢查清單</h2>
+                <h2 class="font-bold text-lg text-[#2E0F11]">多倫多必吃口袋餐廳</h2>
             </div>
         </header>
         <div class="max-w-md mx-auto p-4 space-y-4">
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
                 <div class="flex gap-2">
-                    <input type="text" id="pack-name" placeholder="輸入要帶的物品 (如: 護照、延長線)" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2E0F11]">
-                    <button onclick="addPackItem()" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium">新增</button>
+                    <input type="text" id="restaurant-name" placeholder="輸入美食/餐廳名稱 (如: Tim Hortons)" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2E0F11]">
+                    <button onclick="addRestaurantItem()" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-medium">收藏</button>
                 </div>
             </div>
-            <ul id="packing-list" class="space-y-2"></ul>
+            <ul id="restaurant-list" class="space-y-2"></ul>
         </div>
     </div>
 
@@ -251,27 +248,6 @@
         </div>
     </div>
 
-    <div id="page-games" class="app-page">
-        <header class="bg-white pt-8 p-4 border-b sticky top-0 z-20">
-            <div class="max-w-md mx-auto flex items-center gap-4">
-                <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                <h2 class="font-bold text-lg text-[#2E0F11]">旅遊決策大轉盤</h2>
-            </div>
-        </header>
-        <div class="max-w-md mx-auto p-6 text-center space-y-6">
-            <div class="bg-white rounded-2xl p-6 border shadow-sm max-w-sm mx-auto">
-                <h3 class="font-bold text-base text-gray-700 mb-4">今天吃什麼？</h3>
-                <div class="w-32 h-32 bg-[#FFEBF4] rounded-full mx-auto flex items-center justify-center border-4 border-rose-100 shadow-inner relative mb-4">
-                    <div class="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[16px] border-b-[#2E0F11] absolute -top-1 left-1/2 -translate-x-1/2 z-10"></div>
-                    <div class="w-full h-full flex items-center justify-center rounded-full" id="wheel">
-                        <span id="wheel-result" class="font-bold text-[#2E0F11] px-2 text-sm">按下開轉</span>
-                    </div>
-                </div>
-                <button onclick="spinWheel()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-2 rounded-full shadow-md text-sm transition active:scale-95">大轉盤，啟動！</button>
-            </div>
-        </div>
-    </div>
-
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] px-2 py-2 z-50">
         <div class="max-w-md mx-auto grid grid-cols-4 text-center">
             <button onclick="navigateTo('home')" id="nav-home" class="nav-btn flex flex-col items-center gap-1 text-[#2E0F11] transition">
@@ -286,30 +262,42 @@
                 <i class="fa-solid fa-wallet text-lg"></i>
                 <span class="text-[10px] font-medium">記帳匯率</span>
             </button>
-            <button onclick="navigateTo('packing')" id="nav-packing" class="nav-btn flex flex-col items-center gap-1 text-gray-400 transition">
-                <i class="fa-solid fa-suitcase text-lg"></i>
-                <span class="text-[10px] font-medium">行李清單</span>
+            <button onclick="navigateTo('restaurant')" id="nav-restaurant" class="nav-btn flex flex-col items-center gap-1 text-gray-400 transition">
+                <i class="fa-solid fa-utensils text-lg"></i>
+                <span class="text-[10px] font-medium">口袋餐廳</span>
             </button>
         </div>
     </nav>
 
     <script>
         let exchangeRate = 24.0;
-        const departureDateStr = '2026-07-17'; // 🌟 你的出發日期：2026年7月17日
-        let currentlySelectedDate = '2026-07-17'; // 預選查看出發當天
+        const departureDateStr = '2026-07-17'; 
+        let currentlySelectedDate = '2026-07-17'; 
         
-        // 核心資料庫
-        let data = JSON.parse(localStorage.getItem('canadaProData')) || { 
-            spots: [{name: '尼加拉瀑布 🇨🇦'}, {name: 'CN Tower 電視塔'}], 
-            gifts: [{name: '加拿大楓糖漿', bought: false}], 
-            expenses: [],
-            packing: [{name: '護照與簽證影本', checked: true}],
-            itineraries: [
-                {date: '2026-07-17', title: '多倫多皮爾遜機場落地 ✈️', desc: 'Day 1 正式抵達加拿大！搭乘 UP Express 前往市區宿舍 check-in。'},
-                {date: '2026-07-18', title: '語言學校報到 + 認識環境 🏫', desc: 'Day 2 早上進行入學分班測驗，下午跟同學去買 Presto 交通卡。'},
-                {date: '2026-07-19', title: '多倫多市中心大探索 🍁', desc: 'Day 3 參觀著名地標 CN Tower 與古老的聖勞倫斯市場吃海鮮。'}
-            ]
-        };
+        // 核心底層資料防錯與讀取
+        let rawStorage = localStorage.getItem('canadaProData');
+        let data;
+        
+        try {
+            data = JSON.parse(rawStorage);
+            // 🌟 防錯機制：如果使用者本機存的是行李舊格式，強制重置，防止程式死當 🌟
+            if (!data || !data.hasOwnProperty('restaurants') || !data.itineraries) {
+                throw new Error("Reset storage for new format");
+            }
+        } catch(e) {
+            data = { 
+                spots: [{name: '尼加拉瀑布 🇨🇦'}, {name: 'CN Tower 電視塔'}], 
+                gifts: [{name: '加拿大楓糖漿', bought: false}], 
+                expenses: [],
+                restaurants: [{name: 'Tim Hortons (國民神級咖啡店)', visited: true}, {name: 'Chipotle (墨西哥捲餅)', visited: false}, {name: 'Poutine House (經典乾酪澆頭薯條)', visited: false}],
+                itineraries: [
+                    {date: '2026-07-17', title: '多倫多皮爾遜機場落地 ✈️', desc: 'Day 1 正式抵達加拿大！搭乘 UP Express 前往市區宿舍 check-in。'},
+                    {date: '2026-07-18', title: '語言學校報到 + 認識環境 🏫', desc: 'Day 2 早上進行入學分班測驗，下午跟同學去買 Presto 交通卡。'},
+                    {date: '2026-07-19', title: '多倫多市中心大探索 🍁', desc: 'Day 3 參觀著名地標 CN Tower 與古老的聖勞倫斯市場吃海鮮。'}
+                ]
+            };
+            localStorage.setItem('canadaProData', JSON.stringify(data));
+        }
         
         function save() { localStorage.setItem('canadaProData', JSON.stringify(data)); }
 
@@ -321,7 +309,6 @@
             return `${yyyy}-${mm}-${dd}`;
         }
 
-        // 🌟 核心工具：傳入任何日期，自動幫你換算成它是 Day 幾、距離出發前/後幾天
         function getDayInfo(dateStr) {
             const target = new Date(dateStr);
             const depart = new Date(departureDateStr);
@@ -332,21 +319,18 @@
             const daysDiff = Math.round(timeDiff / (1000 * 60 * 60 * 24));
             
             if (daysDiff >= 0) {
-                // 出發當天及出發後
                 return {
                     dayLabel: `Day ${String(daysDiff + 1).padStart(2, '0')}`,
                     countdownLabel: daysDiff === 0 ? "出發當天 🇨🇦" : `出發第 ${daysDiff + 1} 天`
                 };
             } else {
-                // 出發前
                 return {
-                    dayLabel: `出發前`,
+                    dayLabel: `前 ${Math.abs(daysDiff)} 天`,
                     countdownLabel: `出發前 ${Math.abs(daysDiff)} 天`
                 };
             }
         }
 
-        // ================= 🔔 鈴鐺通知功能 =================
         function triggerBellNotification() {
             const todayStr = getTodayDateString();
             const todaySchedule = data.itineraries.find(item => item.date === todayStr);
@@ -355,7 +339,7 @@
             if (todaySchedule) {
                 alert(`🔔 今日行程動態提醒 (${info.dayLabel})：\n\n📅 日期：${todaySchedule.date}\n📌 行程：${todaySchedule.title}\n📝 備忘：${todaySchedule.desc}`);
             } else {
-                alert(`🔔 今日行程動態提醒：\n\n今天 (${todayStr}) 是 ${info.countdownLabel}。\n目前行事曆上沒有安排活動，可以去放鬆探索唷！`);
+                alert(`🔔 今日行程動態提醒：\n\n今天 (${todayStr}) 是 ${info.countdownLabel}。\n目前沒有安排活動，可以去放鬆探索唷！`);
             }
         }
 
@@ -365,7 +349,6 @@
             document.getElementById('bell-dot').style.display = hasEvent ? 'block' : 'none';
         }
 
-        // ================= 🌸 主頁動態粉色卡片 =================
         function renderHomeTodayCard() {
             const todayStr = getTodayDateString();
             document.getElementById('home-today-date').innerText = todayStr;
@@ -384,23 +367,16 @@
             document.getElementById('total-itinerary-count').innerText = data.itineraries.length;
         }
 
-        // ================= 📅 全新橫向滑動日曆與彈窗控制 =================
         function toggleItineraryModal(show) {
             const modal = document.getElementById('itinerary-modal');
-            if (show) {
-                modal.style.display = 'flex';
-                document.getElementById('iti-date').value = currentlySelectedDate;
-            } else {
-                modal.style.display = 'none';
-            }
+            modal.style.display = show ? 'flex' : 'none';
+            if (show) document.getElementById('iti-date').value = currentlySelectedDate;
         }
 
-        // 動態渲染頂部橫向滑動天數條
         function renderHorizontalDaysScrollbar() {
             const scrollContainer = document.getElementById('horizontal-scroll-days');
+            if(!scrollContainer) return;
             const todayStr = getTodayDateString();
-            
-            // 建立一組從 7/15 (出發前兩天) 開始到 7/25 的測試時間軸
             const startDate = new Date('2026-07-14');
             let htmlHTML = '';
             
@@ -417,16 +393,15 @@
                 const isSelected = loopDateStr === currentlySelectedDate;
                 const isToday = loopDateStr === todayStr;
                 
-                // 根據狀態組合不同的背景樣式
-                let bgStyle = "bg-slate-50 text-slate-700 border border-slate-100";
-                if (isToday) bgStyle = "bg-rose-50 text-rose-900 border border-rose-200";
-                if (isSelected) bgStyle = "bg-slate-900 text-white shadow-md";
+                let bgStyle = "bg-[#FFEBF4] text-[#2E0F11] border border-pink-100/50"; 
+                if (isToday) bgStyle = "bg-rose-200 text-rose-950 border border-rose-300 font-bold";
+                if (isSelected) bgStyle = "bg-slate-900 text-white shadow-md font-black"; 
                 
                 htmlHTML += `
                     <button onclick="selectDateFromScrollbar('${loopDateStr}')" class="flex-shrink-0 flex flex-col items-center justify-center p-3 rounded-2xl min-w-[75px] active:scale-95 transition ${bgStyle}">
-                        <span class="text-[11px] uppercase tracking-wider opacity-70 font-bold">${info.dayLabel}</span>
-                        <span class="text-base font-black mt-0.5">${parseInt(dd)}</span>
-                        <span class="text-[8px] opacity-60 font-medium">${parseInt(mm)}月</span>
+                        <span class="text-[10px] uppercase tracking-wide opacity-80">${info.dayLabel}</span>
+                        <span class="text-base font-extrabold mt-0.5">${parseInt(dd)}</span>
+                        <span class="text-[9px] opacity-70">${parseInt(mm)}月</span>
                     </button>
                 `;
             }
@@ -439,14 +414,12 @@
             renderSelectedDayDetailPanel();
         }
 
-        // 渲染當前選中日期的詳細行程區塊
         function renderSelectedDayDetailPanel() {
             const info = getDayInfo(currentlySelectedDate);
             document.getElementById('selected-day-label').innerText = info.dayLabel;
             document.getElementById('selected-date-label').innerText = currentlySelectedDate;
             document.getElementById('selected-countdown-label').innerText = info.countdownLabel;
             
-            // 篩選當天的行程
             const dayEvents = data.itineraries.filter(item => item.date === currentlySelectedDate);
             const contentContainer = document.getElementById('selected-day-events-content');
             
@@ -461,7 +434,6 @@
             }
             
             contentContainer.innerHTML = dayEvents.map((item, index) => {
-                // 找到該項目在全體陣列中的真實索引，方便刪除
                 const globalIndex = data.itineraries.findIndex(iti => iti.date === item.date && iti.title === item.title);
                 return `
                     <div class="bg-slate-50/60 border border-slate-100/50 p-4 rounded-2xl flex justify-between items-start gap-2">
@@ -483,7 +455,6 @@
             checkBellDot();
         }
 
-        // 新增行程項目
         function addItineraryItem() {
             const dateInput = document.getElementById('iti-date');
             const titleInput = document.getElementById('iti-title');
@@ -500,13 +471,9 @@
                 desc: descInput.value.trim() || '無詳細說明'
             });
 
-            // 自動依照日期重新排序
             data.itineraries.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            // 切換視角到剛新增的那天
             currentlySelectedDate = dateInput.value;
 
-            // 清空輸入框並關閉彈窗
             titleInput.value = '';
             descInput.value = '';
             toggleItineraryModal(false);
@@ -515,58 +482,25 @@
             renderItineraryTimelineAll();
         }
 
-        // ================= 記帳與其他模組保持原樣 =================
-        async function fetchLiveExchangeRate() {
-            try {
-                const response = await fetch('https://open.er-api.com/v6/latest/CAD');
-                const result = await response.json();
-                if (result && result.rates && result.rates.TWD) {
-                    exchangeRate = parseFloat(result.rates.TWD);
-                    document.getElementById('rate-badge').innerText = `1 : ${exchangeRate.toFixed(2)}`;
-                }
-            } catch (error) {
-                document.getElementById('rate-badge').innerText = `1 : 24.00 (離線)`;
-            }
-            convert();
-        }
-
-        function navigateTo(pageId) {
-            document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
-            document.getElementById(`page-${pageId}`).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-[#2E0F11]', 'font-bold');
-                btn.classList.add('text-gray-400', 'font-medium');
-            });
-            const targetNav = document.getElementById(`nav-${pageId}`);
-            if (targetNav) {
-                targetNav.classList.remove('text-gray-400', 'font-medium');
-                targetNav.classList.add('text-[#2E0F11]', 'font-bold');
-            } else {
-                document.getElementById('nav-home').classList.remove('text-gray-400', 'font-medium');
-                document.getElementById('nav-home').classList.add('text-[#2E0F11]', 'font-bold');
-            }
-            window.scrollTo(0, 0);
-        }
-
-        // 行李清單
-        function addPackItem() {
-            const input = document.getElementById('pack-name');
+        // 口袋餐廳功能
+        function addRestaurantItem() {
+            const input = document.getElementById('restaurant-name');
             if(!input.value.trim()) return;
-            data.packing.push({ name: input.value.trim(), checked: false });
-            input.value = ''; save(); renderPacking();
+            data.restaurants.push({ name: input.value.trim(), visited: false });
+            input.value = ''; save(); renderRestaurants();
         }
-        function togglePacking(i) {
-            data.packing[i].checked = !data.packing[i].checked;
-            save(); renderPacking();
+        function toggleRestaurant(i) {
+            data.restaurants[i].visited = !data.restaurants[i].visited;
+            save(); renderRestaurants();
         }
-        function renderPacking() {
-            document.getElementById('packing-list').innerHTML = data.packing.map((p, i) => `
-                <li class="flex items-center justify-between bg-white p-3 rounded-xl border shadow-sm cursor-pointer" onclick="togglePacking(${i})">
+        function renderRestaurants() {
+            document.getElementById('restaurant-list').innerHTML = data.restaurants.map((r, i) => `
+                <li class="flex items-center justify-between bg-white p-3 rounded-xl border shadow-sm cursor-pointer" onclick="toggleRestaurant(${i})">
                     <div class="flex items-center gap-2">
-                        <i class="${p.checked ? 'fa-solid fa-circle-check':'fa-regular fa-circle text-gray-300'} text-lg" style="${p.checked ? 'color: #2E0F11;' : ''}"></i>
-                        <span class="${p.checked ? 'line-through text-gray-400' : 'text-gray-700'} text-sm font-medium">${p.name}</span>
+                        <i class="${r.visited ? 'fa-solid fa-circle-check':'fa-regular fa-circle text-gray-300'} text-lg" style="${r.visited ? 'color: #2E0F11;' : ''}"></i>
+                        <span class="${r.visited ? 'line-through text-gray-400' : 'text-gray-700'} text-sm font-medium">${r.name}</span>
                     </div>
-                    <button onclick="event.stopPropagation(); data.packing.splice(${i},1); save(); renderPacking();" class="text-gray-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                    <button onclick="event.stopPropagation(); data.restaurants.splice(${i},1); save(); renderRestaurants();" class="text-gray-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
                 </li>
             `).join('');
         }
@@ -640,21 +574,8 @@
             document.getElementById('twd-output').innerText = (cad ? (parseFloat(cad) * exchangeRate).toFixed(1) : "0.0") + ' TWD';
         }
 
-        // 大轉盤
-        function spinWheel() {
-            const wheel = document.getElementById('wheel');
-            const resultText = document.getElementById('wheel-result');
-            const options = ["大家AA制", "你請客！", "左邊的人請", "再轉一次", "免單啦！", "喝杯 TimHortons"];
-            wheel.classList.add('spinning');
-            resultText.innerText = "🌀";
-            setTimeout(() => {
-                wheel.classList.remove('spinning');
-                resultText.innerText = options[Math.floor(Math.random() * options.length)];
-            }, 1000);
-        }
-
         function calculateCountdown() {
-            const departureDate = new Date('2026-07-17'); // 🌟 出發日定為 2026-07-17
+            const departureDate = new Date('2026-07-17'); 
             const today = new Date();
             departureDate.setHours(0,0,0,0);
             today.setHours(0,0,0,0);
@@ -663,12 +584,10 @@
             document.getElementById('countdown-days').innerText = daysLeft > 0 ? daysLeft : 0;
         }
 
-        // 初始化載入
+        // 全面初始化
         calculateCountdown();
         fetchLiveExchangeRate();
-        renderSpots(); renderGifts(); renderExpenses(); renderPacking();
-        
-        // 執行全新橫向日曆排版連動
+        renderSpots(); renderGifts(); renderExpenses(); renderRestaurants();
         renderItineraryTimelineAll();
     </script>
 </body>
