@@ -459,6 +459,20 @@
                         class="h-full rounded-full bg-brand-green transition-all duration-500" style="width: 0%"></div>
                 </div>
             </div>
+
+            <!-- 新增分類卡片 -->
+            <div class="bg-white/60 rounded-2xl p-4 border border-dashed border-brand-gray/40 shadow-sm space-y-2">
+                <h3 class="font-bold text-xs text-brand-dark flex items-center gap-1.5">
+                    <i class="fa-solid fa-folder-plus text-brand-gray"></i> 新增自訂行李分類
+                </h3>
+                <div class="flex gap-2">
+                    <input type="text" id="new-luggage-cat-input" placeholder="例如：滑雪裝備、野營用品..."
+                        class="flex-1 border border-brand-beige rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                    <button onclick="addNewLuggageCategory()"
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-1.5 rounded-xl font-bold active:scale-95 transition shadow-sm">新增分類</button>
+                </div>
+            </div>
+
             <!-- Category Grouping Cards -->
             <div id="luggage-categories-container" class="space-y-4">
                 <!-- Dynamically populated categories -->
@@ -855,23 +869,97 @@
 
             const options = ['全部', ...data.locations];
 
-            container.innerHTML = options.map(opt => {
+            let htmlContent = options.map(opt => {
                 const isActive = opt === currentRegion;
                 let bgStyle = 'bg-brand-cream/50 text-brand-gray border border-brand-beige/40';
                 if (isActive) bgStyle = 'bg-brand-dark text-white font-extrabold shadow-sm';
 
+                const isDeletable = opt !== '全部' && opt !== '其他';
+
                 return `
-                    <button onclick="selectRegionTab('${opt}')" class="flex-shrink-0 px-4 py-2 rounded-xl text-xs active:scale-95 transition ${bgStyle}">
-                        ${opt}
-                    </button>
+                    <div onclick="selectRegionTab('${opt}')" class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs active:scale-95 transition cursor-pointer select-none ${bgStyle}">
+                        <span>${opt}</span>
+                        ${isDeletable ? `
+                            <button onclick="event.stopPropagation(); deleteRegionTab('${opt}')" class="ml-0.5 text-brand-gray hover:text-[#D46E82] transition duration-200 focus:outline-none">
+                                <i class="fa-solid fa-xmark text-[9px]"></i>
+                            </button>
+                        ` : ''}
+                    </div>
                 `;
             }).join('');
+
+            // Append "+ 新增專區" button at the end
+            htmlContent += `
+                <button onclick="addNewRegionPrompt()" class="flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs bg-white text-brand-gray border border-dashed border-brand-gray/40 active:scale-95 transition hover:bg-brand-cream focus:outline-none">
+                    <i class="fa-solid fa-plus text-[10px]"></i> <span>新增專區</span>
+                </button>
+            `;
+
+            container.innerHTML = htmlContent;
         }
 
         function selectRegionTab(region) {
             currentRegion = region;
             renderRegionTabs();
             renderRegionCollections();
+        }
+
+        function addNewRegionPrompt() {
+            const newLoc = prompt('請輸入自訂地點/專區名稱 (例如: 多倫多)：');
+            if (newLoc && newLoc.trim()) {
+                const trimmed = newLoc.trim();
+                if (trimmed === '全部') {
+                    alert('不可以使用「全部」作為專區名稱！');
+                    return;
+                }
+                if (!data.locations.includes(trimmed)) {
+                    data.locations.push(trimmed);
+                    save();
+                    populateLocationDropdowns(trimmed);
+                    selectRegionTab(trimmed);
+                } else {
+                    alert('已存在相同名稱的專區！');
+                }
+            }
+        }
+
+        function deleteRegionTab(regionName) {
+            if (regionName === '全部' || regionName === '其他') {
+                alert('預設專區無法刪除！');
+                return;
+            }
+            if (confirm(`確定要刪除「${regionName}」專區嗎？\n該專區下的景點、餐廳、伴手禮將會被重新分類至「其他」！`)) {
+                // Reclassify all items to "其他"
+                if (data.spots) {
+                    data.spots.forEach(s => {
+                        if (s.location === regionName) s.location = '其他';
+                    });
+                }
+                if (data.restaurants) {
+                    data.restaurants.forEach(r => {
+                        if (r.location === regionName) r.location = '其他';
+                    });
+                }
+                if (data.gifts) {
+                    data.gifts.forEach(g => {
+                        if (g.location === regionName) g.location = '其他';
+                    });
+                }
+
+                // Remove from locations list
+                data.locations = data.locations.filter(loc => loc !== regionName);
+                save();
+
+                // If current tab was the deleted one, fall back to "全部"
+                if (currentRegion === regionName) {
+                    currentRegion = '全部';
+                }
+
+                // Refresh everything
+                populateLocationDropdowns();
+                renderRegionTabs();
+                renderRegionCollections();
+            }
         }
 
         function renderRegionCollections() {
@@ -1071,11 +1159,16 @@
                     <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
                         <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
                             <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
-                                <i class="fa-solid ${iconClass} text-brand-gray"></i> ${cat}
+                                <i class="fa-solid ${iconClass} text-brand-gray"></i> <span>${cat}</span>
                             </h3>
-                            <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">
-                                ${items.filter(item => item.checked).length} / ${items.length}
-                            </span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">
+                                    ${items.filter(item => item.checked).length} / ${items.length}
+                                </span>
+                                <button onclick="deleteLuggageCategory('${cat}')" class="text-brand-gray hover:text-[#D46E82] transition p-1 focus:outline-none" title="刪除此分類">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
                         </div>
                         <ul class="space-y-1.5">
                             ${itemsHtml ? itemsHtml : '<li class="text-xs text-brand-gray/50 py-2 text-center">無項目</li>'}
@@ -1115,6 +1208,37 @@
             input.value = '';
             save();
             renderLuggage();
+        }
+
+        function addNewLuggageCategory() {
+            const input = document.getElementById('new-luggage-cat-input');
+            if (!input) return;
+            const catName = input.value.trim();
+            if (!catName) {
+                alert('請輸入行李分類名稱！');
+                return;
+            }
+            if (data.luggage[catName]) {
+                alert('此行李分類已存在！');
+                return;
+            }
+            data.luggage[catName] = [];
+            input.value = '';
+            save();
+            renderLuggage();
+        }
+
+        function deleteLuggageCategory(cat) {
+            const items = data.luggage[cat] || [];
+            let msg = `確定要刪除整組「${cat}」行李分類嗎？`;
+            if (items.length > 0) {
+                msg += `\n⚠️ 此分類下包含的 ${items.length} 個行李項目也將被一併刪除！`;
+            }
+            if (confirm(msg)) {
+                delete data.luggage[cat];
+                save();
+                renderLuggage();
+            }
         }
 
         // 記帳
@@ -1496,6 +1620,7 @@
                         save();
                     }
                     populateLocationDropdowns(trimmed);
+                    renderRegionTabs();
                 } else {
                     selectEl.selectedIndex = 0;
                 }
