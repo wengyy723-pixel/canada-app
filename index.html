@@ -133,45 +133,21 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 pt-2">
-                <button onclick="navigateTo('spots')"
-                    class="bg-white/80 p-4 rounded-2xl border border-brand-beige/30 shadow-sm flex items-center gap-3 text-left hover:bg-white transition active:scale-95">
-                    <div class="bg-brand-blue/70 text-brand-dark p-2.5 rounded-xl"><i
-                            class="fa-solid fa-map-location-dot text-lg"></i></div>
-                    <div>
-                        <h3 class="font-bold text-sm text-brand-dark">景點收藏</h3>
-                        <p class="text-[10px] text-brand-gray">口袋名單</p>
-                    </div>
-                </button>
-                <button onclick="navigateTo('restaurant')"
-                    class="bg-white/80 p-4 rounded-2xl border border-brand-beige/30 shadow-sm flex items-center gap-3 text-left hover:bg-white transition active:scale-95">
-                    <div class="bg-brand-azalea/60 text-brand-dark p-2.5 rounded-xl"><i
-                            class="fa-solid fa-utensils text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-sm text-[#2F4156]">口袋餐廳</h3>
-                        <p class="text-[10px] text-brand-gray">美食收藏</p>
-                    </div>
-                </button>
-                <button onclick="navigateTo('gifts')"
-                    class="bg-white/80 p-4 rounded-2xl border border-brand-beige/30 shadow-sm flex items-center gap-3 text-left hover:bg-white transition active:scale-95">
-                    <div class="bg-brand-peach/80 text-brand-dark p-2.5 rounded-xl"><i
-                            class="fa-solid fa-gift text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-sm text-brand-dark">伴手禮物</h3>
-                        <p class="text-[10px] text-brand-gray">必買代購</p>
-                    </div>
-                </button>
-                <button onclick="navigateTo('luggage')"
-                    class="bg-white/80 p-4 rounded-2xl border border-brand-beige/30 shadow-sm flex items-center gap-3 text-left hover:bg-white transition active:scale-95">
-                    <div class="bg-brand-blue/45 text-brand-dark p-2.5 rounded-xl"><i
-                            class="fa-solid fa-suitcase text-lg"></i></div>
-                    <div>
-                        <h3 class="font-bold text-sm text-brand-dark">行李清單</h3>
-                        <p class="text-[10px] text-brand-gray">打包檢查</p>
-                    </div>
-                </button>
+            <!-- Region Filter Tab Bar -->
+            <div class="bg-white/80 rounded-3xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                    <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5"><i
+                            class="fa-solid fa-map-location-dot text-brand-gray"></i> 地區專區切換</h3>
+                </div>
+                <!-- Horizontal Tab scroll -->
+                <div id="region-tab-bar" class="flex gap-2 overflow-x-auto pb-1 scroll-smooth">
+                    <!-- Tabs generated dynamically -->
+                </div>
+            </div>
+
+            <!-- Dynamic Collection Display -->
+            <div id="home-collections-container" class="space-y-4 pt-1">
+                <!-- Spots, Restaurants, and Gifts collections generated dynamically -->
             </div>
         </main>
     </div>
@@ -467,22 +443,26 @@
 
     <div id="page-luggage" class="app-page">
         <header class="bg-brand-cream/80 backdrop-blur-md pt-8 p-4 border-b border-brand-beige/40 sticky top-0 z-20">
-            <div class="max-w-md mx-auto flex items-center gap-4">
-                <button onclick="navigateTo('home')" class="text-brand-gray hover:text-brand-dark text-lg p-1"><i
-                        class="fa-solid fa-chevron-left"></i></button>
-                <h2 class="font-extrabold text-lg text-brand-dark">行李打包清單</h2>
+            <div class="max-w-md mx-auto">
+                <h2 class="font-extrabold text-lg text-brand-dark">行李打包清單 🇨🇦</h2>
             </div>
         </header>
         <div class="max-w-md mx-auto p-4 space-y-4">
-            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30">
-                <div class="flex gap-2">
-                    <input type="text" id="luggage-name" placeholder="如: 變壓器"
-                        class="flex-1 border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
-                    <button onclick="addLuggageItem()"
-                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-4 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm">加入</button>
+            <!-- Progress Card -->
+            <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-bold text-brand-dark">全體打包進度</span>
+                    <span class="text-brand-gray font-bold" id="luggage-progress-text">0 / 0 (0%)</span>
+                </div>
+                <div class="w-full bg-brand-cream h-2.5 rounded-full overflow-hidden border border-brand-beige/40">
+                    <div id="luggage-progress-bar"
+                        class="h-full rounded-full bg-brand-green transition-all duration-500" style="width: 0%"></div>
                 </div>
             </div>
-            <ul id="luggage-list" class="space-y-2"></ul>
+            <!-- Category Grouping Cards -->
+            <div id="luggage-categories-container" class="space-y-4">
+                <!-- Dynamically populated categories -->
+            </div>
         </div>
     </div>
 
@@ -504,10 +484,10 @@
                 <i class="fa-solid fa-wallet text-lg"></i>
                 <span class="text-[10px] font-medium">記帳匯率</span>
             </button>
-            <button onclick="navigateTo('restaurant')" id="nav-restaurant"
+            <button onclick="navigateTo('luggage')" id="nav-luggage"
                 class="nav-btn flex flex-col items-center gap-1 text-brand-gray transition">
-                <i class="fa-solid fa-utensils text-lg"></i>
-                <span class="text-[10px] font-medium">口袋餐廳</span>
+                <i class="fa-solid fa-suitcase text-lg"></i>
+                <span class="text-[10px] font-medium">行李清單</span>
             </button>
         </div>
     </nav>
@@ -520,6 +500,7 @@
         let currentlySelectedDate = '2026-07-17';
 
         let data;
+        const savedData = localStorage.getItem('canadaProData');
         if (savedData) {
             try {
                 data = JSON.parse(savedData);
@@ -533,14 +514,40 @@
                         { name: '其他', icon: 'fa-tags', budget: 200 }
                     ];
                 }
-                if (!data.luggage) {
-                    data.luggage = [
-                        { name: '護照 & 簽證 (eTA/Study Permit)', checked: true },
-                        { name: '加拿大加幣現金 & 信用卡', checked: true },
-                        { name: '保暖衣物 & 羽絨外套', checked: false },
-                        { name: '個人常用藥品', checked: false },
-                        { name: '變壓器 & 充電線', checked: false }
-                    ];
+                if (!data.luggage || Array.isArray(data.luggage)) {
+                    data.luggage = {
+                        '重要文件/證件': [
+                            { name: '護照 (效期6個月以上)', checked: true },
+                            { name: '加拿大電子簽證 eTA 核准件', checked: true },
+                            { name: '語言學校入學信 (LOA)', checked: false },
+                            { name: '海外學生保險單影本', checked: false }
+                        ],
+                        '衣物穿搭': [
+                            { name: '保暖發熱衣', checked: false },
+                            { name: '羽絨外套 / 防風防水夾克', checked: false },
+                            { name: '針織毛帽 / 保暖防滑手套', checked: false },
+                            { name: '防滑健行鞋 / 舒適球鞋', checked: false }
+                        ],
+                        '日常用品/盥洗': [
+                            { name: '高保濕乳液 / 護唇膏 (乾燥氣候必備)', checked: false },
+                            { name: '防曬乳', checked: false },
+                            { name: '防蚊液', checked: false },
+                            { name: '熊鈴 / 熊噴霧提示指引', checked: false },
+                            { name: '個人旅行盥洗包', checked: false }
+                        ],
+                        '電子產品/相機': [
+                            { name: '美規/加規雙孔插頭 (同台灣，但三孔插座需注意)', checked: false },
+                            { name: '行動電源 (上飛機隨身攜帶)', checked: false },
+                            { name: '相機 & 備用記憶卡', checked: false },
+                            { name: '各類充電線組', checked: false }
+                        ],
+                        '常用藥品': [
+                            { name: '感冒藥 / 退藥片', checked: false },
+                            { name: '腸胃藥 / 止瀉藥', checked: false },
+                            { name: '暈車藥 (洛磯山脈拉車必備)', checked: false },
+                            { name: '外傷藥膏 / OK繃', checked: false }
+                        ]
+                    };
                 }
                 if (!data.locations) {
                     data.locations = ['溫哥華', '班夫', '維多利亞', '惠斯勒', '其他'];
@@ -585,13 +592,39 @@
                 gifts: [
                     { name: '加拿大楓糖漿', bought: false, location: '其他' }
                 ],
-                luggage: [
-                    { name: '護照 & 簽證 (eTA/Study Permit)', checked: true },
-                    { name: '加拿大加幣現金 & 信用卡', checked: true },
-                    { name: '保暖衣物 & 羽絨外套', checked: false },
-                    { name: '個人常用藥品', checked: false },
-                    { name: '變壓器 & 充電線', checked: false }
-                ],
+                luggage: {
+                    '重要文件/證件': [
+                        { name: '護照 (效期6個月以上)', checked: true },
+                        { name: '加拿大電子簽證 eTA 核准件', checked: true },
+                        { name: '語言學校入學信 (LOA)', checked: false },
+                        { name: '海外學生保險單影本', checked: false }
+                    ],
+                    '衣物穿搭': [
+                        { name: '保暖發熱衣', checked: false },
+                        { name: '羽絨外套 / 防風防水夾克', checked: false },
+                        { name: '針織毛帽 / 保暖防滑手套', checked: false },
+                        { name: '防滑健行鞋 / 舒適球鞋', checked: false }
+                    ],
+                    '日常用品/盥洗': [
+                        { name: '高保濕乳液 / 護唇膏 (乾燥氣候必備)', checked: false },
+                        { name: '防曬乳', checked: false },
+                        { name: '防蚊液', checked: false },
+                        { name: '熊鈴 / 熊噴霧提示指引', checked: false },
+                        { name: '個人旅行盥洗包', checked: false }
+                    ],
+                    '電子產品/相機': [
+                        { name: '美規/加規雙孔插頭 (同台灣，但三孔插座需注意)', checked: false },
+                        { name: '行動電源 (上飛機隨身攜帶)', checked: false },
+                        { name: '相機 & 備用記憶卡', checked: false },
+                        { name: '各類充電線組', checked: false }
+                    ],
+                    '常用藥品': [
+                        { name: '感冒藥 / 退藥片', checked: false },
+                        { name: '腸胃藥 / 止瀉藥', checked: false },
+                        { name: '暈車藥 (洛磯山脈拉車必備)', checked: false },
+                        { name: '外傷藥膏 / OK繃', checked: false }
+                    ]
+                },
                 expenses: [],
                 restaurants: [
                     { name: 'Tim Hortons (國民神級咖啡店)', visited: true, location: '溫哥華' },
@@ -814,108 +847,274 @@
             renderItineraryTimelineAll();
         }
 
-        // 口袋餐廳
-        function addRestaurantItem() {
-            const input = document.getElementById('restaurant-name');
-            const locSelect = document.getElementById('restaurant-location');
-            if (!input.value.trim()) return;
-            const loc = locSelect ? locSelect.value : '溫哥華';
-            data.restaurants.push({ name: input.value.trim(), visited: false, location: loc });
-            input.value = ''; save(); renderRestaurants();
-        }
-        function toggleRestaurant(i) {
-            data.restaurants[i].visited = !data.restaurants[i].visited;
-            save(); renderRestaurants();
-        }
-        function renderRestaurants() {
-            document.getElementById('restaurant-list').innerHTML = data.restaurants.map((r, i) => {
-                const loc = r.location || '溫哥華';
+        let currentRegion = '全部';
+
+        function renderRegionTabs() {
+            const container = document.getElementById('region-tab-bar');
+            if (!container) return;
+
+            const options = ['全部', ...data.locations];
+
+            container.innerHTML = options.map(opt => {
+                const isActive = opt === currentRegion;
+                let bgStyle = 'bg-brand-cream/50 text-brand-gray border border-brand-beige/40';
+                if (isActive) bgStyle = 'bg-brand-dark text-white font-extrabold shadow-sm';
+
                 return `
-                <li class="flex items-center justify-between bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleRestaurant(${i})">
-                    <div class="flex items-center gap-2 min-w-0">
-                        <i class="${r.visited ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle text-brand-gray/40'} text-lg flex-shrink-0" style="${r.visited ? 'color: #E29C32;' : ''}"></i>
-                        <span class="${r.visited ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-sm font-medium truncate">${r.name}</span>
-                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${loc}</span>
-                    </div>
-                    <button onclick="event.stopPropagation(); data.restaurants.splice(${i},1); save(); renderRestaurants();" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can"></i></button>
-                </li>`;
+                    <button onclick="selectRegionTab('${opt}')" class="flex-shrink-0 px-4 py-2 rounded-xl text-xs active:scale-95 transition ${bgStyle}">
+                        ${opt}
+                    </button>
+                `;
             }).join('');
         }
 
-        // 景點收藏
-        function addSpot() {
-            const input = document.getElementById('spot-name');
-            const locSelect = document.getElementById('spot-location');
-            if (!input.value.trim()) return;
-            const loc = locSelect ? locSelect.value : '溫哥華';
+        function selectRegionTab(region) {
+            currentRegion = region;
+            renderRegionTabs();
+            renderRegionCollections();
+        }
+
+        function renderRegionCollections() {
+            const container = document.getElementById('home-collections-container');
+            if (!container) return;
+
+            const filterByRegion = (item) => {
+                if (currentRegion === '全部') return true;
+                return item.location === currentRegion;
+            };
+
+            const spots = data.spots.filter(filterByRegion);
+            const restaurants = data.restaurants.filter(filterByRegion);
+            const gifts = data.gifts.filter(filterByRegion);
+
+            let html = `
+                <!-- Spots Collection -->
+                <div class="bg-white/80 rounded-3xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                        <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                            <i class="fa-solid fa-map-location-dot text-brand-gray"></i> 景點收藏
+                        </h3>
+                        <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">${spots.length} 個景點</span>
+                    </div>
+                    <ul class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                        ${spots.map(s => {
+                const globalIndex = data.spots.indexOf(s);
+                return `
+                                <div class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="text-xs font-semibold text-brand-dark truncate">${s.name}</span>
+                                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${s.location}</span>
+                                    </div>
+                                    <button onclick="deleteSpotItem(${globalIndex})" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                </div>
+                            `;
+            }).join('') || '<li class="text-xs text-brand-gray/50 py-3 text-center">目前無景點</li>'}
+                    </ul>
+                    <!-- Inline Add -->
+                    <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
+                        <input type="text" id="add-spot-input" placeholder="輸入景點名稱..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                        <button onclick="addNewSpot()" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-md shrink-0">新增</button>
+                    </div>
+                </div>
+
+                <!-- Restaurants Collection -->
+                <div class="bg-white/80 rounded-3xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                        <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                            <i class="fa-solid fa-utensils text-brand-gray"></i> 口袋餐廳
+                        </h3>
+                        <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">${restaurants.length} 間餐廳</span>
+                    </div>
+                    <ul class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                        ${restaurants.map(r => {
+                const globalIndex = data.restaurants.indexOf(r);
+                return `
+                                <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleRestaurantVisited(${globalIndex})">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <i class="${r.visited ? 'fa-solid fa-circle-check text-[#E29C32]' : 'fa-regular fa-circle text-brand-gray/40'} text-base flex-shrink-0"></i>
+                                        <span class="${r.visited ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${r.name}</span>
+                                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${r.location}</span>
+                                    </div>
+                                    <button onclick="event.stopPropagation(); deleteRestaurantItem(${globalIndex});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                </li>
+                            `;
+            }).join('') || '<li class="text-xs text-brand-gray/50 py-3 text-center">目前無餐廳</li>'}
+                    </ul>
+                    <!-- Inline Add -->
+                    <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
+                        <input type="text" id="add-restaurant-input" placeholder="輸入美食/餐廳名稱..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                        <button onclick="addNewRestaurant()" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-md shrink-0">新增</button>
+                    </div>
+                </div>
+
+                <!-- Gifts Collection -->
+                <div class="bg-white/80 rounded-3xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                        <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                            <i class="fa-solid fa-gift text-brand-gray"></i> 伴手禮 & 購物
+                        </h3>
+                        <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">${gifts.length} 項禮物</span>
+                    </div>
+                    <ul class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                        ${gifts.map(g => {
+                const globalIndex = data.gifts.indexOf(g);
+                return `
+                                <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleGiftBought(${globalIndex})">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <i class="${g.bought ? 'fa-solid fa-square-check text-[#E29C32]' : 'fa-regular fa-square text-brand-gray/40'} text-base flex-shrink-0"></i>
+                                        <span class="${g.bought ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${g.name}</span>
+                                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${g.location}</span>
+                                    </div>
+                                    <button onclick="event.stopPropagation(); deleteGiftItem(${globalIndex});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                </li>
+                            `;
+            }).join('') || '<li class="text-xs text-brand-gray/50 py-3 text-center">目前無伴手禮</li>'}
+                    </ul>
+                    <!-- Inline Add -->
+                    <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
+                        <input type="text" id="add-gift-input" placeholder="輸入禮物名稱..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                        <button onclick="addNewGift()" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-md shrink-0">新增</button>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        function deleteSpotItem(index) {
+            data.spots.splice(index, 1);
+            save();
+            renderRegionCollections();
+        }
+        function addNewSpot() {
+            const input = document.getElementById('add-spot-input');
+            if (!input || !input.value.trim()) return;
+            const loc = currentRegion === '全部' ? (data.locations[0] || '溫哥華') : currentRegion;
             data.spots.push({ name: input.value.trim(), location: loc });
-            input.value = ''; save(); renderSpots();
-        }
-        function renderSpots() {
-            document.getElementById('spots-list').innerHTML = data.spots.map((s, i) => {
-                const loc = s.location || '溫哥華';
-                return `
-                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm">
-                    <div class="flex items-center gap-2 min-w-0">
-                        <span class="text-sm font-medium text-brand-dark truncate">${s.name}</span>
-                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${loc}</span>
-                    </div>
-                    <button onclick="data.spots.splice(${i},1);save();renderSpots();" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can"></i></button>
-                </div>`;
-            }).join('');
+            input.value = '';
+            save();
+            renderRegionCollections();
         }
 
-        // 伴手禮
-        function addGift() {
-            const input = document.getElementById('gift-name');
-            const locSelect = document.getElementById('gift-location');
-            if (!input.value.trim()) return;
-            const loc = locSelect ? locSelect.value : '其他';
+        function toggleRestaurantVisited(index) {
+            data.restaurants[index].visited = !data.restaurants[index].visited;
+            save();
+            renderRegionCollections();
+        }
+        function deleteRestaurantItem(index) {
+            data.restaurants.splice(index, 1);
+            save();
+            renderRegionCollections();
+        }
+        function addNewRestaurant() {
+            const input = document.getElementById('add-restaurant-input');
+            if (!input || !input.value.trim()) return;
+            const loc = currentRegion === '全部' ? (data.locations[0] || '溫哥華') : currentRegion;
+            data.restaurants.push({ name: input.value.trim(), visited: false, location: loc });
+            input.value = '';
+            save();
+            renderRegionCollections();
+        }
+
+        function toggleGiftBought(index) {
+            data.gifts[index].bought = !data.gifts[index].bought;
+            save();
+            renderRegionCollections();
+        }
+        function deleteGiftItem(index) {
+            data.gifts.splice(index, 1);
+            save();
+            renderRegionCollections();
+        }
+        function addNewGift() {
+            const input = document.getElementById('add-gift-input');
+            if (!input || !input.value.trim()) return;
+            const loc = currentRegion === '全部' ? (data.locations[0] || '其他') : currentRegion;
             data.gifts.push({ name: input.value.trim(), bought: false, location: loc });
-            input.value = ''; save(); renderGifts();
-        }
-        function toggleGift(i) {
-            data.gifts[i].bought = !data.gifts[i].bought;
-            save(); renderGifts();
-        }
-        function renderGifts() {
-            document.getElementById('gifts-list').innerHTML = data.gifts.map((g, i) => {
-                const loc = g.location || '其他';
-                return `
-                <li class="flex items-center justify-between bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleGift(${i})">
-                    <div class="flex items-center gap-2 min-w-0">
-                        <i class="${g.bought ? 'fa-solid fa-square-check' : 'fa-regular fa-square text-brand-gray/40'} text-lg flex-shrink-0" style="${g.bought ? 'color: #E29C32;' : ''}"></i>
-                        <span class="${g.bought ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-sm truncate">${g.name}</span>
-                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${loc}</span>
-                    </div>
-                    <button onclick="event.stopPropagation(); data.gifts.splice(${i},1); save(); renderGifts();" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can"></i></button>
-                </li>`;
-            }).join('');
+            input.value = '';
+            save();
+            renderRegionCollections();
         }
 
         // 行李清單
-        function addLuggageItem() {
-            const input = document.getElementById('luggage-name');
-            if (!input.value.trim()) return;
-            data.luggage.push({ name: input.value.trim(), checked: false });
-            input.value = ''; save(); renderLuggage();
-        }
-        function toggleLuggage(i) {
-            data.luggage[i].checked = !data.luggage[i].checked;
-            save(); renderLuggage();
-        }
         function renderLuggage() {
-            const listEl = document.getElementById('luggage-list');
-            if (!listEl) return;
-            listEl.innerHTML = data.luggage.map((g, i) => `
-                <li class="flex items-center justify-between bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleLuggage(${i})">
-                    <div class="flex items-center gap-2">
-                        <i class="${g.checked ? 'fa-solid fa-square-check' : 'fa-regular fa-square text-brand-gray/40'} text-lg" style="${g.checked ? 'color: #E29C32;' : ''}"></i>
-                        <span class="${g.checked ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-sm">${g.name}</span>
+            const container = document.getElementById('luggage-categories-container');
+            if (!container) return;
+
+            let totalItems = 0;
+            let checkedItems = 0;
+
+            const categories = Object.keys(data.luggage);
+
+            let html = categories.map(cat => {
+                const items = data.luggage[cat] || [];
+                totalItems += items.length;
+                checkedItems += items.filter(item => item.checked).length;
+
+                let iconClass = 'fa-tags';
+                if (cat === '衣物穿搭') iconClass = 'fa-shirt';
+                else if (cat === '日常用品/盥洗') iconClass = 'fa-soap';
+                else if (cat === '電子產品/相機') iconClass = 'fa-plug-laptop';
+                else if (cat === '重要文件/證件') iconClass = 'fa-passport';
+                else if (cat === '常用藥品') iconClass = 'fa-prescription-bottle-medical';
+
+                const itemsHtml = items.map((item, index) => `
+                    <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/20 shadow-sm cursor-pointer" onclick="toggleLuggage('${cat}', ${index})">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <i class="${item.checked ? 'fa-solid fa-square-check text-[#E29C32]' : 'fa-regular fa-square text-brand-gray/40'} text-base flex-shrink-0"></i>
+                            <span class="${item.checked ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${item.name}</span>
+                        </div>
+                        <button onclick="event.stopPropagation(); deleteLuggageItem('${cat}', ${index});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                    </li>
+                `).join('');
+
+                return `
+                    <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                        <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                            <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                                <i class="fa-solid ${iconClass} text-brand-gray"></i> ${cat}
+                            </h3>
+                            <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">
+                                ${items.filter(item => item.checked).length} / ${items.length}
+                            </span>
+                        </div>
+                        <ul class="space-y-1.5">
+                            ${itemsHtml ? itemsHtml : '<li class="text-xs text-brand-gray/50 py-2 text-center">無項目</li>'}
+                        </ul>
+                        <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
+                            <input type="text" id="add-input-${cat}" placeholder="新增${cat}項目..." class="flex-1 border border-brand-beige rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                            <button onclick="addLuggageItemToCat('${cat}')" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-3 py-1.5 rounded-xl font-bold active:scale-95 transition shadow-sm"><i class="fa-solid fa-plus"></i></button>
+                        </div>
                     </div>
-                    <button onclick="event.stopPropagation(); data.luggage.splice(${i},1); save(); renderLuggage();" class="text-brand-gray hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
-                </li>
-            `).join('');
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+
+            const progressPct = totalItems > 0 ? (checkedItems / totalItems) * 100 : 0;
+            document.getElementById('luggage-progress-text').innerText = `${checkedItems} / ${totalItems} (${progressPct.toFixed(0)}%)`;
+            document.getElementById('luggage-progress-bar').style.width = `${progressPct}%`;
+        }
+
+        function toggleLuggage(cat, index) {
+            data.luggage[cat][index].checked = !data.luggage[cat][index].checked;
+            save();
+            renderLuggage();
+        }
+
+        function deleteLuggageItem(cat, index) {
+            data.luggage[cat].splice(index, 1);
+            save();
+            renderLuggage();
+        }
+
+        function addLuggageItemToCat(cat) {
+            const input = document.getElementById(`add-input-${cat}`);
+            if (!input || !input.value.trim()) return;
+            if (!data.luggage[cat]) data.luggage[cat] = [];
+            data.luggage[cat].push({ name: input.value.trim(), checked: false });
+            input.value = '';
+            save();
+            renderLuggage();
         }
 
         // 記帳
@@ -1320,10 +1519,12 @@
         }
 
         calculateCountdown();
-        renderSpots(); renderGifts(); renderLuggage(); renderExpenses(); renderRestaurants();
+        renderLuggage(); renderExpenses();
         renderItineraryTimelineAll();
         populateCategoryDropdown();
         populateLocationDropdowns();
+        renderRegionCollections();
+        renderRegionTabs();
         renderBudgetCenter();
 
         const expDateInput = document.getElementById('exp-date');
