@@ -77,49 +77,10 @@
             font-weight: 900;
             color: #2F4156;
         }
-
-        /* Splash Screen Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        .splash-dismissed {
-            opacity: 0 !important;
-            transform: translateY(-100%) !important;
-            pointer-events: none !important;
-        }
     </style>
 </head>
 
-<body class="text-brand-dark bg-brand-cream" style="overflow: hidden; height: 100vh;">
-
-    <!-- App Splash Screen -->
-    <div id="splash-screen" class="fixed inset-0 bg-[#F5EFEB] z-[100] flex flex-col justify-between items-center py-16 px-6 transition-all duration-700 ease-in-out">
-        <div></div>
-        <div class="flex flex-col items-center text-center space-y-6 animate-fade-in-up">
-            <div class="w-32 h-32 rounded-full bg-white flex items-center justify-center shadow-lg border border-brand-beige/45 relative transform hover:scale-105 transition duration-300">
-                <span class="text-6xl">🇨🇦</span>
-            </div>
-            <div class="space-y-2">
-                <h1 class="text-6xl md:text-7xl font-black tracking-tight text-[#2F4156]" style="font-family: 'Playfair Display', serif;">Bonjour</h1>
-                <p class="text-xs font-bold uppercase tracking-widest text-brand-gray">Canada Adventure</p>
-            </div>
-        </div>
-        <div class="w-full max-w-xs">
-            <button id="enter-btn" onclick="dismissSplashScreen()" class="w-full py-4 bg-brand-dark text-white rounded-2xl text-base font-bold shadow-lg shadow-brand-dark/20 hover:shadow-xl hover:bg-brand-dark/95 active:scale-95 transition-all duration-300 tracking-wide">
-                Enter Adventure
-            </button>
-        </div>
-    </div>
+<body class="text-brand-dark bg-brand-cream">
 
     <div id="page-home" class="app-page active">
         <header
@@ -438,12 +399,16 @@
             </div>
         </header>
         <div class="max-w-md mx-auto p-4 space-y-4">
-            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30">
-                <div class="flex gap-2">
-                    <input type="text" id="restaurant-name" placeholder="輸入美食/餐廳名稱 (如: Tim Hortons)"
-                        class="flex-1 border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30 space-y-2">
+                <input type="text" id="restaurant-name" placeholder="輸入美食/餐廳名稱 (如: Tim Hortons)"
+                    class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                <div class="flex gap-2 items-center">
+                    <select id="restaurant-location" onchange="handleLocationSelectChange(this)"
+                        class="location-dropdown-select flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium cursor-pointer">
+                        <!-- Location options populated dynamically -->
+                    </select>
                     <button onclick="addRestaurantItem()"
-                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-4 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm">收藏</button>
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-5 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm shrink-0">收藏</button>
                 </div>
             </div>
             <ul id="restaurant-list" class="space-y-2"></ul>
@@ -459,12 +424,16 @@
             </div>
         </header>
         <div class="max-w-md mx-auto p-4 space-y-4">
-            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30">
-                <div class="flex gap-2">
-                    <input type="text" id="spot-name" placeholder="輸入景點/美食"
-                        class="flex-1 border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30 space-y-2">
+                <input type="text" id="spot-name" placeholder="輸入景點/美食"
+                    class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                <div class="flex gap-2 items-center">
+                    <select id="spot-location" onchange="handleLocationSelectChange(this)"
+                        class="location-dropdown-select flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium cursor-pointer">
+                        <!-- Location options populated dynamically -->
+                    </select>
                     <button onclick="addSpot()"
-                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-4 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm">收藏</button>
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-5 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm shrink-0">收藏</button>
                 </div>
             </div>
             <div id="spots-list" class="space-y-2.5"></div>
@@ -480,12 +449,16 @@
             </div>
         </header>
         <div class="max-w-md mx-auto p-4 space-y-4">
-            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30">
-                <div class="flex gap-2">
-                    <input type="text" id="gift-name" placeholder="如: 楓糖漿"
-                        class="flex-1 border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30 space-y-2">
+                <input type="text" id="gift-name" placeholder="如: 楓糖漿"
+                    class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                <div class="flex gap-2 items-center">
+                    <select id="gift-location" onchange="handleLocationSelectChange(this)"
+                        class="location-dropdown-select flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium cursor-pointer">
+                        <!-- Location options populated dynamically -->
+                    </select>
                     <button onclick="addGift()"
-                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-4 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm">加入</button>
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-5 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm shrink-0">加入</button>
                 </div>
             </div>
             <ul id="gifts-list" class="space-y-2"></ul>
@@ -540,24 +513,13 @@
     </nav>
 
     <script>
-        function dismissSplashScreen() {
-            const splash = document.getElementById('splash-screen');
-            if (splash) {
-                splash.classList.add('splash-dismissed');
-                setTimeout(() => {
-                    document.body.style.overflow = '';
-                    document.body.style.height = '';
-                    splash.style.display = 'none';
-                }, 700);
-            }
-        }
+
 
         let exchangeRate = 24.0;
         const departureDateStr = '2026-07-17';
         let currentlySelectedDate = '2026-07-17';
 
         let data;
-        const savedData = localStorage.getItem('canadaProData');
         if (savedData) {
             try {
                 data = JSON.parse(savedData);
@@ -580,6 +542,24 @@
                         { name: '變壓器 & 充電線', checked: false }
                     ];
                 }
+                if (!data.locations) {
+                    data.locations = ['溫哥華', '班夫', '維多利亞', '惠斯勒', '其他'];
+                }
+                if (data.spots) {
+                    data.spots.forEach(s => {
+                        if (!s.location) s.location = '溫哥華';
+                    });
+                }
+                if (data.restaurants) {
+                    data.restaurants.forEach(r => {
+                        if (!r.location) r.location = '溫哥華';
+                    });
+                }
+                if (data.gifts) {
+                    data.gifts.forEach(g => {
+                        if (!g.location) g.location = '其他';
+                    });
+                }
                 if (data.expenses) {
                     data.expenses.forEach(e => {
                         if (!e.date) {
@@ -597,8 +577,14 @@
 
         if (!data) {
             data = {
-                spots: [{ name: '尼加拉瀑布 🇨🇦' }, { name: 'CN Tower 電視塔' }],
-                gifts: [{ name: '加拿大楓糖漿', bought: false }],
+                locations: ['溫哥華', '班夫', '維多利亞', '惠斯勒', '其他'],
+                spots: [
+                    { name: '尼加拉瀑布 🇨🇦', location: '其他' },
+                    { name: 'CN Tower 電視塔', location: '其他' }
+                ],
+                gifts: [
+                    { name: '加拿大楓糖漿', bought: false, location: '其他' }
+                ],
                 luggage: [
                     { name: '護照 & 簽證 (eTA/Study Permit)', checked: true },
                     { name: '加拿大加幣現金 & 信用卡', checked: true },
@@ -607,7 +593,11 @@
                     { name: '變壓器 & 充電線', checked: false }
                 ],
                 expenses: [],
-                restaurants: [{ name: 'Tim Hortons (國民神級咖啡店)', visited: true }, { name: 'Chipotle (高飽足感墨西哥捲餅)', visited: false }, { name: 'Poutine House (必吃起司澆頭薯條)', visited: false }],
+                restaurants: [
+                    { name: 'Tim Hortons (國民神級咖啡店)', visited: true, location: '溫哥華' },
+                    { name: 'Chipotle (高飽足感墨西哥捲餅)', visited: false, location: '溫哥華' },
+                    { name: 'Poutine House (必吃起司澆頭薯條)', visited: false, location: '溫哥華' }
+                ],
                 itineraries: [
                     { date: '2026-07-17', title: '多倫多皮爾遜機場落地 ✈️', desc: 'Day 1 正式抵達加拿大！搭乘 UP Express 前往市區宿舍 check-in。' },
                     { date: '2026-07-18', title: '語言學校報到 + 認識環境 🏫', desc: 'Day 2 早上進行入學分班測驗。' },
@@ -827,8 +817,10 @@
         // 口袋餐廳
         function addRestaurantItem() {
             const input = document.getElementById('restaurant-name');
+            const locSelect = document.getElementById('restaurant-location');
             if (!input.value.trim()) return;
-            data.restaurants.push({ name: input.value.trim(), visited: false });
+            const loc = locSelect ? locSelect.value : '溫哥華';
+            data.restaurants.push({ name: input.value.trim(), visited: false, location: loc });
             input.value = ''; save(); renderRestaurants();
         }
         function toggleRestaurant(i) {
@@ -836,38 +828,50 @@
             save(); renderRestaurants();
         }
         function renderRestaurants() {
-            document.getElementById('restaurant-list').innerHTML = data.restaurants.map((r, i) => `
+            document.getElementById('restaurant-list').innerHTML = data.restaurants.map((r, i) => {
+                const loc = r.location || '溫哥華';
+                return `
                 <li class="flex items-center justify-between bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleRestaurant(${i})">
-                    <div class="flex items-center gap-2">
-                        <i class="${r.visited ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle text-brand-gray/40'} text-lg" style="${r.visited ? 'color: #E29C32;' : ''}"></i>
-                        <span class="${r.visited ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-sm font-medium">${r.name}</span>
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="${r.visited ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle text-brand-gray/40'} text-lg flex-shrink-0" style="${r.visited ? 'color: #E29C32;' : ''}"></i>
+                        <span class="${r.visited ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-sm font-medium truncate">${r.name}</span>
+                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${loc}</span>
                     </div>
-                    <button onclick="event.stopPropagation(); data.restaurants.splice(${i},1); save(); renderRestaurants();" class="text-brand-gray hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
-                </li>
-            `).join('');
+                    <button onclick="event.stopPropagation(); data.restaurants.splice(${i},1); save(); renderRestaurants();" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+                </li>`;
+            }).join('');
         }
 
         // 景點收藏
         function addSpot() {
             const input = document.getElementById('spot-name');
+            const locSelect = document.getElementById('spot-location');
             if (!input.value.trim()) return;
-            data.spots.push({ name: input.value.trim() });
+            const loc = locSelect ? locSelect.value : '溫哥華';
+            data.spots.push({ name: input.value.trim(), location: loc });
             input.value = ''; save(); renderSpots();
         }
         function renderSpots() {
-            document.getElementById('spots-list').innerHTML = data.spots.map((s, i) => `
+            document.getElementById('spots-list').innerHTML = data.spots.map((s, i) => {
+                const loc = s.location || '溫哥華';
+                return `
                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm">
-                    <span class="text-sm font-medium text-brand-dark">${s.name}</span>
-                    <button onclick="data.spots.splice(${i},1);save();renderSpots();" class="text-brand-gray hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
-                </div>
-            `).join('');
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="text-sm font-medium text-brand-dark truncate">${s.name}</span>
+                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${loc}</span>
+                    </div>
+                    <button onclick="data.spots.splice(${i},1);save();renderSpots();" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+                </div>`;
+            }).join('');
         }
 
         // 伴手禮
         function addGift() {
             const input = document.getElementById('gift-name');
+            const locSelect = document.getElementById('gift-location');
             if (!input.value.trim()) return;
-            data.gifts.push({ name: input.value.trim(), bought: false });
+            const loc = locSelect ? locSelect.value : '其他';
+            data.gifts.push({ name: input.value.trim(), bought: false, location: loc });
             input.value = ''; save(); renderGifts();
         }
         function toggleGift(i) {
@@ -875,15 +879,18 @@
             save(); renderGifts();
         }
         function renderGifts() {
-            document.getElementById('gifts-list').innerHTML = data.gifts.map((g, i) => `
+            document.getElementById('gifts-list').innerHTML = data.gifts.map((g, i) => {
+                const loc = g.location || '其他';
+                return `
                 <li class="flex items-center justify-between bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleGift(${i})">
-                    <div class="flex items-center gap-2">
-                        <i class="${g.bought ? 'fa-solid fa-square-check' : 'fa-regular fa-square text-brand-gray/40'} text-lg" style="${g.bought ? 'color: #E29C32;' : ''}"></i>
-                        <span class="${g.bought ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-sm">${g.name}</span>
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="${g.bought ? 'fa-solid fa-square-check' : 'fa-regular fa-square text-brand-gray/40'} text-lg flex-shrink-0" style="${g.bought ? 'color: #E29C32;' : ''}"></i>
+                        <span class="${g.bought ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-sm truncate">${g.name}</span>
+                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${loc}</span>
                     </div>
-                    <button onclick="event.stopPropagation(); data.gifts.splice(${i},1); save(); renderGifts();" class="text-brand-gray hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
-                </li>
-            `).join('');
+                    <button onclick="event.stopPropagation(); data.gifts.splice(${i},1); save(); renderGifts();" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+                </li>`;
+            }).join('');
         }
 
         // 行李清單
@@ -1280,10 +1287,43 @@
             document.getElementById('countdown-days').innerText = daysLeft > 0 ? daysLeft : 0;
         }
 
+        function handleLocationSelectChange(selectEl) {
+            if (selectEl.value === '__add_new__') {
+                const newLoc = prompt('請輸入自訂地點名稱 (例如: 多倫多)：');
+                if (newLoc && newLoc.trim()) {
+                    const trimmed = newLoc.trim();
+                    if (!data.locations.includes(trimmed)) {
+                        data.locations.push(trimmed);
+                        save();
+                    }
+                    populateLocationDropdowns(trimmed);
+                } else {
+                    selectEl.selectedIndex = 0;
+                }
+            }
+        }
+
+        function populateLocationDropdowns(selectedVal) {
+            const selects = document.querySelectorAll('.location-dropdown-select');
+            selects.forEach(select => {
+                const currentVal = selectedVal || select.value || '溫哥華';
+                select.innerHTML = data.locations.map(loc => `
+                    <option value="${loc}">${loc}</option>
+                `).join('') + '<option value="__add_new__">+ 新增自訂地點...</option>';
+
+                if (data.locations.includes(currentVal)) {
+                    select.value = currentVal;
+                } else {
+                    select.value = data.locations[0] || '溫哥華';
+                }
+            });
+        }
+
         calculateCountdown();
         renderSpots(); renderGifts(); renderLuggage(); renderExpenses(); renderRestaurants();
         renderItineraryTimelineAll();
         populateCategoryDropdown();
+        populateLocationDropdowns();
         renderBudgetCenter();
 
         const expDateInput = document.getElementById('exp-date');
