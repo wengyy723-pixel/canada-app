@@ -1,387 +1,1673 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>加拿大遊學助手 - 即時匯率版 🇨🇦</title>
-    
+    <title>加拿大遊學冒險小幫手</title>
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="加拿大遊學">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="https://img.icons8.com/color/512/canada.png">
+    <link class="apple-touch-icon" href="https://img.icons8.com/color/512/canada.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* 電腦版 iPhone 外殼 */
-        @media (min-width: 768px) {
-            .phone-wrapper {
-                background: #1e1e1e;
-                border: 12px solid #2e2e2e;
-                border-radius: 48px;
-                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 3px 2px rgba(255,255,255,0.2);
-                width: 393px;
-                height: 852px;
-                position: relative;
-                margin: 30px auto;
-                overflow: hidden;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            cream: '#F5EFEB',     // Beige
+                            dark: '#2F4156',      // Navy
+                            gray: '#7A8B9E',      // Slate blue
+                            gold: '#2F4156',      // Accent color is Navy
+                            pink: '#FFE1E6',      // Pale Pink
+                            blue: '#C8D9E6',      // Sky Blue
+                            azalea: '#F7C9D4',    // Azalea
+                            beige: '#F5EFEB',     // Beige
+                            peach: '#FFE1E6',     // Pale Pink
+                            lilac: '#DEE5ED',     // Sky Blue variant
+                            lightgreen: '#E4ECE3', // soft green
+                            green: '#7FA68E',
+                            purple: '#A69FCA',
+                        }
+                    }
+                }
             }
-            .phone-wrapper::before {
-                content: '';
-                position: absolute;
-                top: 15px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 110px;
-                height: 30px;
-                background: #000;
-                border-radius: 20px;
-                z-index: 999;
-                pointer-events: none;
-            }
-            .phone-screen {
-                width: 100%;
-                height: 100%;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
-            .phone-screen::-webkit-scrollbar { display: none; }
         }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        body { 
-            background-color: #f0ebf4; 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #F5EFEB;
+            /* 🌟 優先使用 Outfit 呈現極具質感的現代字體，襯線體作為標題點綴 🌟 */
+            font-family: 'Outfit', 'Playfair Display', Georgia, Cambria, system-ui, -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-        } 
-        .app-page { display: none; min-height: 100%; }
-        .app-page.active { display: block; }
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            overflow-x: hidden;
         }
-        .spinning { animation: rotate 0.8s cubic-bezier(0.1, 0.8, 0.1, 1) infinite; }
+
+        .app-page {
+            display: none;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .app-page.active {
+            display: block;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 🌟 強制讓數字呈現優雅的深 Navy 質感 🌟 */
+        .screenshot-num {
+            font-weight: 900;
+            color: #2F4156;
+        }
     </style>
 </head>
-<body class="text-gray-800 font-sans min-h-screen flex flex-col justify-center items-center">
 
-    <div class="phone-wrapper w-full max-w-md md:max-w-none">
-        <div class="phone-screen bg-[#fcf9f6] text-gray-800 pb-12">
+<body class="text-brand-dark bg-brand-cream">
 
-            <div id="page-home" class="app-page active">
-                <header class="bg-white px-6 pt-12 pb-4 border-b border-gray-100">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h1 class="text-2xl font-serif font-bold text-amber-900 tracking-wide">Bonjour, Canada!</h1>
-                            <p class="text-xs text-amber-700 mt-0.5">2026 · 我的暑期遊學誌 🇨🇦</p>
-                        </div>
-                        <div class="relative bg-amber-50 p-2 rounded-full text-amber-800">
-                            <i class="fa-regular fa-bell text-lg"></i>
-                        </div>
-                    </div>
-                </header>
-
-                <main class="px-4 mt-4 space-y-4">
-                    <div class="bg-gradient-to-br from-red-700 to-red-500 rounded-2xl p-5 text-white shadow-md relative overflow-hidden">
-                        <span class="text-xs bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">今日行程</span>
-                        <h2 class="text-2xl font-bold mt-2">多倫多大學報到日</h2>
-                        <p class="text-xs opacity-90 mt-1"><i class="fa-solid fa-location-dot mr-1"></i>Campus ➜ St. George Station</p>
-                        
-                        <div class="mt-4 pt-3 border-t border-white/20 flex items-center justify-between">
-                            <p class="text-xs text-red-100"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>今天開學典禮囉！</p>
-                            <button onclick="navigateTo('itinerary')" class="bg-white text-red-600 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">查看完整行程</button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
-                            <span class="text-2xl font-bold text-red-600" id="countdown-days">--</span>
-                            <p class="text-[10px] text-gray-400 mt-1">天後出發</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
-                            <span class="text-2xl font-bold text-amber-800">30</span>
-                            <p class="text-[10px] text-gray-400 mt-1">天遊學行程</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
-                            <span class="text-2xl font-bold text-emerald-600">1</span>
-                            <p class="text-[10px] text-gray-400 mt-1">人獨自冒險</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3 pt-2">
-                        <button onclick="navigateTo('spots')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                            <div class="bg-blue-50 text-blue-600 p-2.5 rounded-lg"><i class="fa-solid fa-map-location-dot text-lg"></i></div>
-                            <div><h3 class="font-bold text-sm">景點收藏</h3><p class="text-[10px] text-gray-400">口袋名單</p></div>
-                        </button>
-                        <button onclick="navigateTo('gifts')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                            <div class="bg-amber-50 text-amber-600 p-2.5 rounded-lg"><i class="fa-solid fa-gift text-lg"></i></div>
-                            <div><h3 class="font-bold text-sm">伴手禮清單</h3><p class="text-[10px] text-gray-400">必買代購</p></div>
-                        </button>
-                        <button onclick="navigateTo('finance')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                            <div class="bg-purple-50 text-purple-600 p-2.5 rounded-lg"><i class="fa-solid fa-wallet text-lg"></i></div>
-                            <div><h3 class="font-bold text-sm">記帳與匯率</h3><p class="text-[10px] text-gray-400">即時匯率換算</p></div>
-                        </button>
-                        <button onclick="navigateTo('games')" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-3 text-left hover:bg-gray-50 transition active:scale-95">
-                            <div class="bg-rose-50 text-rose-600 p-2.5 rounded-lg"><i class="fa-solid fa-dice text-lg"></i></div>
-                            <div><h3 class="font-bold text-sm">旅遊小遊戲</h3><p class="text-[10px] text-gray-400">今天吃啥隨機轉</p></div>
-                        </button>
-                    </div>
-                </main>
+    <div id="page-home" class="app-page active">
+        <header
+            class="bg-brand-cream/80 backdrop-blur-md px-6 pt-8 pb-4 border-b border-brand-beige/40 sticky top-0 z-20">
+            <div class="flex justify-between items-center max-w-md mx-auto">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-brand-dark tracking-wide">Hello, Canada!</h1>
+                    <p class="text-xs text-brand-gray mt-0.5">2026 · 我的暑期遊學日記</p>
+                </div>
+                <button onclick="triggerBellNotification()"
+                    class="relative bg-brand-peach/50 p-2 rounded-full text-brand-dark active:scale-95 transition hover:bg-brand-peach">
+                    <i class="fa-regular fa-bell text-lg"></i>
+                    <span id="bell-dot" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                </button>
             </div>
+        </header>
 
-            <div id="page-spots" class="app-page bg-slate-50">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-slate-800">景點收藏專區</h2>
-                </header>
-                <div class="p-4 space-y-4">
-                    <div class="bg-white rounded-2xl p-4 shadow-sm border">
-                        <div class="flex gap-2">
-                            <input type="text" id="spot-name" placeholder="輸入景點/美食 (如: 尼加拉瀑布)" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
-                            <button onclick="addSpot()" class="bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium">收藏</button>
-                        </div>
-                    </div>
-                    <div id="spots-list" class="space-y-2.5"></div>
+        <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
+            <div class="bg-brand-pink rounded-[2rem] p-6 shadow-sm relative overflow-hidden">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs bg-brand-cream/80 px-3 py-1 rounded-full text-brand-dark font-bold">今日行程</span>
+                    <span id="home-today-date" class="text-xs text-brand-dark/80 font-bold">----/--/--</span>
+                </div>
+                <h2 id="home-today-title" class="text-2xl font-bold mt-3 text-brand-dark tracking-tight">載入中...</h2>
+                <p id="home-today-desc" class="text-sm text-brand-dark/80 font-medium mt-1.5">請稍候</p>
+
+                <div class="mt-6 pt-4 border-t border-brand-dark/10 flex items-center justify-between">
+                    <p class="text-xs text-brand-dark font-medium"><i
+                            class="fa-solid fa-wand-magic-sparkles mr-1"></i>好好享受每一天！</p>
+                    <button onclick="navigateTo('itinerary')"
+                        class="bg-brand-dark text-brand-cream text-xs font-bold px-4 py-2 rounded-xl shadow-md active:scale-95 transition hover:bg-brand-gray">查看行事曆</button>
                 </div>
             </div>
 
-            <div id="page-gifts" class="app-page bg-amber-50/20">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-amber-900">伴手禮 & 購物清單</h2>
-                </header>
-                <div class="p-4 space-y-4">
-                    <div class="bg-white rounded-2xl p-4 shadow-sm border">
-                        <div class="flex gap-2">
-                            <input type="text" id="gift-name" placeholder="如: 楓糖漿、Roots 帽T" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
-                            <button onclick="addGift()" class="bg-amber-600 text-white px-4 py-2 rounded-xl text-sm font-medium">加入</button>
-                        </div>
-                    </div>
-                    <ul id="gifts-list" class="space-y-2"></ul>
+            <div class="grid grid-cols-3 gap-3">
+                <div
+                    class="bg-white/80 rounded-3xl p-4 text-center border border-brand-blue/20 shadow-sm flex flex-col justify-center items-center min-h-[110px]">
+                    <span class="text-4xl screenshot-num block leading-none mb-2" id="countdown-days">--</span>
+                    <p class="text-xs font-bold text-brand-gray tracking-wide">天後出發</p>
+                </div>
+                <div
+                    class="bg-brand-pink/50 rounded-3xl p-4 text-center border border-brand-pink/30 shadow-sm flex flex-col justify-center items-center min-h-[110px]">
+                    <span class="text-4xl screenshot-num block leading-none mb-2" id="total-itinerary-count">30</span>
+                    <p class="text-xs font-bold text-brand-gray tracking-wide">天遊學行程</p>
+                </div>
+                <div
+                    class="bg-brand-blue/50 rounded-3xl p-4 text-center border border-brand-blue/30 shadow-sm flex flex-col justify-center items-center min-h-[110px]">
+                    <span class="text-4xl screenshot-num block leading-none mb-2">1</span>
+                    <p class="text-xs font-bold text-brand-gray tracking-wide">人獨自冒險</p>
                 </div>
             </div>
 
-            <div id="page-finance" class="app-page bg-purple-50/20">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-purple-900">記帳與即時匯率</h2>
-                </header>
-                <div class="p-4 space-y-4">
-                    <div class="bg-white rounded-2xl p-4 border shadow-sm">
-                        <h3 class="font-bold text-sm text-purple-700 mb-2">
-                            <i class="fa-solid fa-calculator mr-2"></i>即時匯率換算 
-                            <span id="rate-badge" class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full ml-1 font-normal">載入中...</span>
-                        </h3>
-                        <div class="grid grid-cols-2 gap-3 items-center">
-                            <div>
-                                <label class="block text-[10px] text-gray-400 mb-1">加幣 CAD</label>
-                                <input type="number" id="cad-input" oninput="convert()" class="w-full border rounded-xl p-2 font-bold text-center bg-purple-50 text-purple-800" value="1">
-                            </div>
-                            <div class="text-center pt-4">
-                                <span class="block text-[10px] text-gray-400">換算台幣 TWD</span>
-                                <div class="font-bold text-lg text-gray-700 mt-1" id="twd-output">計算中...</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-2xl p-4 border shadow-sm">
-                        <h3 class="font-bold text-sm text-gray-800 mb-3"><i class="fa-solid fa-dollar-sign mr-2"></i>新增消費紀錄</h3>
-                        <div class="flex gap-2 mb-4">
-                            <input type="text" id="exp-title" placeholder="項目" class="w-1/2 border border-gray-200 rounded-xl px-3 py-2 text-sm">
-                            <input type="number" id="exp-amount" placeholder="CAD" class="w-1/4 border border-gray-200 rounded-xl px-3 py-2 text-sm">
-                            <button onclick="addExpense()" class="bg-purple-600 text-white px-3 py-2 rounded-xl text-sm font-medium">記帳</button>
-                        </div>
-                        <div class="border-t pt-2 flex justify-between font-bold mb-2"><span>總計消費:</span><span id="total-cost" class="text-purple-600">0 CAD</span></div>
-                        <ul id="expenses-list" class="space-y-2"></ul>
-                    </div>
+            <!-- Region Filter Tab Bar -->
+            <div class="bg-white/80 rounded-3xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                    <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5"><i
+                            class="fa-solid fa-map-location-dot text-brand-gray"></i> 地區專區切換</h3>
+                </div>
+                <!-- Horizontal Tab scroll -->
+                <div id="region-tab-bar" class="flex gap-2 overflow-x-auto pb-1 scroll-smooth">
+                    <!-- Tabs generated dynamically -->
                 </div>
             </div>
 
-            <div id="page-games" class="app-page bg-rose-50/20">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-rose-900">旅遊決策大轉盤</h2>
-                </header>
-                <div class="p-6 text-center space-y-6">
-                    <div class="bg-white rounded-2xl p-6 border shadow-sm max-w-sm mx-auto">
-                        <h3 class="font-bold text-base text-gray-700 mb-4">今天誰請客 / 吃什麼？</h3>
-                        <div class="w-32 h-32 bg-rose-100 rounded-full mx-auto flex items-center justify-center border-4 border-rose-300 shadow-inner relative mb-4">
-                            <div class="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[16px] border-b-red-600 absolute -top-1 left-1/2 -translate-x-1/2 z-10"></div>
-                            <div class="w-full h-full flex items-center justify-center rounded-full" id="wheel">
-                                <span id="wheel-result" class="font-bold text-rose-800 px-2 text-sm">按下開轉</span>
-                            </div>
-                        </div>
-                        <button onclick="spinWheel()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-6 py-2 rounded-full shadow-md text-sm transition active:scale-95">大轉盤，啟動！</button>
-                    </div>
+            <!-- Dynamic Collection Display -->
+            <div id="home-collections-container" class="space-y-4 pt-1">
+                <!-- Spots, Restaurants, and Gifts collections generated dynamically -->
+            </div>
+        </main>
+    </div>
+
+    <div id="page-itinerary" class="app-page">
+        <header class="bg-brand-cream/80 backdrop-blur-md pt-8 p-4 border-b border-brand-beige/40 sticky top-0 z-20">
+            <div class="max-w-md mx-auto space-y-3">
+                <div class="flex justify-between items-center">
+                    <h2 class="font-extrabold text-lg text-brand-dark">遊學冒險日誌日曆</h2>
+                    <span class="text-[11px] text-brand-gray">左右滑動切換天數 ➜</span>
+                </div>
+                <div id="horizontal-scroll-days" class="flex gap-2.5 overflow-x-auto pb-1 px-1 scroll-smooth">
                 </div>
             </div>
+        </header>
 
-            <div id="page-itinerary" class="app-page bg-stone-50">
-                <header class="bg-white pt-12 p-4 border-b flex items-center gap-4">
-                    <button onclick="navigateTo('home')" class="text-gray-600 text-lg p-1"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 class="font-bold text-lg text-gray-800">每日行程總覽</h2>
-                </header>
-                <div class="p-4">
-                    <div class="bg-white rounded-2xl p-4 border shadow-sm space-y-4">
-                        <div class="border-l-2 border-red-500 pl-3">
-                            <span class="text-xs font-bold text-red-500">Day 01</span>
-                            <h4 class="font-bold text-sm">多倫多皮爾遜機場落地</h4>
-                            <p class="text-xs text-gray-500 mt-0.5">搭乘 UP Express 前往市區宿舍 check-in。</p>
-                        </div>
-                        <div class="border-l-2 border-gray-200 pl-3">
-                            <span class="text-xs font-bold text-gray-400">Day 02</span>
-                            <h4 class="font-bold text-sm text-gray-700">語言學校報到 + 認識環境</h4>
-                            <p class="text-xs text-gray-400 mt-0.5">早上分班測驗，下午去買 Presto 交通卡。</p>
-                        </div>
+        <div class="max-w-md mx-auto p-4">
+            <div class="bg-white/80 rounded-3xl p-6 shadow-sm border border-brand-beige/30 space-y-4">
+                <div class="flex justify-between items-center border-b border-brand-beige/40 pb-3">
+                    <div>
+                        <h3 id="selected-day-label" class="text-2xl font-black text-brand-dark">Day 01</h3>
+                        <p id="selected-date-label" class="text-xs text-brand-gray mt-0.5">2026-07-17</p>
                     </div>
+                    <span id="selected-countdown-label"
+                        class="text-xs bg-brand-blue text-blue-900 font-bold px-2.5 py-1 rounded-full">出發當天</span>
+                </div>
+                <div id="selected-day-events-content" class="space-y-4 min-height-[150px]">
                 </div>
             </div>
+        </div>
 
+        <button onclick="toggleItineraryModal(true)"
+            class="fixed bottom-24 right-6 w-14 h-14 bg-brand-gold text-white rounded-full flex items-center justify-center shadow-lg shadow-brand-gold/30 hover:bg-brand-gold/90 active:scale-95 transition z-40 focus:outline-none">
+            <i class="fa-solid fa-plus text-xl"></i>
+        </button>
+    </div>
+
+    <div id="itinerary-modal"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-brand-cream rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-xl border border-brand-beige/50">
+            <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                <h3 class="font-extrabold text-base text-brand-dark"><i class="fa-regular fa-calendar-plus mr-1"></i>
+                    新增行事曆行程
+                </h3>
+                <button onclick="toggleItineraryModal(false)" class="text-brand-gray hover:text-brand-dark p-1"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[11px] font-bold text-brand-gray mb-1">選擇日期</label>
+                    <input type="date" id="iti-date"
+                        class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium"
+                        value="2026-07-17">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-brand-gray mb-1">行程名稱</label>
+                    <input type="text" id="iti-title" placeholder="如：多倫多皮爾遜機場落地"
+                        class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-brand-gray mb-1">詳細說明/時間/待辦</label>
+                    <input type="text" id="iti-desc" placeholder="如：搭乘 UP Express 前往宿舍"
+                        class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                </div>
+                <button onclick="addItineraryItem()"
+                    class="w-full bg-brand-dark text-brand-cream hover:bg-brand-gray py-3 rounded-xl text-sm font-bold active:scale-95 transition mt-2 shadow-md">儲存並加入行事曆</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        // 全域匯率變數（預設 24，串接成功後會自動覆蓋）
-        let exchangeRate = 24.0;
+    <!-- 預算分類管理 Modal -->
+    <div id="category-modal"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div
+            class="bg-brand-cream rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-xl border border-brand-beige/50 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                <h3 class="font-extrabold text-base text-brand-dark"><i class="fa-solid fa-gear mr-1"></i> 管理預算與分類</h3>
+                <button onclick="toggleCategoryModal(false)" class="text-brand-gray hover:text-brand-dark p-1"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
 
-        // 本地瀏覽器資料儲存
-        let data = JSON.parse(localStorage.getItem('canadaProData')) || { 
-            spots: [{name: '尼加拉瀑布 🇨🇦'}, {name: 'CN Tower 電視塔'}], 
-            gifts: [{name: '加拿大楓糖漿', bought: false}, {name: 'Roots 經典帽T', bought: false}], 
-            expenses: [] 
-        };
+            <!-- 新增分類 -->
+            <div class="space-y-2 pt-1">
+                <h4 class="text-xs font-bold text-brand-dark"><i class="fa-solid fa-plus mr-1"></i>新增自訂類別</h4>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="new-cat-name" placeholder="名稱 (如：住宿)"
+                        class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                    <input type="number" id="new-cat-budget" placeholder="預算 (CAD)"
+                        class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                </div>
+                <div class="flex gap-2">
+                    <select id="new-cat-icon"
+                        class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold text-brand-dark bg-white font-medium cursor-pointer">
+                        <option value="fa-utensils">🍽️ 餐飲 (fa-utensils)</option>
+                        <option value="fa-bus">🚌 交通 (fa-bus)</option>
+                        <option value="fa-gift">🎁 伴手禮 (fa-gift)</option>
+                        <option value="fa-face-smile">😊 娛樂 (fa-face-smile)</option>
+                        <option value="fa-hotel">🏨 住宿 (fa-hotel)</option>
+                        <option value="fa-cart-shopping">🛒 購物 (fa-cart-shopping)</option>
+                        <option value="fa-plane">✈️ 機票 (fa-plane)</option>
+                        <option value="fa-tags">🏷️ 其他 (fa-tags)</option>
+                    </select>
+                    <button onclick="addCustomCategory()"
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs font-bold px-4 py-2 rounded-xl active:scale-95 transition shadow-sm">新增</button>
+                </div>
+            </div>
+
+            <!-- 現有分類列表與預算修改 -->
+            <div class="space-y-3 pt-3 border-t border-brand-beige/40">
+                <h4 class="text-xs font-bold text-brand-dark"><i class="fa-solid fa-list mr-1"></i>現有分類與預算額度</h4>
+                <div id="category-edit-list" class="space-y-2">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <button onclick="saveCategoryBudgets()"
+                class="w-full bg-brand-dark hover:bg-brand-gray text-brand-cream py-3 rounded-xl text-sm font-bold active:scale-95 transition mt-2 shadow-md">儲存變更</button>
+        </div>
+    </div>
+
+    <div id="page-finance" class="app-page">
+        <header class="bg-brand-cream/80 backdrop-blur-md pt-8 p-4 border-b border-brand-beige/40 sticky top-0 z-20">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-extrabold text-lg text-brand-dark">記帳與即時匯率</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4 space-y-4">
+            <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm">
+                <h3 class="font-bold text-sm text-brand-dark mb-3 flex justify-between items-center">
+                    <span>
+                        <i class="fa-solid fa-calculator mr-2 text-brand-dark"></i>即時匯率換算
+                        <span id="rate-badge"
+                            class="text-xs bg-brand-peach/50 text-brand-dark px-2 py-0.5 rounded-full ml-1 font-bold">CAD
+                            = 24.0
+                            TWD</span>
+                    </span>
+                </h3>
+                <div class="grid grid-cols-3 gap-2.5 items-center">
+                    <div>
+                        <label class="block text-[10px] text-brand-gray mb-1">加幣 CAD</label>
+                        <input type="number" id="cad-input" oninput="convert()"
+                            class="w-full border border-brand-beige rounded-xl p-2 font-bold text-center bg-brand-cream/50 text-brand-dark focus:outline-none text-lg"
+                            value="1">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-brand-gray mb-1">目前匯率</label>
+                        <input type="number" step="0.001" id="rate-input" oninput="updateManualRate(this.value)"
+                            class="w-full border border-brand-beige rounded-xl p-2 font-bold text-center bg-white text-brand-dark focus:outline-none text-lg"
+                            value="24.0">
+                    </div>
+                    <div class="text-center pt-2">
+                        <span class="block text-[10px] text-brand-gray">台幣 TWD</span>
+                        <div class="font-bold text-lg text-brand-dark mt-1" id="twd-output">24.0 TWD</div>
+                    </div>
+                </div>
+                <div
+                    class="mt-4 pt-3 border-t border-brand-beige/40 flex flex-wrap justify-between items-center text-xs text-brand-gray gap-2">
+                    <div class="flex items-center gap-1.5">
+                        <input type="checkbox" id="auto-sync-toggle" onchange="toggleAutoSync(this.checked)"
+                            class="w-3.5 h-3.5 rounded border-brand-beige text-brand-gold focus:ring-brand-gold cursor-pointer">
+                        <label for="auto-sync-toggle" class="cursor-pointer select-none">自動同步銀行匯率</label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="rate-update-time" class="text-[10px] text-brand-gray">最後更新: 尚未同步</span>
+                        <button onclick="manualSyncExchangeRate()" id="btn-sync-rate"
+                            class="bg-brand-peach/50 hover:bg-brand-peach/80 text-brand-dark px-2 py-1 rounded-lg font-bold flex items-center gap-1 active:scale-95 transition">
+                            <i id="rate-sync-icon" class="fa-solid fa-arrows-rotate text-[10px]"></i> 同步
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 預算分配與分析 -->
+            <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                <div class="flex justify-between items-center pb-1 border-b border-brand-beige/40">
+                    <h3 class="font-bold text-sm text-brand-dark">
+                        <i class="fa-solid fa-chart-pie mr-1.5"></i>預算分配與分析
+                    </h3>
+                    <button onclick="toggleCategoryModal(true)"
+                        class="text-[11px] bg-brand-peach/50 hover:bg-brand-peach text-brand-dark font-bold px-2 py-1 rounded-lg flex items-center gap-1 active:scale-95 transition">
+                        <i class="fa-solid fa-gear"></i> 管理預算
+                    </button>
+                </div>
+
+                <div id="budget-progress-container" class="space-y-3">
+                    <!-- Dynamic category budget rows -->
+                </div>
+            </div>
+
+            <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm">
+                <h3 class="font-bold text-sm text-brand-dark mb-3"><i class="fa-solid fa-dollar-sign mr-2"></i>新增消費紀錄
+                </h3>
+                <div class="flex flex-col gap-2.5 mb-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="exp-title" placeholder="項目 (如：午餐)"
+                            class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark bg-white font-medium">
+                        <input type="number" id="exp-amount" placeholder="CAD"
+                            class="w-24 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark bg-white font-medium">
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="exp-category"
+                            class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium cursor-pointer">
+                            <!-- Categories populated dynamically -->
+                        </select>
+                        <input type="date" id="exp-date"
+                            class="w-36 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark bg-white font-medium">
+                    </div>
+                    <button onclick="addExpense()"
+                        class="w-full bg-brand-dark hover:bg-brand-gray text-brand-cream py-2.5 rounded-xl text-sm font-bold active:scale-95 transition shadow-md">記帳</button>
+                </div>
+                <div class="border-t border-brand-beige/40 pt-2 flex justify-between font-bold mb-2">
+                    <span>總計消費:</span><span class="text-brand-dark text-lg" id="total-cost">0 CAD</span>
+                </div>
+                <ul id="expenses-list" class="space-y-2"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-restaurant" class="app-page">
+        <header class="bg-brand-cream/80 backdrop-blur-md pt-8 p-4 border-b border-brand-beige/40 sticky top-0 z-20">
+            <div class="max-w-md mx-auto flex items-center gap-4">
+                <button onclick="navigateTo('home')" class="text-brand-gray hover:text-brand-dark text-lg p-1"><i
+                        class="fa-solid fa-chevron-left"></i></button>
+                <h2 class="font-extrabold text-lg text-brand-dark">溫哥華必吃口袋餐廳</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4 space-y-4">
+            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30 space-y-2">
+                <input type="text" id="restaurant-name" placeholder="輸入美食/餐廳名稱 (如: Tim Hortons)"
+                    class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                <div class="flex gap-2 items-center">
+                    <select id="restaurant-location" onchange="handleLocationSelectChange(this)"
+                        class="location-dropdown-select flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium cursor-pointer">
+                        <!-- Location options populated dynamically -->
+                    </select>
+                    <button onclick="addRestaurantItem()"
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-5 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm shrink-0">收藏</button>
+                </div>
+            </div>
+            <ul id="restaurant-list" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <div id="page-spots" class="app-page">
+        <header class="bg-brand-cream/80 backdrop-blur-md pt-8 p-4 border-b border-brand-beige/40 sticky top-0 z-20">
+            <div class="max-w-md mx-auto flex items-center gap-4">
+                <button onclick="navigateTo('home')" class="text-brand-gray hover:text-brand-dark text-lg p-1"><i
+                        class="fa-solid fa-chevron-left"></i></button>
+                <h2 class="font-extrabold text-lg text-brand-dark">景點收藏專區</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4 space-y-4">
+            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30 space-y-2">
+                <input type="text" id="spot-name" placeholder="輸入景點/美食"
+                    class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                <div class="flex gap-2 items-center">
+                    <select id="spot-location" onchange="handleLocationSelectChange(this)"
+                        class="location-dropdown-select flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium cursor-pointer">
+                        <!-- Location options populated dynamically -->
+                    </select>
+                    <button onclick="addSpot()"
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-5 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm shrink-0">收藏</button>
+                </div>
+            </div>
+            <div id="spots-list" class="space-y-2.5"></div>
+        </div>
+    </div>
+
+    <div id="page-gifts" class="app-page">
+        <header class="bg-brand-cream/80 backdrop-blur-md pt-8 p-4 border-b border-brand-beige/40 sticky top-0 z-20">
+            <div class="max-w-md mx-auto flex items-center gap-4">
+                <button onclick="navigateTo('home')" class="text-brand-gray hover:text-brand-dark text-lg p-1"><i
+                        class="fa-solid fa-chevron-left"></i></button>
+                <h2 class="font-extrabold text-lg text-brand-dark">伴手禮 & 購物清單</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4 space-y-4">
+            <div class="bg-white/80 rounded-2xl p-4 shadow-sm border border-brand-beige/30 space-y-2">
+                <input type="text" id="gift-name" placeholder="如: 楓糖漿"
+                    class="w-full border border-brand-beige bg-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark font-medium">
+                <div class="flex gap-2 items-center">
+                    <select id="gift-location" onchange="handleLocationSelectChange(this)"
+                        class="location-dropdown-select flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium cursor-pointer">
+                        <!-- Location options populated dynamically -->
+                    </select>
+                    <button onclick="addGift()"
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream px-5 py-2 rounded-xl text-sm font-bold active:scale-95 transition shadow-sm shrink-0">加入</button>
+                </div>
+            </div>
+            <ul id="gifts-list" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <div id="page-luggage" class="app-page">
+        <header class="bg-brand-cream/80 backdrop-blur-md pt-8 p-4 border-b border-brand-beige/40 sticky top-0 z-20">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-extrabold text-lg text-brand-dark">行李打包清單 🇨🇦</h2>
+            </div>
+        </header>
+        <div class="max-w-md mx-auto p-4 space-y-4">
+            <!-- Progress Card -->
+            <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-bold text-brand-dark">全體打包進度</span>
+                    <span class="text-brand-gray font-bold" id="luggage-progress-text">0 / 0 (0%)</span>
+                </div>
+                <div class="w-full bg-brand-cream h-2.5 rounded-full overflow-hidden border border-brand-beige/40">
+                    <div id="luggage-progress-bar"
+                        class="h-full rounded-full bg-brand-green transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- 新增分類卡片 -->
+            <div class="bg-white/60 rounded-2xl p-4 border border-dashed border-brand-gray/40 shadow-sm space-y-2">
+                <h3 class="font-bold text-xs text-brand-dark flex items-center gap-1.5">
+                    <i class="fa-solid fa-folder-plus text-brand-gray"></i> 新增自訂行李分類
+                </h3>
+                <div class="flex gap-2">
+                    <input type="text" id="new-luggage-cat-input" placeholder="例如：滑雪裝備、野營用品..."
+                        class="flex-1 border border-brand-beige rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                    <button onclick="addNewLuggageCategory()"
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-1.5 rounded-xl font-bold active:scale-95 transition shadow-sm">新增分類</button>
+                </div>
+            </div>
+
+            <!-- Category Grouping Cards -->
+            <div id="luggage-categories-container" class="space-y-4">
+                <!-- Dynamically populated categories -->
+            </div>
+        </div>
+    </div>
+
+    <nav
+        class="fixed bottom-0 left-0 right-0 bg-brand-cream/90 backdrop-blur-md border-t border-brand-beige/50 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] px-2 py-3.5 z-50">
+        <div class="max-w-md mx-auto grid grid-cols-4 text-center">
+            <button onclick="navigateTo('home')" id="nav-home"
+                class="nav-btn flex flex-col items-center gap-1 text-brand-gold transition">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[10px] font-extrabold">主頁</span>
+            </button>
+            <button onclick="navigateTo('itinerary')" id="nav-itinerary"
+                class="nav-btn flex flex-col items-center gap-1 text-brand-gray transition">
+                <i class="fa-solid fa-calendar-days text-lg"></i>
+                <span class="text-[10px] font-medium">行程日曆</span>
+            </button>
+            <button onclick="navigateTo('finance')" id="nav-finance"
+                class="nav-btn flex flex-col items-center gap-1 text-brand-gray transition">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                <span class="text-[10px] font-medium">記帳匯率</span>
+            </button>
+            <button onclick="navigateTo('luggage')" id="nav-luggage"
+                class="nav-btn flex flex-col items-center gap-1 text-brand-gray transition">
+                <i class="fa-solid fa-suitcase text-lg"></i>
+                <span class="text-[10px] font-medium">行李清單</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+
+
+        let exchangeRate = 24.0;
+        const departureDateStr = '2026-07-17';
+        let currentlySelectedDate = '2026-07-17';
+
+        let data;
+        const savedData = localStorage.getItem('canadaProData');
+        if (savedData) {
+            try {
+                data = JSON.parse(savedData);
+                // Ensure default categories and exchange rate settings exist
+                if (!data.categories) {
+                    data.categories = [
+                        { name: '餐費', icon: 'fa-utensils', budget: 1000 },
+                        { name: '交通', icon: 'fa-bus', budget: 300 },
+                        { name: '伴手禮', icon: 'fa-gift', budget: 500 },
+                        { name: '娛樂', icon: 'fa-face-smile', budget: 400 },
+                        { name: '其他', icon: 'fa-tags', budget: 200 }
+                    ];
+                }
+                if (!data.luggage || Array.isArray(data.luggage)) {
+                    data.luggage = {
+                        '重要文件/證件': [
+                            { name: '護照 (效期6個月以上)', checked: true },
+                            { name: '加拿大電子簽證 eTA 核准件', checked: true },
+                            { name: '語言學校入學信 (LOA)', checked: false },
+                            { name: '海外學生保險單影本', checked: false }
+                        ],
+                        '衣物穿搭': [
+                            { name: '保暖發熱衣', checked: false },
+                            { name: '羽絨外套 / 防風防水夾克', checked: false },
+                            { name: '針織毛帽 / 保暖防滑手套', checked: false },
+                            { name: '防滑健行鞋 / 舒適球鞋', checked: false }
+                        ],
+                        '日常用品/盥洗': [
+                            { name: '高保濕乳液 / 護唇膏 (乾燥氣候必備)', checked: false },
+                            { name: '防曬乳', checked: false },
+                            { name: '防蚊液', checked: false },
+                            { name: '熊鈴 / 熊噴霧提示指引', checked: false },
+                            { name: '個人旅行盥洗包', checked: false }
+                        ],
+                        '電子產品/相機': [
+                            { name: '美規/加規雙孔插頭 (同台灣，但三孔插座需注意)', checked: false },
+                            { name: '行動電源 (上飛機隨身攜帶)', checked: false },
+                            { name: '相機 & 備用記憶卡', checked: false },
+                            { name: '各類充電線組', checked: false }
+                        ],
+                        '常用藥品': [
+                            { name: '感冒藥 / 退藥片', checked: false },
+                            { name: '腸胃藥 / 止瀉藥', checked: false },
+                            { name: '暈車藥 (洛磯山脈拉車必備)', checked: false },
+                            { name: '外傷藥膏 / OK繃', checked: false }
+                        ]
+                    };
+                }
+                if (!data.locations) {
+                    data.locations = ['溫哥華', '班夫', '維多利亞', '惠斯勒', '其他'];
+                }
+                if (data.spots) {
+                    data.spots.forEach(s => {
+                        if (!s.location) s.location = '溫哥華';
+                    });
+                }
+                if (data.restaurants) {
+                    data.restaurants.forEach(r => {
+                        if (!r.location) r.location = '溫哥華';
+                    });
+                }
+                if (data.gifts) {
+                    data.gifts.forEach(g => {
+                        if (!g.location) g.location = '其他';
+                    });
+                }
+                if (data.expenses) {
+                    data.expenses.forEach(e => {
+                        if (!e.date) {
+                            e.date = getTodayDateString();
+                        }
+                    });
+                }
+                if (data.exchangeRate !== undefined) {
+                    exchangeRate = data.exchangeRate;
+                }
+            } catch (e) {
+                console.error("Error parsing saved data:", e);
+            }
+        }
+
+        if (!data) {
+            data = {
+                locations: ['溫哥華', '班夫', '維多利亞', '惠斯勒', '其他'],
+                spots: [
+                    { name: '尼加拉瀑布 🇨🇦', location: '其他' },
+                    { name: 'CN Tower 電視塔', location: '其他' }
+                ],
+                gifts: [
+                    { name: '加拿大楓糖漿', bought: false, location: '其他' }
+                ],
+                luggage: {
+                    '重要文件/證件': [
+                        { name: '護照 (效期6個月以上)', checked: true },
+                        { name: '加拿大電子簽證 eTA 核准件', checked: true },
+                        { name: '語言學校入學信 (LOA)', checked: false },
+                        { name: '海外學生保險單影本', checked: false }
+                    ],
+                    '衣物穿搭': [
+                        { name: '保暖發熱衣', checked: false },
+                        { name: '羽絨外套 / 防風防水夾克', checked: false },
+                        { name: '針織毛帽 / 保暖防滑手套', checked: false },
+                        { name: '防滑健行鞋 / 舒適球鞋', checked: false }
+                    ],
+                    '日常用品/盥洗': [
+                        { name: '高保濕乳液 / 護唇膏 (乾燥氣候必備)', checked: false },
+                        { name: '防曬乳', checked: false },
+                        { name: '防蚊液', checked: false },
+                        { name: '熊鈴 / 熊噴霧提示指引', checked: false },
+                        { name: '個人旅行盥洗包', checked: false }
+                    ],
+                    '電子產品/相機': [
+                        { name: '美規/加規雙孔插頭 (同台灣，但三孔插座需注意)', checked: false },
+                        { name: '行動電源 (上飛機隨身攜帶)', checked: false },
+                        { name: '相機 & 備用記憶卡', checked: false },
+                        { name: '各類充電線組', checked: false }
+                    ],
+                    '常用藥品': [
+                        { name: '感冒藥 / 退藥片', checked: false },
+                        { name: '腸胃藥 / 止瀉藥', checked: false },
+                        { name: '暈車藥 (洛磯山脈拉車必備)', checked: false },
+                        { name: '外傷藥膏 / OK繃', checked: false }
+                    ]
+                },
+                expenses: [],
+                restaurants: [
+                    { name: 'Tim Hortons (國民神級咖啡店)', visited: true, location: '溫哥華' },
+                    { name: 'Chipotle (高飽足感墨西哥捲餅)', visited: false, location: '溫哥華' },
+                    { name: 'Poutine House (必吃起司澆頭薯條)', visited: false, location: '溫哥華' }
+                ],
+                itineraries: [
+                    { date: '2026-07-17', title: '多倫多皮爾遜機場落地 ✈️', desc: 'Day 1 正式抵達加拿大！搭乘 UP Express 前往市區宿舍 check-in。' },
+                    { date: '2026-07-18', title: '語言學校報到 + 認識環境 🏫', desc: 'Day 2 早上進行入學分班測驗。' },
+                    { date: '2026-07-19', title: '多倫多市中心大探索 🍁', desc: 'Day 3 參觀著名地標 CN Tower。' }
+                ],
+                categories: [
+                    { name: '餐費', icon: 'fa-utensils', budget: 1000 },
+                    { name: '交通', icon: 'fa-bus', budget: 300 },
+                    { name: '伴手禮', icon: 'fa-gift', budget: 500 },
+                    { name: '娛樂', icon: 'fa-face-smile', budget: 400 },
+                    { name: '其他', icon: 'fa-tags', budget: 200 }
+                ],
+                exchangeRate: 24.0,
+                autoSyncRate: true,
+                rateLastUpdated: ''
+            };
+            save();
+        }
+
         function save() { localStorage.setItem('canadaProData', JSON.stringify(data)); }
 
-        // 🌟 核心功能：使用 Fetch API 抓取網路上的真實即時匯率
-        async function fetchLiveExchangeRate() {
-            try {
-                // 向免費的匯率 API 發出請求
-                const response = await fetch('https://open.er-api.com/v6/latest/CAD');
-                const result = await response.json();
-                
-                // 提取加幣對台幣 (TWD) 的匯率
-                if (result && result.rates && result.rates.TWD) {
-                    exchangeRate = parseFloat(result.rates.TWD);
-                    
-                    // 更新網頁上的 UI 標籤
-                    document.getElementById('rate-badge').innerText = `1 : ${exchangeRate.toFixed(2)}`;
-                    console.log(`成功動態更新最新匯率：1 CAD = ${exchangeRate} TWD`);
-                }
-            } catch (error) {
-                console.error("即時匯率抓取失敗，將使用預設匯率 24.0", error);
-                document.getElementById('rate-badge').innerText = `1 : 24.00 (離線)`;
-            }
-            // 抓取完不論成功與否，立刻重新計算一次畫面數字
-            convert();
-        }
-
-        // 頁面切換控制
         function navigateTo(pageId) {
             document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
-            document.getElementById(`page-${pageId}`).classList.add('active');
-            const screen = document.querySelector('.phone-screen');
-            if(screen) screen.scrollTop = 0;
-            window.scrollTo(0, 0);
+            document.getElementById('page-' + pageId).classList.add('active');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-brand-gold', 'font-extrabold');
+                btn.classList.add('text-brand-gray', 'font-medium');
+            });
+            const activeNav = document.getElementById('nav-' + pageId);
+            if (activeNav) {
+                activeNav.classList.remove('text-brand-gray', 'font-medium');
+                activeNav.classList.add('text-brand-gold', 'font-extrabold');
+            }
         }
 
-        // 景點控制
-        function addSpot() {
-            const input = document.getElementById('spot-name');
-            if(!input.value.trim()) return;
-            data.spots.push({ name: input.value.trim() });
-            input.value = ''; save(); renderSpots();
-        }
-        function renderSpots() {
-            document.getElementById('spots-list').innerHTML = data.spots.map((s, i) => `
-                <div class="flex items-center justify-between bg-white p-3 rounded-xl border shadow-sm">
-                    <span class="text-sm font-medium text-slate-700">${s.name}</span>
-                    <button onclick="data.spots.splice(${i},1);save();renderSpots();" class="text-gray-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
-                </div>
-            `).join('');
+        function getTodayDateString() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
         }
 
-        // 伴手禮控制
-        function addGift() {
-            const input = document.getElementById('gift-name');
-            if(!input.value.trim()) return;
-            data.gifts.push({ name: input.value.trim(), bought: false });
-            input.value = ''; save(); renderGifts();
+        function getDayInfo(dateStr) {
+            const target = new Date(dateStr);
+            const depart = new Date(departureDateStr);
+            target.setHours(0, 0, 0, 0);
+            depart.setHours(0, 0, 0, 0);
+
+            const timeDiff = target - depart;
+            const daysDiff = Math.round(timeDiff / (1000 * 60 * 60 * 24));
+
+            if (daysDiff >= 0) {
+                return {
+                    dayLabel: `Day ${String(daysDiff + 1).padStart(2, '0')}`,
+                    countdownLabel: daysDiff === 0 ? "出發當天 🇨🇦" : `出發第 ${daysDiff + 1} 天`
+                };
+            } else {
+                return {
+                    dayLabel: `前 ${Math.abs(daysDiff)} 天`,
+                    countdownLabel: `出發前 ${Math.abs(daysDiff)} 天`
+                };
+            }
         }
-        function toggleGift(i) {
-            data.gifts[i].bought = !data.gifts[i].bought;
-            save(); renderGifts();
+
+        function triggerBellNotification() {
+            const todayStr = getTodayDateString();
+            const todaySchedule = data.itineraries.find(item => item.date === todayStr);
+            const info = getDayInfo(todayStr);
+
+            if (todaySchedule) {
+                alert(`🔔 今日行程動態提醒 (${info.dayLabel})：\n\n📅 日期：${todaySchedule.date}\n📌 行程：${todaySchedule.title}\n📝 備忘：${todaySchedule.desc}`);
+            } else {
+                alert(`🔔 今日行程動態提醒：\n\n今天 (${todayStr}) 是 ${info.countdownLabel}。\n目前沒有安排活動，可以去放鬆探索唷！`);
+            }
         }
-        function renderGifts() {
-            document.getElementById('gifts-list').innerHTML = data.gifts.map((g, i) => `
-                <li class="flex items-center justify-between bg-white p-3 rounded-xl border shadow-sm cursor-pointer" onclick="toggleGift(${i})">
-                    <div class="flex items-center gap-2">
-                        <i class="${g.bought ? 'fa-solid fa-square-check text-amber-600':'fa-regular fa-square text-gray-300'} text-lg"></i>
-                        <span class="${g.bought ? 'line-through text-gray-400' : 'text-gray-700'} text-sm">${g.name}</span>
+
+        function checkBellDot() {
+            const todayStr = getTodayDateString();
+            const hasEvent = data.itineraries.some(item => item.date === todayStr);
+            document.getElementById('bell-dot').style.display = hasEvent ? 'block' : 'none';
+        }
+
+        function renderHomeTodayCard() {
+            const todayStr = getTodayDateString();
+            document.getElementById('home-today-date').innerText = todayStr;
+
+            const todaySchedule = data.itineraries.find(item => item.date === todayStr);
+            const info = getDayInfo(todayStr);
+
+            if (todaySchedule) {
+                document.getElementById('home-today-title').innerText = `[${info.dayLabel}] ${todaySchedule.title}`;
+                document.getElementById('home-today-desc').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i>${todaySchedule.desc}`;
+            } else {
+                document.getElementById('home-today-title').innerText = "今天沒有排行程 ☕";
+                document.getElementById('home-today-desc').innerText = `今天是 ${info.countdownLabel}，給自己排個行事曆探索吧！`;
+            }
+
+            //document.getElementById('total-itinerary-count').innerText = data.itineraries.length;
+        }
+
+        function toggleItineraryModal(show) {
+            const modal = document.getElementById('itinerary-modal');
+            modal.style.display = show ? 'flex' : 'none';
+            if (show) document.getElementById('iti-date').value = currentlySelectedDate;
+        }
+
+        function renderHorizontalDaysScrollbar() {
+            const scrollContainer = document.getElementById('horizontal-scroll-days');
+            if (!scrollContainer) return;
+            const todayStr = getTodayDateString();
+            const startDate = new Date('2026-07-14');
+            let htmlHTML = '';
+
+            for (let i = 0; i < 36; i++) {
+                const currentLoopDate = new Date(startDate);
+                currentLoopDate.setDate(startDate.getDate() + i);
+
+                const yyyy = currentLoopDate.getFullYear();
+                const mm = String(currentLoopDate.getMonth() + 1).padStart(2, '0');
+                const dd = String(currentLoopDate.getDate()).padStart(2, '0');
+                const loopDateStr = `${yyyy}-${mm}-${dd}`;
+
+                const info = getDayInfo(loopDateStr);
+                const isSelected = loopDateStr === currentlySelectedDate;
+                const isToday = loopDateStr === todayStr;
+
+                let bgStyle = "bg-brand-beige/50 text-brand-gray border border-brand-beige/40";
+                if (isToday) bgStyle = "bg-brand-blue text-blue-900 border border-brand-blue/80 font-bold";
+                if (isSelected) bgStyle = "bg-brand-gold text-white shadow-md font-black";
+
+                htmlHTML += `
+                    <button onclick="selectDateFromScrollbar('${loopDateStr}')" class="flex-shrink-0 flex flex-col items-center justify-center p-3 rounded-2xl min-w-[75px] active:scale-95 transition ${bgStyle}">
+                        <span class="text-[10px] uppercase tracking-wide opacity-80">${info.dayLabel}</span>
+                        <span class="text-xl font-black mt-0.5">${parseInt(dd)}</span>
+                        <span class="text-[9px] opacity-70">${parseInt(mm)}月</span>
+                    </button>
+                `;
+            }
+            scrollContainer.innerHTML = htmlHTML;
+        }
+
+        function selectDateFromScrollbar(dateStr) {
+            currentlySelectedDate = dateStr;
+            renderHorizontalDaysScrollbar();
+            renderSelectedDayDetailPanel();
+        }
+
+        function renderSelectedDayDetailPanel() {
+            const info = getDayInfo(currentlySelectedDate);
+            document.getElementById('selected-day-label').innerText = info.dayLabel;
+            document.getElementById('selected-date-label').innerText = currentlySelectedDate;
+            document.getElementById('selected-countdown-label').innerText = info.countdownLabel;
+
+            const dayEvents = data.itineraries.filter(item => item.date === currentlySelectedDate);
+            const contentContainer = document.getElementById('selected-day-events-content');
+
+            if (dayEvents.length === 0) {
+                contentContainer.innerHTML = `
+                    <div class="text-center py-8 space-y-2">
+                        <p class="text-3xl">☕</p>
+                        <p class="text-xs text-gray-400">這一天目前空空如也，沒有排任何事情。</p>
+                    </div>`;
+                return;
+            }
+
+            contentContainer.innerHTML = dayEvents.map((item, index) => {
+                const globalIndex = data.itineraries.findIndex(iti => iti.date === item.date && iti.title === item.title);
+                return `
+                    <div class="bg-white/60 border border-brand-beige/50 p-4 rounded-2xl flex justify-between items-start gap-2">
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-sm text-brand-dark">${item.title}</h4>
+                            <p class="text-xs text-brand-gray leading-relaxed">${item.desc}</p>
+                        </div>
+                        <button onclick="data.itineraries.splice(${globalIndex},1); save(); renderItineraryTimelineAll();" class="text-brand-gray hover:text-red-500 p-1 transition">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>`;
+            }).join('');
+        }
+
+        function renderItineraryTimelineAll() {
+            renderHorizontalDaysScrollbar();
+            renderSelectedDayDetailPanel();
+            renderHomeTodayCard();
+            checkBellDot();
+        }
+
+        function addItineraryItem() {
+            const dateInput = document.getElementById('iti-date');
+            const titleInput = document.getElementById('iti-title');
+            const descInput = document.getElementById('iti-desc');
+
+            if (!dateInput.value || !titleInput.value.trim()) {
+                alert('請確實填寫「行程名稱」！');
+                return;
+            }
+
+            data.itineraries.push({
+                date: dateInput.value,
+                title: titleInput.value.trim(),
+                desc: descInput.value.trim() || '無詳細說明'
+            });
+
+            data.itineraries.sort((a, b) => new Date(a.date) - new Date(b.date));
+            currentlySelectedDate = dateInput.value;
+
+            titleInput.value = '';
+            descInput.value = '';
+            toggleItineraryModal(false);
+
+            save();
+            renderItineraryTimelineAll();
+        }
+
+        let currentRegion = '全部';
+
+        function renderRegionTabs() {
+            const container = document.getElementById('region-tab-bar');
+            if (!container) return;
+
+            const options = ['全部', ...data.locations];
+
+            let htmlContent = options.map(opt => {
+                const isActive = opt === currentRegion;
+                let bgStyle = 'bg-brand-cream/50 text-brand-gray border border-brand-beige/40';
+                if (isActive) bgStyle = 'bg-brand-dark text-white font-extrabold shadow-sm';
+
+                const isDeletable = opt !== '全部' && opt !== '其他';
+
+                return `
+                    <div onclick="selectRegionTab('${opt}')" class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs active:scale-95 transition cursor-pointer select-none ${bgStyle}">
+                        <span>${opt}</span>
+                        ${isDeletable ? `
+                            <button onclick="event.stopPropagation(); deleteRegionTab('${opt}')" class="ml-0.5 text-brand-gray hover:text-[#D46E82] transition duration-200 focus:outline-none">
+                                <i class="fa-solid fa-xmark text-[9px]"></i>
+                            </button>
+                        ` : ''}
                     </div>
-                    <button onclick="event.stopPropagation(); data.gifts.splice(${i},1); save(); renderGifts();" class="text-gray-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
-                </li>
+                `;
+            }).join('');
+
+            // Append "+ 新增專區" button at the end
+            htmlContent += `
+                <button onclick="addNewRegionPrompt()" class="flex-shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs bg-white text-brand-gray border border-dashed border-brand-gray/40 active:scale-95 transition hover:bg-brand-cream focus:outline-none">
+                    <i class="fa-solid fa-plus text-[10px]"></i> <span>新增專區</span>
+                </button>
+            `;
+
+            container.innerHTML = htmlContent;
+        }
+
+        function selectRegionTab(region) {
+            currentRegion = region;
+            renderRegionTabs();
+            renderRegionCollections();
+        }
+
+        function addNewRegionPrompt() {
+            const newLoc = prompt('請輸入自訂地點/專區名稱 (例如: 多倫多)：');
+            if (newLoc && newLoc.trim()) {
+                const trimmed = newLoc.trim();
+                if (trimmed === '全部') {
+                    alert('不可以使用「全部」作為專區名稱！');
+                    return;
+                }
+                if (!data.locations.includes(trimmed)) {
+                    data.locations.push(trimmed);
+                    save();
+                    populateLocationDropdowns(trimmed);
+                    selectRegionTab(trimmed);
+                } else {
+                    alert('已存在相同名稱的專區！');
+                }
+            }
+        }
+
+        function deleteRegionTab(regionName) {
+            if (regionName === '全部' || regionName === '其他') {
+                alert('預設專區無法刪除！');
+                return;
+            }
+            if (confirm(`確定要刪除「${regionName}」專區嗎？\n該專區下的景點、餐廳、伴手禮將會被重新分類至「其他」！`)) {
+                // Reclassify all items to "其他"
+                if (data.spots) {
+                    data.spots.forEach(s => {
+                        if (s.location === regionName) s.location = '其他';
+                    });
+                }
+                if (data.restaurants) {
+                    data.restaurants.forEach(r => {
+                        if (r.location === regionName) r.location = '其他';
+                    });
+                }
+                if (data.gifts) {
+                    data.gifts.forEach(g => {
+                        if (g.location === regionName) g.location = '其他';
+                    });
+                }
+
+                // Remove from locations list
+                data.locations = data.locations.filter(loc => loc !== regionName);
+                save();
+
+                // If current tab was the deleted one, fall back to "全部"
+                if (currentRegion === regionName) {
+                    currentRegion = '全部';
+                }
+
+                // Refresh everything
+                populateLocationDropdowns();
+                renderRegionTabs();
+                renderRegionCollections();
+            }
+        }
+
+        function renderRegionCollections() {
+            const container = document.getElementById('home-collections-container');
+            if (!container) return;
+
+            const filterByRegion = (item) => {
+                if (currentRegion === '全部') return true;
+                return item.location === currentRegion;
+            };
+
+            const spots = data.spots.filter(filterByRegion);
+            const restaurants = data.restaurants.filter(filterByRegion);
+            const gifts = data.gifts.filter(filterByRegion);
+
+            let html = `
+                <!-- Spots Collection -->
+                <div class="bg-white/80 rounded-3xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                        <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                            <i class="fa-solid fa-map-location-dot text-brand-gray"></i> 景點收藏
+                        </h3>
+                        <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">${spots.length} 個景點</span>
+                    </div>
+                    <ul class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                        ${spots.map(s => {
+                const globalIndex = data.spots.indexOf(s);
+                return `
+                                <div class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="text-xs font-semibold text-brand-dark truncate">${s.name}</span>
+                                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${s.location}</span>
+                                    </div>
+                                    <button onclick="deleteSpotItem(${globalIndex})" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                </div>
+                            `;
+            }).join('') || '<li class="text-xs text-brand-gray/50 py-3 text-center">目前無景點</li>'}
+                    </ul>
+                    <!-- Inline Add -->
+                    <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
+                        <input type="text" id="add-spot-input" placeholder="輸入景點名稱..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                        <button onclick="addNewSpot()" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-md shrink-0">新增</button>
+                    </div>
+                </div>
+
+                <!-- Restaurants Collection -->
+                <div class="bg-white/80 rounded-3xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                        <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                            <i class="fa-solid fa-utensils text-brand-gray"></i> 口袋餐廳
+                        </h3>
+                        <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">${restaurants.length} 間餐廳</span>
+                    </div>
+                    <ul class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                        ${restaurants.map(r => {
+                const globalIndex = data.restaurants.indexOf(r);
+                return `
+                                <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleRestaurantVisited(${globalIndex})">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <i class="${r.visited ? 'fa-solid fa-circle-check text-[#E29C32]' : 'fa-regular fa-circle text-brand-gray/40'} text-base flex-shrink-0"></i>
+                                        <span class="${r.visited ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${r.name}</span>
+                                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${r.location}</span>
+                                    </div>
+                                    <button onclick="event.stopPropagation(); deleteRestaurantItem(${globalIndex});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                </li>
+                            `;
+            }).join('') || '<li class="text-xs text-brand-gray/50 py-3 text-center">目前無餐廳</li>'}
+                    </ul>
+                    <!-- Inline Add -->
+                    <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
+                        <input type="text" id="add-restaurant-input" placeholder="輸入美食/餐廳名稱..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                        <button onclick="addNewRestaurant()" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-md shrink-0">新增</button>
+                    </div>
+                </div>
+
+                <!-- Gifts Collection -->
+                <div class="bg-white/80 rounded-3xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                        <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                            <i class="fa-solid fa-gift text-brand-gray"></i> 伴手禮 & 購物
+                        </h3>
+                        <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">${gifts.length} 項禮物</span>
+                    </div>
+                    <ul class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                        ${gifts.map(g => {
+                const globalIndex = data.gifts.indexOf(g);
+                return `
+                                <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleGiftBought(${globalIndex})">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <i class="${g.bought ? 'fa-solid fa-square-check text-[#E29C32]' : 'fa-regular fa-square text-brand-gray/40'} text-base flex-shrink-0"></i>
+                                        <span class="${g.bought ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${g.name}</span>
+                                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${g.location}</span>
+                                    </div>
+                                    <button onclick="event.stopPropagation(); deleteGiftItem(${globalIndex});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                </li>
+                            `;
+            }).join('') || '<li class="text-xs text-brand-gray/50 py-3 text-center">目前無伴手禮</li>'}
+                    </ul>
+                    <!-- Inline Add -->
+                    <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
+                        <input type="text" id="add-gift-input" placeholder="輸入禮物名稱..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                        <button onclick="addNewGift()" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-md shrink-0">新增</button>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        function deleteSpotItem(index) {
+            data.spots.splice(index, 1);
+            save();
+            renderRegionCollections();
+        }
+        function addNewSpot() {
+            const input = document.getElementById('add-spot-input');
+            if (!input || !input.value.trim()) return;
+            const loc = currentRegion === '全部' ? (data.locations[0] || '溫哥華') : currentRegion;
+            data.spots.push({ name: input.value.trim(), location: loc });
+            input.value = '';
+            save();
+            renderRegionCollections();
+        }
+
+        function toggleRestaurantVisited(index) {
+            data.restaurants[index].visited = !data.restaurants[index].visited;
+            save();
+            renderRegionCollections();
+        }
+        function deleteRestaurantItem(index) {
+            data.restaurants.splice(index, 1);
+            save();
+            renderRegionCollections();
+        }
+        function addNewRestaurant() {
+            const input = document.getElementById('add-restaurant-input');
+            if (!input || !input.value.trim()) return;
+            const loc = currentRegion === '全部' ? (data.locations[0] || '溫哥華') : currentRegion;
+            data.restaurants.push({ name: input.value.trim(), visited: false, location: loc });
+            input.value = '';
+            save();
+            renderRegionCollections();
+        }
+
+        function toggleGiftBought(index) {
+            data.gifts[index].bought = !data.gifts[index].bought;
+            save();
+            renderRegionCollections();
+        }
+        function deleteGiftItem(index) {
+            data.gifts.splice(index, 1);
+            save();
+            renderRegionCollections();
+        }
+        function addNewGift() {
+            const input = document.getElementById('add-gift-input');
+            if (!input || !input.value.trim()) return;
+            const loc = currentRegion === '全部' ? (data.locations[0] || '其他') : currentRegion;
+            data.gifts.push({ name: input.value.trim(), bought: false, location: loc });
+            input.value = '';
+            save();
+            renderRegionCollections();
+        }
+
+        // 行李清單
+        function renderLuggage() {
+            const container = document.getElementById('luggage-categories-container');
+            if (!container) return;
+
+            let totalItems = 0;
+            let checkedItems = 0;
+
+            const categories = Object.keys(data.luggage);
+
+            let html = categories.map(cat => {
+                const items = data.luggage[cat] || [];
+                totalItems += items.length;
+                checkedItems += items.filter(item => item.checked).length;
+
+                let iconClass = 'fa-tags';
+                if (cat === '衣物穿搭') iconClass = 'fa-shirt';
+                else if (cat === '日常用品/盥洗') iconClass = 'fa-soap';
+                else if (cat === '電子產品/相機') iconClass = 'fa-plug-laptop';
+                else if (cat === '重要文件/證件') iconClass = 'fa-passport';
+                else if (cat === '常用藥品') iconClass = 'fa-prescription-bottle-medical';
+
+                const itemsHtml = items.map((item, index) => `
+                    <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/20 shadow-sm cursor-pointer" onclick="toggleLuggage('${cat}', ${index})">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <i class="${item.checked ? 'fa-solid fa-square-check text-[#E29C32]' : 'fa-regular fa-square text-brand-gray/40'} text-base flex-shrink-0"></i>
+                            <span class="${item.checked ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${item.name}</span>
+                        </div>
+                        <button onclick="event.stopPropagation(); deleteLuggageItem('${cat}', ${index});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                    </li>
+                `).join('');
+
+                return `
+                    <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm space-y-3">
+                        <div class="flex justify-between items-center border-b border-brand-beige/40 pb-2">
+                            <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                                <i class="fa-solid ${iconClass} text-brand-gray"></i> <span>${cat}</span>
+                            </h3>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">
+                                    ${items.filter(item => item.checked).length} / ${items.length}
+                                </span>
+                                <button onclick="deleteLuggageCategory('${cat}')" class="text-brand-gray hover:text-[#D46E82] transition p-1 focus:outline-none" title="刪除此分類">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5">
+                            ${itemsHtml ? itemsHtml : '<li class="text-xs text-brand-gray/50 py-2 text-center">無項目</li>'}
+                        </ul>
+                        <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
+                            <input type="text" id="add-input-${cat}" placeholder="新增${cat}項目..." class="flex-1 border border-brand-beige rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                            <button onclick="addLuggageItemToCat('${cat}')" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-3 py-1.5 rounded-xl font-bold active:scale-95 transition shadow-sm"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+
+            const progressPct = totalItems > 0 ? (checkedItems / totalItems) * 100 : 0;
+            document.getElementById('luggage-progress-text').innerText = `${checkedItems} / ${totalItems} (${progressPct.toFixed(0)}%)`;
+            document.getElementById('luggage-progress-bar').style.width = `${progressPct}%`;
+        }
+
+        function toggleLuggage(cat, index) {
+            data.luggage[cat][index].checked = !data.luggage[cat][index].checked;
+            save();
+            renderLuggage();
+        }
+
+        function deleteLuggageItem(cat, index) {
+            data.luggage[cat].splice(index, 1);
+            save();
+            renderLuggage();
+        }
+
+        function addLuggageItemToCat(cat) {
+            const input = document.getElementById(`add-input-${cat}`);
+            if (!input || !input.value.trim()) return;
+            if (!data.luggage[cat]) data.luggage[cat] = [];
+            data.luggage[cat].push({ name: input.value.trim(), checked: false });
+            input.value = '';
+            save();
+            renderLuggage();
+        }
+
+        function addNewLuggageCategory() {
+            const input = document.getElementById('new-luggage-cat-input');
+            if (!input) return;
+            const catName = input.value.trim();
+            if (!catName) {
+                alert('請輸入行李分類名稱！');
+                return;
+            }
+            if (data.luggage[catName]) {
+                alert('此行李分類已存在！');
+                return;
+            }
+            data.luggage[catName] = [];
+            input.value = '';
+            save();
+            renderLuggage();
+        }
+
+        function deleteLuggageCategory(cat) {
+            const items = data.luggage[cat] || [];
+            let msg = `確定要刪除整組「${cat}」行李分類嗎？`;
+            if (items.length > 0) {
+                msg += `\n⚠️ 此分類下包含的 ${items.length} 個行李項目也將被一併刪除！`;
+            }
+            if (confirm(msg)) {
+                delete data.luggage[cat];
+                save();
+                renderLuggage();
+            }
+        }
+
+        // 記帳
+        function populateCategoryDropdown() {
+            const select = document.getElementById('exp-category');
+            if (!select) return;
+            select.innerHTML = data.categories.map(cat => `
+                <option value="${cat.name}">${cat.name}</option>
             `).join('');
         }
 
-        // 記帳控制
         function addExpense() {
             const t = document.getElementById('exp-title').value.trim();
             const a = parseFloat(document.getElementById('exp-amount').value);
-            if(!t || isNaN(a)) return;
-            data.expenses.push({title: t, amount: a});
-            document.getElementById('exp-title').value=''; document.getElementById('exp-amount').value='';
-            save(); renderExpenses();
+            const selectEl = document.getElementById('exp-category');
+            const c = selectEl ? selectEl.value : '其他';
+            const d = document.getElementById('exp-date').value || getTodayDateString();
+
+            if (!t || isNaN(a) || a <= 0) {
+                alert('請輸入項目名稱與大於 0 的金額！');
+                return;
+            }
+
+            data.expenses.push({ title: t, amount: a, category: c, date: d });
+            data.expenses.sort((x, y) => new Date(y.date) - new Date(x.date));
+            document.getElementById('exp-title').value = '';
+            document.getElementById('exp-amount').value = '';
+            save();
+            renderExpenses();
+            if (typeof renderBudgetCenter === 'function') {
+                renderBudgetCenter();
+            }
         }
+
         function renderExpenses() {
             let total = 0;
             document.getElementById('expenses-list').innerHTML = data.expenses.map((e, i) => {
                 total += e.amount;
+                const catName = e.category || '其他';
+                const cat = data.categories.find(c => c.name === catName) || { icon: 'fa-tags' };
                 return `
-                    <li class="flex justify-between text-xs text-gray-600 bg-white p-3 rounded-xl border shadow-sm items-center">
-                        <span>${e.title}</span>
+                    <li class="flex justify-between text-xs text-brand-gray bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm items-center hover:bg-brand-beige/30 transition">
+                        <div class="flex flex-col gap-0.5">
+                            <span class="font-semibold text-brand-dark">${e.title}</span>
+                            <span class="text-[10px] text-brand-gray flex items-center gap-2 flex-wrap">
+                                <span class="flex items-center gap-1">
+                                    <i class="fa-solid ${cat.icon} text-[8px]"></i> ${catName}
+                                </span>
+                                <span class="opacity-40">|</span>
+                                <span class="flex items-center gap-0.5">
+                                    <i class="fa-regular fa-calendar text-[8px]"></i> ${e.date || ''}
+                                </span>
+                            </span>
+                        </div>
                         <div class="flex items-center gap-2">
-                            <span class="font-bold text-gray-800">${e.amount} CAD</span>
-                            <button onclick="data.expenses.splice(${i},1);save();renderExpenses();" class="text-gray-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                            <span class="font-bold text-brand-dark">${e.amount.toFixed(2)} CAD</span>
+                            <button onclick="data.expenses.splice(${i},1);save();renderExpenses();if(typeof renderBudgetCenter === 'function') renderBudgetCenter();" class="text-brand-gray hover:text-red-500 p-1 transition">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
                         </div>
                     </li>`;
             }).join('');
             document.getElementById('total-cost').innerText = total.toFixed(2) + ' CAD';
         }
 
-        // 匯率計算（自動綁定全域變數 exchangeRate）
+        // 預算與分類管理
+        function toggleCategoryModal(show) {
+            const modal = document.getElementById('category-modal');
+            if (modal) {
+                modal.style.display = show ? 'flex' : 'none';
+                if (show) {
+                    renderCategoryEditList();
+                    // Clear custom category input fields
+                    document.getElementById('new-cat-name').value = '';
+                    document.getElementById('new-cat-budget').value = '';
+                }
+            }
+        }
+
+        function renderCategoryEditList() {
+            const container = document.getElementById('category-edit-list');
+            if (!container) return;
+
+            container.innerHTML = data.categories.map((cat, index) => {
+                return `
+                    <div class="flex items-center gap-2 bg-white/70 p-2.5 rounded-xl border border-brand-beige/50">
+                        <span class="w-8 h-8 rounded-lg bg-white border flex items-center justify-center text-brand-dark">
+                            <i class="fa-solid ${cat.icon}"></i>
+                        </span>
+                        <div class="flex-1 min-w-0">
+                            <span class="text-xs font-bold text-brand-dark block truncate">${cat.name}</span>
+                            <span class="text-[9px] text-brand-gray">目前預算: ${cat.budget} CAD</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <input type="number" data-index="${index}" class="cat-budget-input w-20 border border-brand-beige rounded-lg px-2 py-1 text-xs text-center font-bold text-brand-dark bg-white" value="${cat.budget}" placeholder="金額">
+                            <button onclick="deleteCategory(${index})" class="text-brand-gray hover:text-red-500 p-1.5 transition" title="刪除類別">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addCustomCategory() {
+            const nameInput = document.getElementById('new-cat-name');
+            const budgetInput = document.getElementById('new-cat-budget');
+            const iconInput = document.getElementById('new-cat-icon');
+
+            const name = nameInput.value.trim();
+            const budget = parseFloat(budgetInput.value);
+            const icon = iconInput.value;
+
+            if (!name) {
+                alert('請輸入分類名稱！');
+                return;
+            }
+            if (isNaN(budget) || budget <= 0) {
+                alert('請輸入大於 0 的預算金額！');
+                return;
+            }
+            if (data.categories.some(c => c.name === name)) {
+                alert('已存在相同名稱的分類！');
+                return;
+            }
+
+            data.categories.push({
+                name: name,
+                icon: icon,
+                budget: budget
+            });
+            save();
+
+            // Refresh
+            renderCategoryEditList();
+            populateCategoryDropdown();
+            renderBudgetCenter();
+
+            // Clear inputs
+            nameInput.value = '';
+            budgetInput.value = '';
+        }
+
+        function deleteCategory(index) {
+            const cat = data.categories[index];
+            const hasExpenses = data.expenses.some(e => e.category === cat.name);
+
+            if (data.categories.length <= 1) {
+                alert('必須保留至少一個預算分類！');
+                return;
+            }
+
+            let msg = `確定要刪除分類「${cat.name}」嗎？`;
+            if (hasExpenses) {
+                msg += `\n⚠️ 此分類下已有消費紀錄，刪除後這些紀錄會被歸類到「其他」！`;
+            }
+
+            if (confirm(msg)) {
+                // Re-classify expenses of this category to "其他"
+                if (hasExpenses) {
+                    data.expenses.forEach(e => {
+                        if (e.category === cat.name) {
+                            e.category = '其他';
+                        }
+                    });
+                }
+
+                // Remove
+                data.categories.splice(index, 1);
+
+                // Ensure "其他" exists if needed
+                if (data.categories.length > 0 && !data.categories.some(c => c.name === '其他') && hasExpenses) {
+                    data.categories.push({ name: '其他', icon: 'fa-tags', budget: 200 });
+                }
+
+                save();
+                renderCategoryEditList();
+                populateCategoryDropdown();
+                renderExpenses();
+                renderBudgetCenter();
+            }
+        }
+
+        function saveCategoryBudgets() {
+            const inputs = document.querySelectorAll('.cat-budget-input');
+            let updated = false;
+
+            inputs.forEach(input => {
+                const index = parseInt(input.getAttribute('data-index'));
+                const newBudget = parseFloat(input.value);
+                if (!isNaN(newBudget) && newBudget >= 0) {
+                    data.categories[index].budget = newBudget;
+                    updated = true;
+                }
+            });
+
+            if (updated) {
+                save();
+                renderBudgetCenter();
+                alert('預算更新成功！');
+            }
+            toggleCategoryModal(false);
+        }
+
+        function renderBudgetCenter() {
+            const container = document.getElementById('budget-progress-container');
+            if (!container) return;
+
+            let totalBudget = data.categories.reduce((sum, c) => sum + c.budget, 0);
+            let totalSpent = data.expenses.reduce((sum, e) => sum + e.amount, 0);
+            let totalPct = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
+
+            let masterColorClass = 'bg-brand-green';
+            if (totalPct >= 100) masterColorClass = 'bg-[#D46E82]';
+            else if (totalPct >= 70) masterColorClass = 'bg-brand-gold';
+
+            let html = `
+                <!-- Master Total Budget Card -->
+                <div class="bg-brand-beige/40 p-3 rounded-2xl border border-brand-beige/60 mb-2 space-y-1.5">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-brand-dark">總預算使用狀況</span>
+                        <span class="text-brand-gray font-medium">
+                            <span class="font-black text-brand-dark">${totalSpent.toFixed(1)}</span> / ${totalBudget.toFixed(0)} CAD (${totalPct.toFixed(0)}%)
+                        </span>
+                    </div>
+                    <div class="w-full bg-brand-beige/30 h-2.5 rounded-full overflow-hidden border border-brand-beige/40">
+                        <div class="h-full rounded-full transition-all duration-500 ${masterColorClass}" style="width: ${Math.min(totalPct, 100)}%"></div>
+                    </div>
+                </div>
+            `;
+
+            html += data.categories.map(cat => {
+                const spent = data.expenses
+                    .filter(e => (e.category || '其他') === cat.name)
+                    .reduce((sum, e) => sum + e.amount, 0);
+
+                const pct = cat.budget > 0 ? (spent / cat.budget) * 100 : 0;
+                const displayPct = Math.min(pct, 100);
+
+                let colorClass = 'bg-brand-green';
+                let textClass = 'text-brand-gray';
+                if (pct >= 100) {
+                    colorClass = 'bg-[#D46E82]';
+                    textClass = 'text-[#D46E82] font-bold';
+                } else if (pct >= 70) {
+                    colorClass = 'bg-brand-gold';
+                    textClass = 'text-brand-gold font-semibold';
+                }
+
+                return `
+                    <div class="space-y-1 pt-1.5">
+                        <div class="flex justify-between items-center text-[11px]">
+                            <span class="text-brand-dark font-bold flex items-center gap-1.5">
+                                <span class="w-5 h-5 rounded-md bg-white border border-brand-beige/40 flex items-center justify-center text-brand-dark">
+                                    <i class="fa-solid ${cat.icon} text-[10px]"></i>
+                                </span>
+                                ${cat.name}
+                            </span>
+                            <span class="${textClass}">
+                                <span class="font-bold">${spent.toFixed(1)}</span> <span class="text-[9px] text-brand-gray/60">/ ${cat.budget} CAD</span>
+                                <span class="ml-1 text-[10px] font-black">(${pct.toFixed(0)}%)</span>
+                            </span>
+                        </div>
+                        <div class="w-full bg-white h-1.5 rounded-full overflow-hidden border border-brand-beige/30">
+                            <div class="h-full rounded-full transition-all duration-500 ${colorClass}" style="width: ${displayPct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+        }
+
+        async function fetchExchangeRate() {
+            try {
+                const res = await fetch('https://open.er-api.com/v6/latest/CAD');
+                const result = await res.json();
+                if (result && result.rates && result.rates.TWD) {
+                    exchangeRate = parseFloat(result.rates.TWD);
+                    data.exchangeRate = exchangeRate;
+
+                    const lastUpdate = new Date(result.time_last_update_utc);
+                    const formattedTime = lastUpdate.toLocaleString('zh-TW', { hour12: false });
+                    data.rateLastUpdated = formattedTime;
+                    save();
+                    return true;
+                }
+            } catch (e) {
+                console.error("Failed to fetch exchange rate:", e);
+            }
+            return false;
+        }
+
+        async function manualSyncExchangeRate() {
+            const syncIcon = document.getElementById('rate-sync-icon');
+            if (syncIcon) syncIcon.classList.add('fa-spin');
+
+            const success = await fetchExchangeRate();
+            if (success) {
+                updateExchangeRateUI();
+                convert();
+            } else {
+                alert('匯率同步失敗，請檢查網路連線！');
+            }
+
+            if (syncIcon) syncIcon.classList.remove('fa-spin');
+        }
+
+        function toggleAutoSync(checked) {
+            data.autoSyncRate = checked;
+            save();
+            updateExchangeRateUI();
+            if (checked) {
+                manualSyncExchangeRate();
+            }
+        }
+
+        function updateManualRate(val) {
+            const num = parseFloat(val);
+            if (!isNaN(num) && num > 0) {
+                exchangeRate = num;
+                data.exchangeRate = num;
+                save();
+                convert();
+                document.getElementById('rate-badge').innerText = `CAD = ${exchangeRate.toFixed(2)} TWD`;
+            }
+        }
+
+        function updateExchangeRateUI() {
+            document.getElementById('rate-badge').innerText = `CAD = ${exchangeRate.toFixed(2)} TWD`;
+
+            const rateInput = document.getElementById('rate-input');
+            if (rateInput) {
+                rateInput.value = exchangeRate;
+                rateInput.disabled = data.autoSyncRate;
+                if (data.autoSyncRate) {
+                    rateInput.classList.add('bg-brand-beige/50', 'text-brand-gray');
+                    rateInput.classList.remove('bg-white', 'text-brand-dark');
+                } else {
+                    rateInput.classList.remove('bg-brand-beige/50', 'text-brand-gray');
+                    rateInput.classList.add('bg-white', 'text-brand-dark');
+                }
+            }
+
+            const syncToggle = document.getElementById('auto-sync-toggle');
+            if (syncToggle) {
+                syncToggle.checked = data.autoSyncRate;
+            }
+
+            const updateTimeSpan = document.getElementById('rate-update-time');
+            if (updateTimeSpan) {
+                updateTimeSpan.innerText = data.rateLastUpdated ? `最後更新: ${data.rateLastUpdated}` : '最後更新: 尚未同步';
+            }
+        }
+
         function convert() {
             const cad = document.getElementById('cad-input').value;
-            document.getElementById('twd-output').innerText = (cad ? (parseFloat(cad) * exchangeRate).toFixed(1) : "0.0") + ' TWD';
+            const inputVal = parseFloat(cad);
+            document.getElementById('twd-output').innerText = (isNaN(inputVal) ? "0.0" : (inputVal * exchangeRate).toFixed(1)) + ' TWD';
         }
 
-        // 轉盤小遊戲
-        function spinWheel() {
-            const wheel = document.getElementById('wheel');
-            const resultText = document.getElementById('wheel-result');
-            const options = ["大家AA制", "你請客！", "左邊的人請", "真心話大冒險", "再轉一次", "免單啦！", "喝杯 TimHortons"];
-            wheel.classList.add('spinning');
-            resultText.innerText = "🌀";
-            setTimeout(() => {
-                wheel.classList.remove('spinning');
-                resultText.innerText = options[Math.floor(Math.random() * options.length)];
-            }, 1000);
-        }
-
-        // 自動計算倒數天數 (出發日定為 2026-07-15)
         function calculateCountdown() {
-            const departureDate = new Date('2026-07-15'); 
+            const departureDate = new Date('2026-07-17');
             const today = new Date();
-            departureDate.setHours(0,0,0,0);
-            today.setHours(0,0,0,0);
+            departureDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
             const timeDiff = departureDate - today;
             const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
             document.getElementById('countdown-days').innerText = daysLeft > 0 ? daysLeft : 0;
         }
 
-        // 初始執行
+        function handleLocationSelectChange(selectEl) {
+            if (selectEl.value === '__add_new__') {
+                const newLoc = prompt('請輸入自訂地點名稱 (例如: 多倫多)：');
+                if (newLoc && newLoc.trim()) {
+                    const trimmed = newLoc.trim();
+                    if (!data.locations.includes(trimmed)) {
+                        data.locations.push(trimmed);
+                        save();
+                    }
+                    populateLocationDropdowns(trimmed);
+                    renderRegionTabs();
+                } else {
+                    selectEl.selectedIndex = 0;
+                }
+            }
+        }
+
+        function populateLocationDropdowns(selectedVal) {
+            const selects = document.querySelectorAll('.location-dropdown-select');
+            selects.forEach(select => {
+                const currentVal = selectedVal || select.value || '溫哥華';
+                select.innerHTML = data.locations.map(loc => `
+                    <option value="${loc}">${loc}</option>
+                `).join('') + '<option value="__add_new__">+ 新增自訂地點...</option>';
+
+                if (data.locations.includes(currentVal)) {
+                    select.value = currentVal;
+                } else {
+                    select.value = data.locations[0] || '溫哥華';
+                }
+            });
+        }
+
         calculateCountdown();
-        fetchLiveExchangeRate(); // 👈 啟動時立刻連上網路抓即時匯率
-        renderSpots(); renderGifts(); renderExpenses();
+        renderLuggage(); renderExpenses();
+        renderItineraryTimelineAll();
+        populateCategoryDropdown();
+        populateLocationDropdowns();
+        renderRegionCollections();
+        renderRegionTabs();
+        renderBudgetCenter();
+
+        const expDateInput = document.getElementById('exp-date');
+        if (expDateInput) {
+            expDateInput.value = getTodayDateString();
+        }
+
+        updateExchangeRateUI();
+        convert();
+        if (data.autoSyncRate) {
+            fetchExchangeRate().then(success => {
+                if (success) {
+                    updateExchangeRateUI();
+                    convert();
+                }
+            });
+        }
     </script>
 </body>
+
 </html>
