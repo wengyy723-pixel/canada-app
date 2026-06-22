@@ -77,6 +77,78 @@
             font-weight: 900;
             color: #2F4156;
         }
+
+        /* 🌟 全域版面與內邊距微調加大，更適合手機操作 🌟 */
+        .app-page {
+            padding-bottom: 130px !important;
+            /* Make sure bottom nav doesn't overlap content */
+        }
+
+        main>div,
+        .app-page>div {
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Scale default utility paddings */
+        .p-4 {
+            padding: 1.25rem !important;
+            /* 20px instead of 16px */
+        }
+
+        .p-6 {
+            padding: 1.75rem !important;
+            /* 28px instead of 24px */
+        }
+
+        .p-2.5 {
+            padding: 0.875rem !important;
+            /* 14px instead of 10px */
+        }
+
+        .p-3 {
+            padding: 1.125rem !important;
+            /* 18px instead of 12px */
+        }
+
+        .py-2 {
+            padding-top: 0.875rem !important;
+            padding-bottom: 0.875rem !important;
+        }
+
+        .py-1.5 {
+            padding-top: 0.625rem !important;
+            padding-bottom: 0.625rem !important;
+        }
+
+        .py-2.5 {
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+        }
+
+        .py-3 {
+            padding-top: 1.125rem !important;
+            padding-bottom: 1.125rem !important;
+        }
+
+        .px-4 {
+            padding-left: 1.5rem !important;
+            padding-right: 1.5rem !important;
+        }
+
+        .px-5 {
+            padding-left: 1.75rem !important;
+            padding-right: 1.75rem !important;
+        }
+
+        /* Input fields and dropdown selectors padding scaling */
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            padding-top: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+            border-radius: 0.875rem !important;
+        }
     </style>
 </head>
 
@@ -285,36 +357,36 @@
                             TWD</span>
                     </span>
                 </h3>
-                <div class="grid grid-cols-3 gap-2.5 items-center">
+                <div class="grid grid-cols-3 gap-4 items-center">
                     <div>
-                        <label class="block text-[10px] text-brand-gray mb-1">加幣 CAD</label>
+                        <label class="block text-xs font-semibold text-brand-gray mb-1">加幣 CAD</label>
                         <input type="number" id="cad-input" oninput="convert()"
                             class="w-full border border-brand-beige rounded-xl p-2 font-bold text-center bg-brand-cream/50 text-brand-dark focus:outline-none text-lg"
                             value="1">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-brand-gray mb-1">目前匯率</label>
+                        <label class="block text-xs font-semibold text-brand-gray mb-1">目前匯率</label>
                         <input type="number" step="0.001" id="rate-input" oninput="updateManualRate(this.value)"
                             class="w-full border border-brand-beige rounded-xl p-2 font-bold text-center bg-white text-brand-dark focus:outline-none text-lg"
                             value="24.0">
                     </div>
                     <div class="text-center pt-2">
-                        <span class="block text-[10px] text-brand-gray">台幣 TWD</span>
+                        <span class="block text-xs font-semibold text-brand-gray">台幣 TWD</span>
                         <div class="font-bold text-lg text-brand-dark mt-1" id="twd-output">24.0 TWD</div>
                     </div>
                 </div>
                 <div
-                    class="mt-4 pt-3 border-t border-brand-beige/40 flex flex-wrap justify-between items-center text-xs text-brand-gray gap-2">
+                    class="mt-5 pt-3 border-t border-brand-beige/40 flex flex-wrap justify-between items-center text-sm text-brand-gray gap-3">
                     <div class="flex items-center gap-1.5">
                         <input type="checkbox" id="auto-sync-toggle" onchange="toggleAutoSync(this.checked)"
-                            class="w-3.5 h-3.5 rounded border-brand-beige text-brand-gold focus:ring-brand-gold cursor-pointer">
+                            class="w-4 h-4 rounded border-brand-beige text-brand-gold focus:ring-brand-gold cursor-pointer">
                         <label for="auto-sync-toggle" class="cursor-pointer select-none">自動同步銀行匯率</label>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span id="rate-update-time" class="text-[10px] text-brand-gray">最後更新: 尚未同步</span>
+                        <span id="rate-update-time" class="text-xs font-semibold text-brand-gray">最後更新: 尚未同步</span>
                         <button onclick="manualSyncExchangeRate()" id="btn-sync-rate"
-                            class="bg-brand-peach/50 hover:bg-brand-peach/80 text-brand-dark px-2 py-1 rounded-lg font-bold flex items-center gap-1 active:scale-95 transition">
-                            <i id="rate-sync-icon" class="fa-solid fa-arrows-rotate text-[10px]"></i> 同步
+                            class="bg-brand-peach/50 hover:bg-brand-peach/80 text-brand-dark px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1 active:scale-95 transition text-xs">
+                            <i id="rate-sync-icon" class="fa-solid fa-arrows-rotate text-xs"></i> 同步
                         </button>
                     </div>
                 </div>
@@ -342,7 +414,8 @@
                 </h3>
                 <div class="flex flex-col gap-2.5 mb-4">
                     <div class="flex gap-2">
-                        <input type="text" id="exp-title" placeholder="項目 (如：午餐)"
+                        <input type="text" id="exp-title" oninput="autoDetectExpenseCategory(this.value)"
+                            placeholder="項目 (如：午餐)"
                             class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark bg-white font-medium">
                         <input type="number" id="exp-amount" placeholder="CAD"
                             class="w-24 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold text-brand-dark bg-white font-medium">
@@ -361,7 +434,7 @@
                 <div class="border-t border-brand-beige/40 pt-2 flex justify-between font-bold mb-2">
                     <span>總計消費:</span><span class="text-brand-dark text-lg" id="total-cost">0 CAD</span>
                 </div>
-                <ul id="expenses-list" class="space-y-2"></ul>
+                <ul id="expenses-list" class="space-y-3"></ul>
             </div>
         </div>
     </div>
@@ -443,8 +516,12 @@
 
     <div id="page-luggage" class="app-page">
         <header class="bg-brand-cream/80 backdrop-blur-md pt-8 p-4 border-b border-brand-beige/40 sticky top-0 z-20">
-            <div class="max-w-md mx-auto">
+            <div class="max-w-md mx-auto flex justify-between items-center">
                 <h2 class="font-extrabold text-lg text-brand-dark">行李打包清單 🇨🇦</h2>
+                <button onclick="resetLuggageToDefault()"
+                    class="text-xs bg-[#FFE1E6]/50 hover:bg-[#FFE1E6] text-brand-dark px-2.5 py-1 rounded-xl font-bold active:scale-95 transition focus:outline-none">
+                    <i class="fa-solid fa-arrows-rotate mr-1"></i>重設為預設清單
+                </button>
             </div>
         </header>
         <div class="max-w-md mx-auto p-4 space-y-4">
@@ -460,16 +537,36 @@
                 </div>
             </div>
 
+            <!-- 新增行李項目卡片 (支援自動分類功能) -->
+            <div class="bg-white/80 rounded-2xl p-4 border border-brand-beige/30 shadow-sm space-y-2">
+                <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus text-brand-gray"></i> 新增行李項目 (智慧自動分類)
+                </h3>
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="luggage-name" oninput="autoDetectLuggageCategory(this.value)"
+                        placeholder="輸入行李名稱 (例如：保暖發熱衣、感冒藥)"
+                        class="w-full border border-brand-beige rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                    <div class="flex gap-2">
+                        <select id="luggage-category"
+                            class="flex-1 border border-brand-beige rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium cursor-pointer">
+                            <!-- Categories populated dynamically -->
+                        </select>
+                        <button onclick="addGlobalLuggageItem()"
+                            class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-sm px-5 py-2.5 rounded-xl font-bold active:scale-95 transition shadow-sm shrink-0">新增項目</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- 新增分類卡片 -->
             <div class="bg-white/60 rounded-2xl p-4 border border-dashed border-brand-gray/40 shadow-sm space-y-2">
-                <h3 class="font-bold text-xs text-brand-dark flex items-center gap-1.5">
+                <h3 class="font-bold text-sm text-brand-dark flex items-center gap-1.5">
                     <i class="fa-solid fa-folder-plus text-brand-gray"></i> 新增自訂行李分類
                 </h3>
                 <div class="flex gap-2">
                     <input type="text" id="new-luggage-cat-input" placeholder="例如：滑雪裝備、野營用品..."
-                        class="flex-1 border border-brand-beige rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                        class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
                     <button onclick="addNewLuggageCategory()"
-                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-1.5 rounded-xl font-bold active:scale-95 transition shadow-sm">新增分類</button>
+                        class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-sm px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-sm">新增分類</button>
                 </div>
             </div>
 
@@ -480,28 +577,28 @@
         </div>
     </div>
 
-    <nav
-        class="fixed bottom-0 left-0 right-0 bg-brand-cream/90 backdrop-blur-md border-t border-brand-beige/50 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] px-2 py-3.5 z-50">
+    <nav class="fixed bottom-0 left-0 right-0 bg-brand-cream/90 backdrop-blur-md border-t border-brand-beige/50 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] pt-4 px-4 z-50"
+        style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));">
         <div class="max-w-md mx-auto grid grid-cols-4 text-center">
             <button onclick="navigateTo('home')" id="nav-home"
-                class="nav-btn flex flex-col items-center gap-1 text-brand-gold transition">
-                <i class="fa-solid fa-house text-lg"></i>
-                <span class="text-[10px] font-extrabold">主頁</span>
+                class="nav-btn flex flex-col items-center gap-2 text-brand-gold transition duration-150 active:scale-90 focus:outline-none">
+                <i class="fa-solid fa-house text-xl"></i>
+                <span class="text-[10px] font-extrabold tracking-wide">主頁</span>
             </button>
             <button onclick="navigateTo('itinerary')" id="nav-itinerary"
-                class="nav-btn flex flex-col items-center gap-1 text-brand-gray transition">
-                <i class="fa-solid fa-calendar-days text-lg"></i>
-                <span class="text-[10px] font-medium">行程日曆</span>
+                class="nav-btn flex flex-col items-center gap-2 text-brand-gray transition duration-150 active:scale-90 focus:outline-none">
+                <i class="fa-solid fa-calendar-days text-xl"></i>
+                <span class="text-[10px] font-medium tracking-wide">行程日曆</span>
             </button>
             <button onclick="navigateTo('finance')" id="nav-finance"
-                class="nav-btn flex flex-col items-center gap-1 text-brand-gray transition">
-                <i class="fa-solid fa-wallet text-lg"></i>
-                <span class="text-[10px] font-medium">記帳匯率</span>
+                class="nav-btn flex flex-col items-center gap-2 text-brand-gray transition duration-150 active:scale-90 focus:outline-none">
+                <i class="fa-solid fa-wallet text-xl"></i>
+                <span class="text-[10px] font-medium tracking-wide">記帳匯率</span>
             </button>
             <button onclick="navigateTo('luggage')" id="nav-luggage"
-                class="nav-btn flex flex-col items-center gap-1 text-brand-gray transition">
-                <i class="fa-solid fa-suitcase text-lg"></i>
-                <span class="text-[10px] font-medium">行李清單</span>
+                class="nav-btn flex flex-col items-center gap-2 text-brand-gray transition duration-150 active:scale-90 focus:outline-none">
+                <i class="fa-solid fa-suitcase text-xl"></i>
+                <span class="text-[10px] font-medium tracking-wide">行李清單</span>
             </button>
         </div>
     </nav>
@@ -518,6 +615,84 @@
         if (savedData) {
             try {
                 data = JSON.parse(savedData);
+
+                // Force update to the new Google Sheets luggage list if they have old data
+                if (data.luggage && (!data.luggage["重要文件/證件"] || !data.luggage["重要文件/證件"].some(item => item.name.includes("入學許可 I-20")))) {
+                    data.luggage = {
+                        "重要文件/證件": [
+                            { "name": "入學許可 I-20 (一定要隨身攜帶)", "checked": false },
+                            { "name": "錄取通知 (可以截圖或翻拍錄取信，並放在手機或Line相簿中，必要時可以馬上找到)", "checked": false },
+                            { "name": "護照 (確認離護照到期至少6個月以上)", "checked": true },
+                            { "name": "機票 (航空公司App登機證、第三方App登機證條碼)", "checked": true },
+                            { "name": "錢包 (包含現金、信用卡、國際金融卡、支票等)", "checked": true },
+                            { "name": "照片 (最好帶著護照格式2吋大頭照、留學國家常用規格的大頭照)", "checked": true }
+                        ],
+                        "衣物穿搭": [
+                            { "name": "衣架 ((可當地買))", "checked": false },
+                            { "name": "春夏上衣", "checked": false },
+                            { "name": "秋冬上衣", "checked": false },
+                            { "name": "運動套裝", "checked": false },
+                            { "name": "褲子", "checked": false },
+                            { "name": "裙子", "checked": false },
+                            { "name": "襪子", "checked": false },
+                            { "name": "內褲", "checked": false },
+                            { "name": "內衣", "checked": false },
+                            { "name": "鞋子", "checked": false },
+                            { "name": "薄外套", "checked": false },
+                            { "name": "厚外套", "checked": false },
+                            { "name": "拖鞋 (要去歐美的話，拖鞋很不容易買到，建議直接從台灣帶)", "checked": false }
+                        ],
+                        "日常用品/盥洗": [
+                            { "name": "水壺 (可以在出境後買水，空服員也會提供水，但也可以自己帶水壺)", "checked": false },
+                            { "name": "酒精 (在乎乾淨可以考慮攜帶)", "checked": false },
+                            { "name": "口罩 (飛機密閉空間，可以考慮攜帶)", "checked": false },
+                            { "name": "小包衛生紙 (不一定要帶，飛機上通常會提供)", "checked": false },
+                            { "name": "傘 (當地不常下雨的話其實不用放隨身行李(容易被查又佔空間))", "checked": false },
+                            { "name": "頸枕 (容易睡不好的記得要帶頸枕)", "checked": false },
+                            { "name": "小瓶護手霜 (飛機上通常滿乾的)", "checked": false },
+                            { "name": "牙膏牙刷 ((可當地買) 有些航空公司會提供，如果會在意還是可以攜帶)", "checked": false },
+                            { "name": "沐浴乳 ((可當地買))", "checked": false },
+                            { "name": "洗發精 ((可當地買))", "checked": false },
+                            { "name": "護髮 ((可當地買))", "checked": false },
+                            { "name": "身體乳霜 ((可當地買))", "checked": false },
+                            { "name": "卸妝乳 ((可當地買))", "checked": false },
+                            { "name": "梳子 ((可當地買))", "checked": false },
+                            { "name": "指甲剪 ((可當地買))", "checked": false },
+                            { "name": "化妝水 ((可當地買) 美妝產品如果有一定要用的品牌可以準備著，其他都可以當地買)", "checked": false },
+                            { "name": "髮圈", "checked": false },
+                            { "name": "隱形眼鏡 (美國購買隱形眼鏡非常麻煩，建議配年拋月拋，或是購買足夠的日拋)", "checked": false },
+                            { "name": "保養液 (美國 Amazon 可以直接訂到便宜的保養液和生理食鹽水)", "checked": false },
+                            { "name": "吹風機 ((可當地買))", "checked": false },
+                            { "name": "文具 (鉛筆、原子筆、麥克筆(很實用)、膠帶、釘書機...)", "checked": false },
+                            { "name": "筆記本 ((可當地買) 歐美筆記本都滿貴的，日本的話就在當地買就好了)", "checked": false },
+                            { "name": "浴巾毛巾 (一到當地就要洗澡可以用)", "checked": false },
+                            { "name": "寢具 ((可當地買) 但一到當地就要睡覺的人可以考慮帶自己的乾淨寢具)", "checked": false }
+                        ],
+                        "電子產品/相機": [
+                            { "name": "網路 (可以考慮 eSim、事先買好實體Sim卡，或者用短期漫遊，到當地再辦)", "checked": true },
+                            { "name": "筆電 (怕摔壞的話一定要放隨身行李)", "checked": false },
+                            { "name": "手機", "checked": true },
+                            { "name": "行動充電器 (一定要放隨身行李(不能放託運行李箱))", "checked": true },
+                            { "name": "平板", "checked": false },
+                            { "name": "耳機 (看影片必備)", "checked": false },
+                            { "name": "變壓器", "checked": false },
+                            { "name": "充電線", "checked": false },
+                            { "name": "拍立得、底片 (很多留學生很愛帶拍立得)", "checked": false },
+                            { "name": "延長線 (可以在台灣買！很實用)", "checked": false },
+                            { "name": "HDMI 線", "checked": false },
+                            { "name": "藍芽音響", "checked": false }
+                        ],
+                        "常用藥品": [
+                            { "name": "眼藥水", "checked": false },
+                            { "name": "止痛藥", "checked": false },
+                            { "name": "保健食品 (如果是在美國的話，購買保健食品非常便宜)", "checked": false },
+                            { "name": "感冒藥 (如果有習慣的感冒藥建議攜帶，尤其有些人很容易一到當地水土不服)", "checked": false },
+                            { "name": "過敏藥", "checked": false }
+                        ]
+                    };
+                    save();
+                }
+
                 // Ensure default categories and exchange rate settings exist
                 if (!data.categories) {
                     data.categories = [
@@ -530,36 +705,255 @@
                 }
                 if (!data.luggage || Array.isArray(data.luggage)) {
                     data.luggage = {
-                        '重要文件/證件': [
-                            { name: '護照 (效期6個月以上)', checked: true },
-                            { name: '加拿大電子簽證 eTA 核准件', checked: true },
-                            { name: '語言學校入學信 (LOA)', checked: false },
-                            { name: '海外學生保險單影本', checked: false }
+                        "重要文件/證件": [
+                            {
+                                "name": "入學許可 I-20 (一定要隨身攜帶)",
+                                "checked": false
+                            },
+                            {
+                                "name": "錄取通知 (可以截圖或翻拍錄取信，並放在手機或Line相簿中，必要時可以馬上找到)",
+                                "checked": false
+                            },
+                            {
+                                "name": "護照 (確認離護照到期至少6個月以上)",
+                                "checked": true
+                            },
+                            {
+                                "name": "機票 (航空公司App登機證、第三方App登機證條碼)",
+                                "checked": true
+                            },
+                            {
+                                "name": "錢包 (包含現金、信用卡、國際金融卡、支票等)",
+                                "checked": true
+                            },
+                            {
+                                "name": "照片 (最好帶著護照格式2吋大頭照、留學國家常用規格的大頭照)",
+                                "checked": true
+                            }
                         ],
-                        '衣物穿搭': [
-                            { name: '保暖發熱衣', checked: false },
-                            { name: '羽絨外套 / 防風防水夾克', checked: false },
-                            { name: '針織毛帽 / 保暖防滑手套', checked: false },
-                            { name: '防滑健行鞋 / 舒適球鞋', checked: false }
+                        "衣物穿搭": [
+                            {
+                                "name": "衣架 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "春夏上衣",
+                                "checked": false
+                            },
+                            {
+                                "name": "秋冬上衣",
+                                "checked": false
+                            },
+                            {
+                                "name": "運動套裝",
+                                "checked": false
+                            },
+                            {
+                                "name": "褲子",
+                                "checked": false
+                            },
+                            {
+                                "name": "裙子",
+                                "checked": false
+                            },
+                            {
+                                "name": "襪子",
+                                "checked": false
+                            },
+                            {
+                                "name": "內褲",
+                                "checked": false
+                            },
+                            {
+                                "name": "內衣",
+                                "checked": false
+                            },
+                            {
+                                "name": "鞋子",
+                                "checked": false
+                            },
+                            {
+                                "name": "薄外套",
+                                "checked": false
+                            },
+                            {
+                                "name": "厚外套",
+                                "checked": false
+                            },
+                            {
+                                "name": "拖鞋 (要去歐美的話，拖鞋很不容易買到，建議直接從台灣帶)",
+                                "checked": false
+                            }
                         ],
-                        '日常用品/盥洗': [
-                            { name: '高保濕乳液 / 護唇膏 (乾燥氣候必備)', checked: false },
-                            { name: '防曬乳', checked: false },
-                            { name: '防蚊液', checked: false },
-                            { name: '熊鈴 / 熊噴霧提示指引', checked: false },
-                            { name: '個人旅行盥洗包', checked: false }
+                        "日常用品/盥洗": [
+                            {
+                                "name": "水壺 (可以在出境後買水，空服員也會提供水，但也可以自己帶水壺)",
+                                "checked": false
+                            },
+                            {
+                                "name": "酒精 (在乎乾淨可以考慮攜帶)",
+                                "checked": false
+                            },
+                            {
+                                "name": "口罩 (飛機密閉空間，可以考慮攜帶)",
+                                "checked": false
+                            },
+                            {
+                                "name": "小包衛生紙 (不一定要帶，飛機上通常會提供)",
+                                "checked": false
+                            },
+                            {
+                                "name": "傘 (當地不常下雨的話其實不用放隨身行李(容易被查又佔空間))",
+                                "checked": false
+                            },
+                            {
+                                "name": "頸枕 (容易睡不好的記得要帶頸枕)",
+                                "checked": false
+                            },
+                            {
+                                "name": "小瓶護手霜 (飛機上通常滿乾的)",
+                                "checked": false
+                            },
+                            {
+                                "name": "牙膏牙刷 ((可當地買) 有些航空公司會提供，如果會在意還是可以攜帶)",
+                                "checked": false
+                            },
+                            {
+                                "name": "沐浴乳 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "洗發精 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "護髮 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "身體乳霜 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "卸妝乳 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "梳子 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "指甲剪 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "化妝水 ((可當地買) 美妝產品如果有一定要用的品牌可以準備著，其他都可以當地買)",
+                                "checked": false
+                            },
+                            {
+                                "name": "髮圈",
+                                "checked": false
+                            },
+                            {
+                                "name": "隱形眼鏡 (美國購買隱形眼鏡非常麻煩，建議配年拋月拋，或是購買足夠的日拋)",
+                                "checked": false
+                            },
+                            {
+                                "name": "保養液 (美國 Amazon 可以直接訂到便宜的保養液和生理食鹽水)",
+                                "checked": false
+                            },
+                            {
+                                "name": "吹風機 ((可當地買))",
+                                "checked": false
+                            },
+                            {
+                                "name": "文具 (鉛筆、原子筆、麥克筆(很實用)、膠帶、釘書機...)",
+                                "checked": false
+                            },
+                            {
+                                "name": "筆記本 ((可當地買) 歐美筆記本都滿貴的，日本的話就在當地買就好了)",
+                                "checked": false
+                            },
+                            {
+                                "name": "浴巾毛巾 (一到當地就要洗澡可以用)",
+                                "checked": false
+                            },
+                            {
+                                "name": "寢具 ((可當地買) 但一到當地就要睡覺的人可以考慮帶自己的乾淨寢具)",
+                                "checked": false
+                            }
                         ],
-                        '電子產品/相機': [
-                            { name: '美規/加規雙孔插頭 (同台灣，但三孔插座需注意)', checked: false },
-                            { name: '行動電源 (上飛機隨身攜帶)', checked: false },
-                            { name: '相機 & 備用記憶卡', checked: false },
-                            { name: '各類充電線組', checked: false }
+                        "電子產品/相機": [
+                            {
+                                "name": "網路 (可以考慮 eSim、事先買好實體Sim卡，或者用短期漫遊，到當地再辦)",
+                                "checked": true
+                            },
+                            {
+                                "name": "筆電 (怕摔壞的話一定要放隨身行李)",
+                                "checked": false
+                            },
+                            {
+                                "name": "手機",
+                                "checked": true
+                            },
+                            {
+                                "name": "行動充電器 (一定要放隨身行李(不能放託運行李箱))",
+                                "checked": true
+                            },
+                            {
+                                "name": "平板",
+                                "checked": false
+                            },
+                            {
+                                "name": "耳機 (看影片必備)",
+                                "checked": false
+                            },
+                            {
+                                "name": "變壓器",
+                                "checked": false
+                            },
+                            {
+                                "name": "充電線",
+                                "checked": false
+                            },
+                            {
+                                "name": "拍立得、底片 (很多留學生很愛帶拍立得)",
+                                "checked": false
+                            },
+                            {
+                                "name": "延長線 (可以在台灣買！很實用)",
+                                "checked": false
+                            },
+                            {
+                                "name": "HDMI 線",
+                                "checked": false
+                            },
+                            {
+                                "name": "藍芽音響",
+                                "checked": false
+                            }
                         ],
-                        '常用藥品': [
-                            { name: '感冒藥 / 退藥片', checked: false },
-                            { name: '腸胃藥 / 止瀉藥', checked: false },
-                            { name: '暈車藥 (洛磯山脈拉車必備)', checked: false },
-                            { name: '外傷藥膏 / OK繃', checked: false }
+                        "常用藥品": [
+                            {
+                                "name": "眼藥水",
+                                "checked": false
+                            },
+                            {
+                                "name": "止痛藥",
+                                "checked": false
+                            },
+                            {
+                                "name": "保健食品 (如果是在美國的話，購買保健食品非常便宜)",
+                                "checked": false
+                            },
+                            {
+                                "name": "感冒藥 (如果有習慣的感冒藥建議攜帶，尤其有些人很容易一到當地水土不服)",
+                                "checked": false
+                            },
+                            {
+                                "name": "過敏藥",
+                                "checked": false
+                            }
                         ]
                     };
                 }
@@ -607,36 +1001,255 @@
                     { name: '加拿大楓糖漿', bought: false, location: '其他' }
                 ],
                 luggage: {
-                    '重要文件/證件': [
-                        { name: '護照 (效期6個月以上)', checked: true },
-                        { name: '加拿大電子簽證 eTA 核准件', checked: true },
-                        { name: '語言學校入學信 (LOA)', checked: false },
-                        { name: '海外學生保險單影本', checked: false }
+                    "重要文件/證件": [
+                        {
+                            "name": "入學許可 I-20 (一定要隨身攜帶)",
+                            "checked": false
+                        },
+                        {
+                            "name": "錄取通知 (可以截圖或翻拍錄取信，並放在手機或Line相簿中，必要時可以馬上找到)",
+                            "checked": false
+                        },
+                        {
+                            "name": "護照 (確認離護照到期至少6個月以上)",
+                            "checked": true
+                        },
+                        {
+                            "name": "機票 (航空公司App登機證、第三方App登機證條碼)",
+                            "checked": true
+                        },
+                        {
+                            "name": "錢包 (包含現金、信用卡、國際金融卡、支票等)",
+                            "checked": true
+                        },
+                        {
+                            "name": "照片 (最好帶著護照格式2吋大頭照、留學國家常用規格的大頭照)",
+                            "checked": true
+                        }
                     ],
-                    '衣物穿搭': [
-                        { name: '保暖發熱衣', checked: false },
-                        { name: '羽絨外套 / 防風防水夾克', checked: false },
-                        { name: '針織毛帽 / 保暖防滑手套', checked: false },
-                        { name: '防滑健行鞋 / 舒適球鞋', checked: false }
+                    "衣物穿搭": [
+                        {
+                            "name": "衣架 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "春夏上衣",
+                            "checked": false
+                        },
+                        {
+                            "name": "秋冬上衣",
+                            "checked": false
+                        },
+                        {
+                            "name": "運動套裝",
+                            "checked": false
+                        },
+                        {
+                            "name": "褲子",
+                            "checked": false
+                        },
+                        {
+                            "name": "裙子",
+                            "checked": false
+                        },
+                        {
+                            "name": "襪子",
+                            "checked": false
+                        },
+                        {
+                            "name": "內褲",
+                            "checked": false
+                        },
+                        {
+                            "name": "內衣",
+                            "checked": false
+                        },
+                        {
+                            "name": "鞋子",
+                            "checked": false
+                        },
+                        {
+                            "name": "薄外套",
+                            "checked": false
+                        },
+                        {
+                            "name": "厚外套",
+                            "checked": false
+                        },
+                        {
+                            "name": "拖鞋 (要去歐美的話，拖鞋很不容易買到，建議直接從台灣帶)",
+                            "checked": false
+                        }
                     ],
-                    '日常用品/盥洗': [
-                        { name: '高保濕乳液 / 護唇膏 (乾燥氣候必備)', checked: false },
-                        { name: '防曬乳', checked: false },
-                        { name: '防蚊液', checked: false },
-                        { name: '熊鈴 / 熊噴霧提示指引', checked: false },
-                        { name: '個人旅行盥洗包', checked: false }
+                    "日常用品/盥洗": [
+                        {
+                            "name": "水壺 (可以在出境後買水，空服員也會提供水，但也可以自己帶水壺)",
+                            "checked": false
+                        },
+                        {
+                            "name": "酒精 (在乎乾淨可以考慮攜帶)",
+                            "checked": false
+                        },
+                        {
+                            "name": "口罩 (飛機密閉空間，可以考慮攜帶)",
+                            "checked": false
+                        },
+                        {
+                            "name": "小包衛生紙 (不一定要帶，飛機上通常會提供)",
+                            "checked": false
+                        },
+                        {
+                            "name": "傘 (當地不常下雨的話其實不用放隨身行李(容易被查又佔空間))",
+                            "checked": false
+                        },
+                        {
+                            "name": "頸枕 (容易睡不好的記得要帶頸枕)",
+                            "checked": false
+                        },
+                        {
+                            "name": "小瓶護手霜 (飛機上通常滿乾的)",
+                            "checked": false
+                        },
+                        {
+                            "name": "牙膏牙刷 ((可當地買) 有些航空公司會提供，如果會在意還是可以攜帶)",
+                            "checked": false
+                        },
+                        {
+                            "name": "沐浴乳 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "洗發精 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "護髮 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "身體乳霜 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "卸妝乳 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "梳子 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "指甲剪 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "化妝水 ((可當地買) 美妝產品如果有一定要用的品牌可以準備著，其他都可以當地買)",
+                            "checked": false
+                        },
+                        {
+                            "name": "髮圈",
+                            "checked": false
+                        },
+                        {
+                            "name": "隱形眼鏡 (美國購買隱形眼鏡非常麻煩，建議配年拋月拋，或是購買足夠的日拋)",
+                            "checked": false
+                        },
+                        {
+                            "name": "保養液 (美國 Amazon 可以直接訂到便宜的保養液和生理食鹽水)",
+                            "checked": false
+                        },
+                        {
+                            "name": "吹風機 ((可當地買))",
+                            "checked": false
+                        },
+                        {
+                            "name": "文具 (鉛筆、原子筆、麥克筆(很實用)、膠帶、釘書機...)",
+                            "checked": false
+                        },
+                        {
+                            "name": "筆記本 ((可當地買) 歐美筆記本都滿貴的，日本的話就在當地買就好了)",
+                            "checked": false
+                        },
+                        {
+                            "name": "浴巾毛巾 (一到當地就要洗澡可以用)",
+                            "checked": false
+                        },
+                        {
+                            "name": "寢具 ((可當地買) 但一到當地就要睡覺的人可以考慮帶自己的乾淨寢具)",
+                            "checked": false
+                        }
                     ],
-                    '電子產品/相機': [
-                        { name: '美規/加規雙孔插頭 (同台灣，但三孔插座需注意)', checked: false },
-                        { name: '行動電源 (上飛機隨身攜帶)', checked: false },
-                        { name: '相機 & 備用記憶卡', checked: false },
-                        { name: '各類充電線組', checked: false }
+                    "電子產品/相機": [
+                        {
+                            "name": "網路 (可以考慮 eSim、事先買好實體Sim卡，或者用短期漫遊，到當地再辦)",
+                            "checked": true
+                        },
+                        {
+                            "name": "筆電 (怕摔壞的話一定要放隨身行李)",
+                            "checked": false
+                        },
+                        {
+                            "name": "手機",
+                            "checked": true
+                        },
+                        {
+                            "name": "行動充電器 (一定要放隨身行李(不能放託運行李箱))",
+                            "checked": true
+                        },
+                        {
+                            "name": "平板",
+                            "checked": false
+                        },
+                        {
+                            "name": "耳機 (看影片必備)",
+                            "checked": false
+                        },
+                        {
+                            "name": "變壓器",
+                            "checked": false
+                        },
+                        {
+                            "name": "充電線",
+                            "checked": false
+                        },
+                        {
+                            "name": "拍立得、底片 (很多留學生很愛帶拍立得)",
+                            "checked": false
+                        },
+                        {
+                            "name": "延長線 (可以在台灣買！很實用)",
+                            "checked": false
+                        },
+                        {
+                            "name": "HDMI 線",
+                            "checked": false
+                        },
+                        {
+                            "name": "藍芽音響",
+                            "checked": false
+                        }
                     ],
-                    '常用藥品': [
-                        { name: '感冒藥 / 退藥片', checked: false },
-                        { name: '腸胃藥 / 止瀉藥', checked: false },
-                        { name: '暈車藥 (洛磯山脈拉車必備)', checked: false },
-                        { name: '外傷藥膏 / OK繃', checked: false }
+                    "常用藥品": [
+                        {
+                            "name": "眼藥水",
+                            "checked": false
+                        },
+                        {
+                            "name": "止痛藥",
+                            "checked": false
+                        },
+                        {
+                            "name": "保健食品 (如果是在美國的話，購買保健食品非常便宜)",
+                            "checked": false
+                        },
+                        {
+                            "name": "感冒藥 (如果有習慣的感冒藥建議攜帶，尤其有些人很容易一到當地水土不服)",
+                            "checked": false
+                        },
+                        {
+                            "name": "過敏藥",
+                            "checked": false
+                        }
                     ]
                 },
                 expenses: [],
@@ -984,24 +1597,24 @@
                         </h3>
                         <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">${spots.length} 個景點</span>
                     </div>
-                    <ul class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                    <ul class="space-y-3 max-h-[220px] overflow-y-auto pr-1">
                         ${spots.map(s => {
                 const globalIndex = data.spots.indexOf(s);
                 return `
-                                <div class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="text-xs font-semibold text-brand-dark truncate">${s.name}</span>
-                                        <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${s.location}</span>
+                                <div class="flex items-center justify-between bg-white/70 py-3.5 px-4 rounded-xl border border-brand-beige/30 shadow-sm">
+                                    <div class="flex items-center gap-2.5 min-w-0">
+                                        <span class="text-base font-semibold text-brand-dark truncate">${s.name}</span>
+                                        <span class="text-xs bg-brand-blue/30 text-brand-dark px-2 py-0.5 rounded-full font-bold flex-shrink-0">${s.location}</span>
                                     </div>
-                                    <button onclick="deleteSpotItem(${globalIndex})" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                    <button onclick="deleteSpotItem(${globalIndex})" class="text-brand-gray hover:text-red-500 p-2 flex-shrink-0"><i class="fa-solid fa-trash-can text-sm"></i></button>
                                 </div>
                             `;
-            }).join('') || '<li class="text-xs text-brand-gray/50 py-3 text-center">目前無景點</li>'}
+            }).join('') || '<li class="text-sm text-brand-gray/50 py-3 text-center">目前無景點</li>'}
                     </ul>
                     <!-- Inline Add -->
                     <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
-                        <input type="text" id="add-spot-input" placeholder="輸入景點名稱..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
-                        <button onclick="addNewSpot()" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-md shrink-0">新增</button>
+                        <input type="text" id="add-spot-input" placeholder="輸入景點名稱..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                        <button onclick="addNewSpot()" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-sm px-5 py-2.5 rounded-xl font-bold active:scale-95 transition shadow-md shrink-0">新增</button>
                     </div>
                 </div>
 
@@ -1020,7 +1633,7 @@
                                 <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleRestaurantVisited(${globalIndex})">
                                     <div class="flex items-center gap-2 min-w-0">
                                         <i class="${r.visited ? 'fa-solid fa-circle-check text-[#E29C32]' : 'fa-regular fa-circle text-brand-gray/40'} text-base flex-shrink-0"></i>
-                                        <span class="${r.visited ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${r.name}</span>
+                                        <span class="${r.visited ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-base font-semibold truncate">${r.name}</span>
                                         <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${r.location}</span>
                                     </div>
                                     <button onclick="event.stopPropagation(); deleteRestaurantItem(${globalIndex});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
@@ -1050,7 +1663,7 @@
                                 <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/30 shadow-sm cursor-pointer" onclick="toggleGiftBought(${globalIndex})">
                                     <div class="flex items-center gap-2 min-w-0">
                                         <i class="${g.bought ? 'fa-solid fa-square-check text-[#E29C32]' : 'fa-regular fa-square text-brand-gray/40'} text-base flex-shrink-0"></i>
-                                        <span class="${g.bought ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${g.name}</span>
+                                        <span class="${g.bought ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-base font-semibold truncate">${g.name}</span>
                                         <span class="text-[9px] bg-brand-blue/30 text-brand-dark px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">${g.location}</span>
                                     </div>
                                     <button onclick="event.stopPropagation(); deleteGiftItem(${globalIndex});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
@@ -1133,6 +1746,20 @@
 
             const categories = Object.keys(data.luggage);
 
+            // Populate global category dropdown if it exists
+            const select = document.getElementById('luggage-category');
+            if (select) {
+                const currentVal = select.value;
+                select.innerHTML = categories.map(cat => `
+                    <option value="${cat}">${cat}</option>
+                `).join('');
+                if (categories.includes(currentVal)) {
+                    select.value = currentVal;
+                } else if (categories.length > 0) {
+                    select.value = categories[0];
+                }
+            }
+
             let html = categories.map(cat => {
                 const items = data.luggage[cat] || [];
                 totalItems += items.length;
@@ -1146,12 +1773,12 @@
                 else if (cat === '常用藥品') iconClass = 'fa-prescription-bottle-medical';
 
                 const itemsHtml = items.map((item, index) => `
-                    <li class="flex items-center justify-between bg-white/70 p-2.5 rounded-xl border border-brand-beige/20 shadow-sm cursor-pointer" onclick="toggleLuggage('${cat}', ${index})">
-                        <div class="flex items-center gap-2 min-w-0">
-                            <i class="${item.checked ? 'fa-solid fa-square-check text-[#E29C32]' : 'fa-regular fa-square text-brand-gray/40'} text-base flex-shrink-0"></i>
-                            <span class="${item.checked ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-xs font-semibold truncate">${item.name}</span>
+                    <li class="flex items-center justify-between bg-white/70 py-3.5 px-4 rounded-xl border border-brand-beige/20 shadow-sm cursor-pointer" onclick="toggleLuggage('${cat}', ${index})">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <i class="${item.checked ? 'fa-solid fa-square-check text-[#E29C32]' : 'fa-regular fa-square text-brand-gray/40'} text-lg flex-shrink-0"></i>
+                            <span class="${item.checked ? 'line-through text-brand-gray/65' : 'text-brand-dark'} text-base font-semibold truncate">${item.name}</span>
                         </div>
-                        <button onclick="event.stopPropagation(); deleteLuggageItem('${cat}', ${index});" class="text-brand-gray hover:text-red-500 p-1 flex-shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        <button onclick="event.stopPropagation(); deleteLuggageItem('${cat}', ${index});" class="text-brand-gray hover:text-red-500 p-2 flex-shrink-0"><i class="fa-solid fa-trash-can text-sm"></i></button>
                     </li>
                 `).join('');
 
@@ -1162,20 +1789,20 @@
                                 <i class="fa-solid ${iconClass} text-brand-gray"></i> <span>${cat}</span>
                             </h3>
                             <div class="flex items-center gap-2">
-                                <span class="text-[10px] bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">
+                                <span class="text-xs bg-brand-cream px-2 py-0.5 rounded-full font-bold text-brand-dark">
                                     ${items.filter(item => item.checked).length} / ${items.length}
                                 </span>
-                                <button onclick="deleteLuggageCategory('${cat}')" class="text-brand-gray hover:text-[#D46E82] transition p-1 focus:outline-none" title="刪除此分類">
-                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                <button onclick="deleteLuggageCategory('${cat}')" class="text-brand-gray hover:text-[#D46E82] transition p-2 focus:outline-none" title="刪除此分類">
+                                    <i class="fa-solid fa-trash-can text-sm"></i>
                                 </button>
                             </div>
                         </div>
-                        <ul class="space-y-1.5">
-                            ${itemsHtml ? itemsHtml : '<li class="text-xs text-brand-gray/50 py-2 text-center">無項目</li>'}
+                        <ul class="space-y-2.5">
+                            ${itemsHtml ? itemsHtml : '<li class="text-sm text-brand-gray/50 py-2 text-center">無項目</li>'}
                         </ul>
                         <div class="flex gap-2 pt-1 border-t border-brand-beige/20">
-                            <input type="text" id="add-input-${cat}" placeholder="新增${cat}項目..." class="flex-1 border border-brand-beige rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
-                            <button onclick="addLuggageItemToCat('${cat}')" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-xs px-3 py-1.5 rounded-xl font-bold active:scale-95 transition shadow-sm"><i class="fa-solid fa-plus"></i></button>
+                            <input type="text" id="add-input-${cat}" placeholder="新增${cat}項目..." class="flex-1 border border-brand-beige rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-gold bg-white text-brand-dark font-medium">
+                            <button onclick="addLuggageItemToCat('${cat}')" class="bg-brand-dark hover:bg-brand-gray text-brand-cream text-sm px-4 py-2 rounded-xl font-bold active:scale-95 transition shadow-sm"><i class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>
                 `;
@@ -1241,6 +1868,144 @@
             }
         }
 
+        function addGlobalLuggageItem() {
+            const input = document.getElementById('luggage-name');
+            const select = document.getElementById('luggage-category');
+            if (!input || !select) return;
+            const name = input.value.trim();
+            const cat = select.value;
+            if (!name) {
+                alert('請輸入行李項目名稱！');
+                return;
+            }
+            if (!data.luggage[cat]) {
+                data.luggage[cat] = [];
+            }
+            data.luggage[cat].push({ name: name, checked: false });
+            input.value = '';
+            save();
+            renderLuggage();
+        }
+
+        function autoDetectLuggageCategory(value) {
+            const val = value.trim();
+            if (!val) return;
+            const rules = [
+                { cat: '衣物穿搭', keywords: ['衣', '褲', '鞋', '外套', '發熱', '襪', '帽'] },
+                { cat: '重要文件/證件', keywords: ['護照', '簽證', '保險', '日幣', '加幣', '印', '文件', '證件'] },
+                { cat: '常用藥品', keywords: ['藥', '維他命', '感冒', 'OK蹦', '貼布'] },
+                { cat: '電子產品/相機', keywords: ['線', '充電', '變壓', '手機', '相機', '行動電源', 'Mac', 'iPad'] },
+                { cat: '日常用品/盥洗', keywords: ['乳液', '牙刷', '洗', '隱眼', '保濕', '隱形眼鏡'] }
+            ];
+            for (const rule of rules) {
+                if (rule.keywords.some(kw => val.includes(kw))) {
+                    const select = document.getElementById('luggage-category');
+                    if (select && data.luggage[rule.cat]) {
+                        select.value = rule.cat;
+                    }
+                    break;
+                }
+            }
+        }
+
+        function autoDetectExpenseCategory(value) {
+            const val = value.trim();
+            if (!val) return;
+            const rules = [
+                { cat: '餐費', keywords: ['飯', '麵', '吃', '午餐', '晚餐', '早餐', '麥當勞', 'Tim', '咖啡', '喝'] },
+                { cat: '交通', keywords: ['車', '地鐵', 'Bus', '機票', 'UP', '搭'] }
+            ];
+            for (const rule of rules) {
+                if (rule.keywords.some(kw => val.includes(kw))) {
+                    const select = document.getElementById('exp-category');
+                    if (select && data.categories.some(c => c.name === rule.cat)) {
+                        select.value = rule.cat;
+                    }
+                    break;
+                }
+            }
+        }
+
+        function resetLuggageToDefault() {
+            if (confirm("確定要將所有行李清單重設為預設資料嗎？（這將會覆蓋您目前的行李修改與勾選狀態，載入剛才同步的試算表內容）")) {
+                const defaultLuggage = {
+                    "重要文件/證件": [
+                        { "name": "入學許可 I-20 (一定要隨身攜帶)", "checked": false },
+                        { "name": "錄取通知 (可以截圖或翻拍錄取信，並放在手機或Line相簿中，必要時可以馬上找到)", "checked": false },
+                        { "name": "護照 (確認離護照到期至少6個月以上)", "checked": true },
+                        { "name": "機票 (航空公司App登機證、第三方App登機證條碼)", "checked": true },
+                        { "name": "錢包 (包含現金、信用卡、國際金融卡、支票等)", "checked": true },
+                        { "name": "照片 (最好帶著護照格式2吋大頭照、留學國家常用規格的大頭照)", "checked": true }
+                    ],
+                    "衣物穿搭": [
+                        { "name": "衣架 ((可當地買))", "checked": false },
+                        { "name": "春夏上衣", "checked": false },
+                        { "name": "秋冬上衣", "checked": false },
+                        { "name": "運動套裝", "checked": false },
+                        { "name": "褲子", "checked": false },
+                        { "name": "裙子", "checked": false },
+                        { "name": "襪子", "checked": false },
+                        { "name": "內褲", "checked": false },
+                        { "name": "內衣", "checked": false },
+                        { "name": "鞋子", "checked": false },
+                        { "name": "薄外套", "checked": false },
+                        { "name": "厚外套", "checked": false },
+                        { "name": "拖鞋 (要去歐美的話，拖鞋很不容易買到，建議直接從台灣帶)", "checked": false }
+                    ],
+                    "日常用品/盥洗": [
+                        { "name": "水壺 (可以在出境後買水，空服員也會提供水，但也可以自己帶水壺)", "checked": false },
+                        { "name": "酒精 (在乎乾淨可以考慮攜帶)", "checked": false },
+                        { "name": "口罩 (飛機密閉空間，可以考慮攜帶)", "checked": false },
+                        { "name": "小包衛生紙 (不一定要帶，飛機上通常會提供)", "checked": false },
+                        { "name": "傘 (當地不常下雨的話其實不用放隨身行李(容易被查又佔空間))", "checked": false },
+                        { "name": "頸枕 (容易睡不好的記得要帶頸枕)", "checked": false },
+                        { "name": "小瓶護手霜 (飛機上通常滿乾的)", "checked": false },
+                        { "name": "牙膏牙刷 ((可當地買) 有些航空公司會提供，如果會在意還是可以攜帶)", "checked": false },
+                        { "name": "沐浴乳 ((可當地買))", "checked": false },
+                        { "name": "洗發精 ((可當地買))", "checked": false },
+                        { "name": "護髮 ((可當地買))", "checked": false },
+                        { "name": "身體乳霜 ((可當地買))", "checked": false },
+                        { "name": "卸妝乳 ((可當地買))", "checked": false },
+                        { "name": "梳子 ((可當地買))", "checked": false },
+                        { "name": "指甲剪 ((可當地買))", "checked": false },
+                        { "name": "化妝水 ((可當地買) 美妝產品如果有一定要用的品牌可以準備著，其他都可以當地買)", "checked": false },
+                        { "name": "髮圈", "checked": false },
+                        { "name": "隱形眼鏡 (美國購買隱形眼鏡非常麻煩，建議配年拋月拋，或是購買足夠的日拋)", "checked": false },
+                        { "name": "保養液 (美國 Amazon 可以直接訂到便宜的保養液和生理食鹽水)", "checked": false },
+                        { "name": "吹風機 ((可當地買))", "checked": false },
+                        { "name": "文具 (鉛筆、原子筆、麥克筆(很實用)、膠帶、釘書機...)", "checked": false },
+                        { "name": "筆記本 ((可當地買) 歐美筆記本都滿貴的，日本的話就在當地買就好了)", "checked": false },
+                        { "name": "浴巾毛巾 (一到當地就要洗澡可以用)", "checked": false },
+                        { "name": "寢具 ((可當地買) 但一到當地就要睡覺的人可以考慮帶自己的乾淨寢具)", "checked": false }
+                    ],
+                    "電子產品/相機": [
+                        { "name": "網路 (可以考慮 eSim、事先買好實體Sim卡，或者用短期漫遊，到當地再辦)", "checked": true },
+                        { "name": "筆電 (怕摔壞的話一定要放隨身行李)", "checked": false },
+                        { "name": "手機", "checked": true },
+                        { "name": "行動充電器 (一定要放隨身行李(不能放託運行李箱))", "checked": true },
+                        { "name": "平板", "checked": false },
+                        { "name": "耳機 (看影片必備)", "checked": false },
+                        { "name": "變壓器", "checked": false },
+                        { "name": "充電線", "checked": false },
+                        { "name": "拍立得、底片 (很多留學生很愛帶拍立得)", "checked": false },
+                        { "name": "延長線 (可以在台灣買！很實用)", "checked": false },
+                        { "name": "HDMI 線", "checked": false },
+                        { "name": "藍芽音響", "checked": false }
+                    ],
+                    "常用藥品": [
+                        { "name": "眼藥水", "checked": false },
+                        { "name": "止痛藥", "checked": false },
+                        { "name": "保健食品 (如果是在美國的話，購買保健食品非常便宜)", "checked": false },
+                        { "name": "感冒藥 (如果有習慣的感冒藥建議攜帶，尤其有些人很容易一到當地水土不服)", "checked": false },
+                        { "name": "過敏藥", "checked": false }
+                    ]
+                };
+                data.luggage = defaultLuggage;
+                save();
+                renderLuggage();
+            }
+        }
+
         // 記帳
         function populateCategoryDropdown() {
             const select = document.getElementById('exp-category');
@@ -1280,23 +2045,23 @@
                 const catName = e.category || '其他';
                 const cat = data.categories.find(c => c.name === catName) || { icon: 'fa-tags' };
                 return `
-                    <li class="flex justify-between text-xs text-brand-gray bg-white p-3 rounded-xl border border-brand-beige/30 shadow-sm items-center hover:bg-brand-beige/30 transition">
-                        <div class="flex flex-col gap-0.5">
-                            <span class="font-semibold text-brand-dark">${e.title}</span>
-                            <span class="text-[10px] text-brand-gray flex items-center gap-2 flex-wrap">
-                                <span class="flex items-center gap-1">
-                                    <i class="fa-solid ${cat.icon} text-[8px]"></i> ${catName}
+                    <li class="flex justify-between text-sm text-brand-gray bg-white py-3.5 px-4.5 rounded-xl border border-brand-beige/30 shadow-sm items-center hover:bg-brand-beige/30 transition gap-4">
+                        <div class="flex flex-col gap-1">
+                            <span class="font-bold text-brand-dark text-base">${e.title}</span>
+                            <span class="text-sm font-semibold text-brand-gray flex items-center gap-3.5 flex-wrap">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid ${cat.icon} text-xs"></i> ${catName}
                                 </span>
                                 <span class="opacity-40">|</span>
-                                <span class="flex items-center gap-0.5">
-                                    <i class="fa-regular fa-calendar text-[8px]"></i> ${e.date || ''}
+                                <span class="flex items-center gap-1">
+                                    <i class="fa-regular fa-calendar text-xs"></i> ${e.date || ''}
                                 </span>
                             </span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-brand-dark">${e.amount.toFixed(2)} CAD</span>
-                            <button onclick="data.expenses.splice(${i},1);save();renderExpenses();if(typeof renderBudgetCenter === 'function') renderBudgetCenter();" class="text-brand-gray hover:text-red-500 p-1 transition">
-                                <i class="fa-solid fa-trash-can text-xs"></i>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="font-black text-brand-dark text-base">${e.amount.toFixed(2)} CAD</span>
+                            <button onclick="data.expenses.splice(${i},1);save();renderExpenses();if(typeof renderBudgetCenter === 'function') renderBudgetCenter();" class="text-brand-gray hover:text-red-500 p-2 transition">
+                                <i class="fa-solid fa-trash-can text-sm"></i>
                             </button>
                         </div>
                     </li>`;
@@ -1458,9 +2223,9 @@
             let html = `
                 <!-- Master Total Budget Card -->
                 <div class="bg-brand-beige/40 p-3 rounded-2xl border border-brand-beige/60 mb-2 space-y-1.5">
-                    <div class="flex justify-between items-center text-xs">
+                    <div class="flex justify-between items-center text-sm font-semibold">
                         <span class="font-bold text-brand-dark">總預算使用狀況</span>
-                        <span class="text-brand-gray font-medium">
+                        <span class="text-brand-gray font-medium text-sm">
                             <span class="font-black text-brand-dark">${totalSpent.toFixed(1)}</span> / ${totalBudget.toFixed(0)} CAD (${totalPct.toFixed(0)}%)
                         </span>
                     </div>
@@ -1490,16 +2255,16 @@
 
                 return `
                     <div class="space-y-1 pt-1.5">
-                        <div class="flex justify-between items-center text-[11px]">
+                        <div class="flex justify-between items-center text-sm">
                             <span class="text-brand-dark font-bold flex items-center gap-1.5">
                                 <span class="w-5 h-5 rounded-md bg-white border border-brand-beige/40 flex items-center justify-center text-brand-dark">
-                                    <i class="fa-solid ${cat.icon} text-[10px]"></i>
+                                    <i class="fa-solid ${cat.icon} text-xs"></i>
                                 </span>
                                 ${cat.name}
                             </span>
-                            <span class="${textClass}">
-                                <span class="font-bold">${spent.toFixed(1)}</span> <span class="text-[9px] text-brand-gray/60">/ ${cat.budget} CAD</span>
-                                <span class="ml-1 text-[10px] font-black">(${pct.toFixed(0)}%)</span>
+                            <span class="${textClass} text-xs">
+                                <span class="font-bold text-sm">${spent.toFixed(1)}</span> <span class="text-xs text-brand-gray/60">/ ${cat.budget} CAD</span>
+                                <span class="ml-1 text-xs font-black">(${pct.toFixed(0)}%)</span>
                             </span>
                         </div>
                         <div class="w-full bg-white h-1.5 rounded-full overflow-hidden border border-brand-beige/30">
